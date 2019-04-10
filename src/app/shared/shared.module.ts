@@ -11,6 +11,10 @@ import { Page404Component } from './page404/page404.component';
   ],
   imports: [
     CommonModule
+  ],
+  exports: [
+    HeaderComponent,
+    FooterComponent
   ]
 })
 export class SharedModule { }

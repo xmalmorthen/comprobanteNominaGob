@@ -1,3 +1,40 @@
-<p>
-  log-in works!
-</p>
+<div class="sidenav">
+  <div class="login-main-text">
+    <h2>
+      Comprobantes<br />
+      de Nómina
+    </h2>
+    <p>
+      Para ingrersar es necesario especifique su RFC o CURP, número de
+      trabajador y dependencia o adscripción en la que se encuentra registrado.
+    </p>
+  </div>
+</div>
+<div class="main">
+  <div class="col-md-6 col-sm-12">
+    <div class="login-form">                          
+      <form [formGroup]="frm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="form-group">
+          <label>Dependencia o adscripción <sup>*</sup></label>
+          <select2 formControlName="adscripcion" [data]="data" autofocus tabIndex="1" [ngClass]="{ 'is-invalid': f.adscripcion.invalid && (f.adscripcion.dirty || f.adscripcion.touched) }"></select2>
+          <span *ngIf="submitted && f.adscripcion.invalid" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
+        </div>
+        <div class="form-group">
+          <label>RFC o CURP <sup>*</sup></label>
+          <input type="text" formControlName="usuario" class="form-control form-control-sm" tabIndex="2" />
+          <span *ngIf="submitted && f.usuario.invalid && f.usuario.errors?.required" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
+          <span *ngIf="submitted && f.usuario.invalid && f.usuario.errors?.minlength" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> La longitud mínima es de {{ f.usuario.errors?.minlength.requiredLength }}</span>
+        </div>
+        <div class="form-group">
+          <label>Número de trabajador <sup>*</sup></label>
+          <input type="text" formControlName="numtrabajador" class="form-control form-control-sm" tabIndex="3" />
+          <span *ngIf="submitted && f.numtrabajador.invalid" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
+        </div>
+        <div>
+          * Información requerida        
+        </div>
+        <button type="submit" class="btn btn-black float-right">Ingresar</button>
+      </form>
+    </div>
+  </div>
+</div>

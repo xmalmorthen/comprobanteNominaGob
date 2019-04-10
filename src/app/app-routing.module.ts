@@ -4,12 +4,15 @@ import { Routes, RouterModule } from '@angular/router';
 // INDEX COMPONENTS
 import { MainComponent, LogInComponent } from './pages/pages.index';
 import { Page404Component } from './shared/shared.index';
+import { PagesComponent } from './pages/pages.component';
 
 
 const routes: Routes = [
-  { path: 'principal', component: MainComponent },
+  { path: '', component: PagesComponent , children: [
+    { path: 'principal', component: MainComponent },
+    { path: '', redirectTo: 'principal', pathMatch: 'full' }
+  ]},
   { path: 'logIn', component: LogInComponent },
-  { path: '', redirectTo: '/principal', pathMatch: 'full' },
   { path: '**', component: Page404Component }
 ];
 
