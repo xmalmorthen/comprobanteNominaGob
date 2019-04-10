@@ -1,3 +1,18 @@
+.page-flexbox-wrapper{
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.header {
+    z-index: 2;
+    background-color: white;
+}
+
+.logo {
+    width: 400px;
+}
+
 .main-head{
     height: 150px;
     background: #FFF;
@@ -15,17 +30,20 @@
     padding: 0px 10px;
 }
 
-@media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
+.login-main-text{
+    margin-top: 20%;
+    padding: 60px;
+    color: #fff;
+    text-align: justify;
 }
 
-@media screen and (max-width: 450px) {
-    .login-form{
-        margin-top: 10%;
-    }
+.login-main-text h2{
+    font-weight: 300;
+}
 
-    .register-form{
-        margin-top: 10%;
+@media screen and (max-width: 1280px){
+    .logo {
+        width: 300px;
     }
 }
 
@@ -43,26 +61,39 @@
     }
 
     .login-form{
-        margin-top: 70%;
-    }
+        margin-top: 30%;
+    }    
+}
 
-    .register-form{
+@media screen and (max-width: 768px){
+    .login-main-text{
+        margin-top: 5%;
+        padding: 30px;
+        color: #fff;
+    }
+    .login-form{
+        margin-top: 5%;
+    }
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+}
+
+@media screen and (max-width: 450px) {
+    .login-form{
         margin-top: 20%;
     }
 }
 
 
-.login-main-text{
-    margin-top: 20%;
-    padding: 60px;
-    color: #fff;
-}
-
-.login-main-text h2{
-    font-weight: 300;
-}
-
 .btn-black{
     background-color: #000 !important;
     color: #fff;
+}
+
+form {
+    border: 1px solid #cacaca!important;
+    border-radius: 5px;
+    padding: 1em;
 }
