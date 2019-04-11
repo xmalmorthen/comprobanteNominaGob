@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // SERVICES INDEX
-import { WsStampingSATService } from './service.index';
+import { WsStampingSATService, LoginGuard, LogInService } from './service.index';
 
 @NgModule({
   declarations: [],
@@ -10,7 +10,9 @@ import { WsStampingSATService } from './service.index';
     CommonModule
   ],
   providers: [
-    WsStampingSATService
+    LoginGuard,
+    WsStampingSATService,
+    LogInService
   ]
 })
 export class ServiceModule { }

@@ -5,7 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 // SERVICES INDEX
-import { WsStampingSATService } from 'src/app/services/service.index';
+import { WsStampingSATService, LogInService } from 'src/app/services/service.index';
 import { getEmisores_Response_Interface, getAccess_Response_Interface, responseService_Response_Interface, RESTService_Response_Interface } from 'src/app/interfaces/interfaces.index';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
@@ -34,7 +34,8 @@ export class LogInComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private wsStampingSATService: WsStampingSATService
+    private wsStampingSATService: WsStampingSATService,
+    private logInService: LogInService
   ) { 
     this.getEmisoresList()
       .subscribe ( (response: any[]) =>{
@@ -102,8 +103,7 @@ export class LogInComponent implements OnInit {
     )
       .subscribe( ( response: getAccess_Response_Interface) => {
 
-        localStorage.setItem('sessionUserData', JSON.stringify(response) );
-
+        this.logInService.register( response );
         this.router.navigate( ['/principal'] );
 
       },

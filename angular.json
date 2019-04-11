@@ -28,12 +28,14 @@
             ],
             "styles": [
               "src/styles.scss",
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/datatables.net-dt/css/jquery.dataTables.css"
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",
               "./node_modules/popper.js/dist/umd/popper.min.js",
-              "./node_modules/gasparesganga-jquery-loading-overlay/dist/loadingoverlay.min.js"
+              "./node_modules/gasparesganga-jquery-loading-overlay/dist/loadingoverlay.min.js",
+              "./node_modules/datatables.net/js/jquery.dataTables.js"
             ],
             "es5BrowserSupport": true
           },
@@ -90,12 +92,14 @@
             "karmaConfig": "src/karma.conf.js",
             "styles": [
               "src/styles.scss",
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/datatables.net-dt/css/jquery.dataTables.css"
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",
               "./node_modules/popper.js/dist/umd/popper.min.js",
-              "./node_modules/gasparesganga-jquery-loading-overlay/dist/loadingoverlay.min.js"
+              "./node_modules/gasparesganga-jquery-loading-overlay/dist/loadingoverlay.min.js",
+              "./node_modules/datatables.net/js/jquery.dataTables.js"
             ],
             "assets": [
               "src/favicon.ico",

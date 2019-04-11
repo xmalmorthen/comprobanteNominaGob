@@ -5,10 +5,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { MainComponent, LogInComponent } from './pages/pages.index';
 import { Page404Component } from './shared/shared.index';
 import { PagesComponent } from './pages/pages.component';
-
+import { LoginGuard } from './services/service.index';
 
 const routes: Routes = [
-  { path: '', component: PagesComponent , children: [
+  { path: '', component: PagesComponent , canActivate: [ LoginGuard  ], children: [
     { path: 'principal', component: MainComponent },
     { path: '', redirectTo: 'principal', pathMatch: 'full' }
   ]},
