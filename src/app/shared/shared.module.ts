@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent, FooterComponent } from './shared.index';
-import { Page404Component } from './page404/page404.component';
+import { RouterModule } from '@angular/router';
+import { HeaderComponent, FooterComponent, Page404Component } from './shared.index';
 
 @NgModule({
   declarations: [
+    
     HeaderComponent,
     FooterComponent,
     Page404Component
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule
   ],
   exports: [
     HeaderComponent,

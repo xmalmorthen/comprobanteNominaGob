@@ -12,10 +12,7 @@ export class LoginGuard implements CanActivate  {
     private router: Router
   ){}
 
-  canActivate(): boolean {
-    if (!this.logInService.sessionActive())
-      this.router.navigate( [ '/logIn' ] );
-    else
-      return true;
+  async canActivate() {
+    return await this.logInService.sessionActive() ? true : this.router.navigate( [ 'logIn' ] );
   }
 }

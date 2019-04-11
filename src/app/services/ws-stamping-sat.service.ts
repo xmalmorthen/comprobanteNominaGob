@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { Observable, Subscriber } from 'rxjs';
 
 // INTERFACES
-import { getEmisores_Response_Interface, responseService_Response_Interface, getAccess_Response_Interface, getAccess_Request_Interface } from '../interfaces/interfaces.index';
+import { getEmisores_Response_Interface, responseService_Response_Interface, getAccess_Response_Interface, getAccess_Request_Interface, getComprobantesToken_Response_Interface, getComprobantesToken_Request_Interface } from '../interfaces/interfaces.index';
 
 // CONSTANTES
 const apiEndPoint = 'http://localhost:9999';
@@ -68,5 +68,74 @@ export class WsStampingSATService {
           return <getAccess_Response_Interface>response.Response;
         })
       );
+  }
+
+  // VERIFICAR VIGENCIA DE SESIÓN
+  checkSession( tocken: string): Observable< boolean > {
+    
+    const wsRequest = `${apiEndPoint}/${apiVersion}/get/checkToken`;
+    let headers_object = new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': apiAuth
+    });
+
+    return this.http.post<responseService_Response_Interface>(wsRequest, { token: tocken }, { headers: headers_object })
+      .pipe(
+        map( (response: responseService_Response_Interface) => {
+          return response.Response ? true : false;
+        })
+      );
+  }
+
+  // RECICLAR SESION
+  recicleSession( token: string): Observable<getAccess_Response_Interface> {
+    
+    const wsRequest = `${apiEndPoint}/${apiVersion}/get/recicleToken`;
+    let headers_object = new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': apiAuth
+    });    
+
+    return this.http.post<responseService_Response_Interface>(wsRequest, { token: token }, { headers: headers_object })
+      .pipe(
+        map( (response: responseService_Response_Interface) => {
+          return <getAccess_Response_Interface>response.Response;
+        })
+      );
+  }
+
+  // OBTENER COMPROBANTES
+  getComprobantes( token: string, fechaInicio: string = null, fechaFin: string = null): Observable< getComprobantesToken_Response_Interface[] > {
+    
+    const wsRequest = `${apiEndPoint}/${apiVersion}/get/getStampListToken`;
+    let headers_object = new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': apiAuth
+    }); 
+    
+    let model: getComprobantesToken_Request_Interface = {      
+      token: token,
+      fechaInicio: fechaInicio,
+      fechaFin: fechaFin
+    }
+    
+    return this.http.post<responseService_Response_Interface>(wsRequest, model, { headers: headers_object })
+      .pipe(
+        map( (response: responseService_Response_Interface) => {
+          return <getComprobantesToken_Response_Interface[]>response.Response;
+        })
+      );
+  }
+
+  getXML( UUID: string ): void {
+    const callUrl = `${apiEndPoint}/${apiVersion}/get/getStampingXML?identifier=${UUID}`;
+    window.open(callUrl, "_blank");
+    // window.location.href = callUrl;
+  }
+
+  getPDF( UUID: string ): void {
+    const callUrl = `${apiEndPoint}/${apiVersion}/get/getStampPDF?identifier=${UUID}`;
+    window.open(callUrl, "_blank");
+    // window.location.href = callUrl;
   }
 }

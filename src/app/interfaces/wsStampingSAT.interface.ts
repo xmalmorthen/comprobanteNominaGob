@@ -1,6 +1,6 @@
 export interface responseService_Response_Interface {
   RESTService: RESTService_Response_Interface;
-  Response: getEmisores_Response_Interface[] | getAccess_Response_Interface;
+  Response: getEmisores_Response_Interface[] | getAccess_Response_Interface | getComprobantesToken_Response_Interface[];
 }
 
 export interface RESTService_Response_Interface {
@@ -32,3 +32,18 @@ export interface getAccess_Response_Interface {
   fExpired: string;
 }
 
+export interface getComprobantesToken_Request_Interface {
+  token: string;
+  fechaInicio?: string;
+  fechaFin?: string;
+}
+
+export interface getComprobantesToken_Response_Interface {
+  id: number;
+  rfcEmisor: string;
+  serie: string;
+  folio: string;
+  UUID: string;
+  fechaTimbrado: string;
+  cancelado: boolean;
+}

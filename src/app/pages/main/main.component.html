@@ -1,6 +1,8 @@
 <div>
+  <h1 class="pageTitle">Comprobante de ingresos</h1>
+  <br>
   <!-- BEGIN TABLE -->
-  <table #tablaComprobantes class="table table-striped dt-responsive" style="width:100%">
+  <table #tablaComprobantes class="table table-striped responsive compact" style="width:100%">
     <thead>
       <tr>
           <th>UUID SAT</th>
@@ -9,15 +11,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>58133228-4849-4D9D-8C58-085A9407C9A5</td>
-        <td>23 de Enero del 2017 11:04:00</td>
-        <td>
-            <a class='m-2' href="#" title='Detalle'><i class="fa fa-eye fa-2x"></i></a>
-            <a class='m-2' href="#" title='Descargar XML'><i class="fa fa-pencil-square-o fa-2x"></i></a>
-            <a class='m-2' href="#" title='Descargar comprobante fiscal'><i class="fa fa-trash fa-2x"></i></a>
+      <tr *ngFor="let item of comprobantesList">
+        <td>{{ item.UUID }}</td>
+        <td>{{ item.fechaTimbrado }}</td>
+        <td class="d-flex justify-content-md-between">
+            <a (click)="showDetail($event, item.UUID)" class='m-2' title='Detalle'><i class="fa fa fa-file-text-o fa-2x"></i></a>
+            <a (click)="getXml($event, item.UUID)" class='m-2' title='Descargar XML'><i class="fa fa fa-file-code-o fa-2x"></i></a>
+            <a (click)="getPdf($event, item.UUID)"  class='m-2' title='Descargar comprobante fiscal'><i class="fa fa fa-file-pdf-o fa-2x"></i></a>
         </td>
-      </tr>          
+      </tr>
     </tbody>
   </table>
   <!-- END TABLE -->

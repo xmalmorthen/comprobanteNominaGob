@@ -1,3 +1,27 @@
-<header class="header">
-  HEADER
-</header>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <button (click)="toggleCollapsed()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  
+  <img class="navbar-brand logo m-2" src="./assets/images/logo.png" alt="Gobierno del Estado de Colima">
+
+  <div [ngClass]="{'collapse': collapsed, 'navbar-collapse': true}" class="collapse navbar-collapse" id="navbarTogglerDemo01">
+    <h3 class='navbar-text mr-auto mt-lg-5 ml-lg-2'>Capital Humano - Gobierno del Estado de Colima</h3>
+    <ul class="navbar-nav mt-2 mt-lg-5 mr-lg-4">
+      <li class="nav-item " routerLinkActive="active">
+        <a [routerLink]="['/principal']" class="nav-link" title="Página principal">
+          <i class="fa fa-home fa-2x" aria-hidden="true"></i> 
+          <span class="d-lg-none ml-1">Página principal</span>
+          <span class="d-lg-none sr-only">Página principal</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a (click)="logOut()" class="nav-link" title="Cerrar sesión">
+          <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
+          <span class="d-lg-none ml-1">Cerrar sesión</span>
+          <span class="d-lg-none sr-only">Cerrar sesión</span>
+        </a>
+      </li>        
+    </ul>      
+  </div>
+</nav>

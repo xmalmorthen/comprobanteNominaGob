@@ -26,6 +26,8 @@ export class LogInComponent implements OnInit {
   frm: FormGroup;
   submitted = false;
 
+  select2Value = '';
+
   err: errModel_Interface = {
     err: false
   };
@@ -40,18 +42,20 @@ export class LogInComponent implements OnInit {
     this.getEmisoresList()
       .subscribe ( (response: any[]) =>{
         this.adscripcion = response;
+      
+        // TODO: Quitar declaración de formulario después de testear
+        this.select2Value = 'ICI1209027S2';
+
       },
       ( error: HttpErrorResponse ) =>{});
   }
 
   ngOnInit() {
-
     this.frm = new FormGroup({
-      adscripcion: new FormControl(null, [ Validators.required ]),
-      usuario: new FormControl(null, [ Validators.required, Validators.minLength(12)] ),
-      numtrabajador: new FormControl(null, Validators.required)
+      adscripcion: new FormControl('', [ Validators.required ]),
+      usuario: new FormControl('ruam8111232s9', [ Validators.required, Validators.minLength(12)] ),
+      numtrabajador: new FormControl('18840', Validators.required)
     });
-
   }
 
   private getEmisoresList() : Observable< getEmisores_Response_Interface[] > {
@@ -103,7 +107,7 @@ export class LogInComponent implements OnInit {
     )
       .subscribe( ( response: getAccess_Response_Interface) => {
 
-        this.logInService.register( response );
+        this.logInService.register( response, this.frm.value.usuario );
         this.router.navigate( ['/principal'] );
 
       },

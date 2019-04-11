@@ -4,7 +4,11 @@
   flex-direction: column;
 }
 
-.header {
+.Site-content {
+  flex: 1;
+}
+
+.header, .footer {
     z-index: 2;
     background-color: white;
 }
