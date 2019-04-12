@@ -138,4 +138,22 @@ export class WsStampingSATService {
     window.open(callUrl, "_blank");
     // window.location.href = callUrl;
   }
+
+  getZip( UUID: string ): void {
+    const callUrl = `${apiEndPoint}/${apiVersion}/get/getZipFiles?identifier=${UUID}`;
+    window.open(callUrl, "_blank");
+    // window.location.href = callUrl;
+  }
+
+  getZipMultiple( uuidList: string[] ): void {
+
+    const stringUUIDList =  uuidList.join(","); 
+    const stringUUIDB64 = btoa(stringUUIDList);
+
+    const callUrl = `${apiEndPoint}/${apiVersion}/get/getZipMultiple?identifier=${stringUUIDB64}`;
+    
+    window.open(callUrl, "_blank");
+    // window.location.href = callUrl;
+  }
+
 }

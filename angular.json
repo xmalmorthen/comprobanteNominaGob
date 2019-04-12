@@ -39,7 +39,9 @@
               "./node_modules/datatables.net/js/jquery.dataTables.min.js",
               "./src/assets/vendor/datatable/dataTables.bootstrap4.min.js",
               "./src/assets/vendor/datatable/dataTables.responsive.min.js",
-              "./src/assets/vendor/datatable/responsive.bootstrap4.min.js"
+              "./src/assets/vendor/datatable/responsive.bootstrap4.min.js",
+              "./src/assets/vendor/moment/v2.8.4/moment.min.js",
+              "./src/assets/vendor/datatable/datetime-moment.js"
             ],
             "es5BrowserSupport": true
           },
@@ -107,7 +109,9 @@
               "./node_modules/datatables.net/js/jquery.dataTables.min.js",
               "./src/assets/vendor/datatable/dataTables.bootstrap4.min.js",
               "./src/assets/vendor/datatable/dataTables.responsive.min.js",
-              "./src/assets/vendor/datatable/responsive.bootstrap4.min.js"
+              "./src/assets/vendor/datatable/responsive.bootstrap4.min.js",
+              "./src/assets/vendor/moment/v2.8.4/moment.min.js",
+              "./src/assets/vendor/datatable/datetime-moment.js"
             ],
             "assets": [
               "src/favicon.ico",

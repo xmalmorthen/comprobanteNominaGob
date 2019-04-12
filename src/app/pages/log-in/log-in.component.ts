@@ -42,10 +42,6 @@ export class LogInComponent implements OnInit {
     this.getEmisoresList()
       .subscribe ( (response: any[]) =>{
         this.adscripcion = response;
-      
-        // TODO: Quitar declaración de formulario después de testear
-        this.select2Value = 'ICI1209027S2';
-
       },
       ( error: HttpErrorResponse ) =>{});
   }
@@ -53,8 +49,8 @@ export class LogInComponent implements OnInit {
   ngOnInit() {
     this.frm = new FormGroup({
       adscripcion: new FormControl('', [ Validators.required ]),
-      usuario: new FormControl('ruam8111232s9', [ Validators.required, Validators.minLength(12)] ),
-      numtrabajador: new FormControl('18840', Validators.required)
+      usuario: new FormControl('', [ Validators.required, Validators.minLength(12)] ),
+      numtrabajador: new FormControl('', Validators.required)
     });
   }
 

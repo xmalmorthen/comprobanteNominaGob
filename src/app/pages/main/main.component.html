@@ -5,22 +5,44 @@
   <table #tablaComprobantes class="table table-striped responsive compact" style="width:100%">
     <thead>
       <tr>
-          <th>UUID SAT</th>
-          <th>Fecha de Timbrado</th>              
-          <th>Acciones</th>
+        <th>UUID SAT</th>
+        <th>Fecha de Timbrado</th>              
+        <th>Acciones</th>
+        <th class='d-none d-md-table-cell'>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="checkAll" [(ngModel)]="checkAll" data-md-icheck (change)="checkAllToggle($event)">
+            <label class="custom-control-label" for="checkAll"></label>
+          </div>
+        </th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let item of comprobantesList">
         <td>{{ item.UUID }}</td>
-        <td>{{ item.fechaTimbrado }}</td>
-        <td class="d-flex justify-content-md-between">
+        <td>{{ item.fechaTimbrado | date: 'dd/MM/yyyy'}}</td>
+        <td class="d-sm-flex justify-content-md-between">
             <a (click)="showDetail($event, item.UUID)" class='m-2' title='Detalle'><i class="fa fa fa-file-text-o fa-2x"></i></a>
             <a (click)="getXml($event, item.UUID)" class='m-2' title='Descargar XML'><i class="fa fa fa-file-code-o fa-2x"></i></a>
             <a (click)="getPdf($event, item.UUID)"  class='m-2' title='Descargar comprobante fiscal'><i class="fa fa fa-file-pdf-o fa-2x"></i></a>
+            <a (click)="getZip($event, item.UUID)"  class='m-2' title='Descargar XML y Comprobante fiscal'><i class="fa fa-file-archive-o fa-2x" aria-hidden="true"></i></a>
+        </td>
+        <td class='d-none d-md-table-cell text-center'>
+          <div class="custom-control custom-checkbox mt-2">
+            <input type="checkbox" class="custom-control-input" id="check{{item.id}}" (change)="checkToggle($event)" [attr.data-uuid]="item.UUID">
+            <label class="custom-control-label" for="check{{item.id}}"></label>
+          </div>
         </td>
       </tr>
     </tbody>
   </table>
   <!-- END TABLE -->
+  
+  <div *ngIf="itemsSelecteds > 1" class="row mt-3">
+    <div class="col-md-12">
+      <h4 class='d-inline'><span class="badge badge-success" style='font-size: 1.2em'> {{ itemsSelecteds }} </span> registro(s) seleccionado(s)</h4>
+      <h1 class='d-inline ml-3' style='font-size: 2em;'>- </h1>
+      <button class="btn btn-default m-1" id="zip" (click)="getZipMultiple($event)"><i class="fa fa-file-archive-o fa-3x" aria-hidden="true"></i></button>
+      <h1 class='d-inline' style='font-size: 2em;'> -</h1>
+    </div>
+</div>
 </div>
