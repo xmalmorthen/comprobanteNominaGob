@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 // INDEX COMPONENTS
-import { MainComponent, LogInComponent } from './pages/pages.index';
+import { MainComponent, LogInComponent, DetailUUIDComponent } from './pages/pages.index';
 import { Page404Component } from './shared/shared.index';
 import { PagesComponent } from './pages/pages.component';
 import { LoginGuard } from './services/guards/login.guard';
@@ -10,6 +10,7 @@ import { LoginGuard } from './services/guards/login.guard';
 const routes: Routes = [
   { path: '', component: PagesComponent , canActivate: [ LoginGuard  ], children: [
     { path: 'principal', component: MainComponent },    
+    { path: 'detalle/:uuid', component: DetailUUIDComponent },    
     { path: '', redirectTo: 'principal', pathMatch: 'full' }
   ]},
   { path: 'logIn', component: LogInComponent },

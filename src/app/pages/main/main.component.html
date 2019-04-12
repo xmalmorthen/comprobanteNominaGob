@@ -1,4 +1,4 @@
-<div>
+<div class='container'>
   <h1 class="pageTitle">Comprobante de ingresos</h1>
   <br>
   <!-- BEGIN TABLE -->
@@ -21,7 +21,7 @@
         <td>{{ item.UUID }}</td>
         <td>{{ item.fechaTimbrado | date: 'dd/MM/yyyy'}}</td>
         <td class="d-sm-flex justify-content-md-between">
-            <a (click)="showDetail($event, item.UUID)" class='m-2' title='Detalle'><i class="fa fa fa-file-text-o fa-2x"></i></a>
+            <a [routerLink]="['/detalle', item.UUID]" class='m-2' title='Detalle'><i class="fa fa fa-file-text-o fa-2x"></i></a>
             <a (click)="getXml($event, item.UUID)" class='m-2' title='Descargar XML'><i class="fa fa fa-file-code-o fa-2x"></i></a>
             <a (click)="getPdf($event, item.UUID)"  class='m-2' title='Descargar comprobante fiscal'><i class="fa fa fa-file-pdf-o fa-2x"></i></a>
             <a (click)="getZip($event, item.UUID)"  class='m-2' title='Descargar XML y Comprobante fiscal'><i class="fa fa-file-archive-o fa-2x" aria-hidden="true"></i></a>

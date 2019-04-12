@@ -18,7 +18,9 @@ export class WsStampingSATService {
 
   emisoresResponse: getEmisores_Response_Interface[] = null;
 
-  constructor( private http: HttpClient) { }
+  constructor( 
+    private http: HttpClient
+  ) { }
 
   // OBTENER CATÁLOGO DE EMISORES
   public emisores(rfc: string = null): Observable< getEmisores_Response_Interface[] > {
@@ -154,6 +156,13 @@ export class WsStampingSATService {
     
     window.open(callUrl, "_blank");
     // window.location.href = callUrl;
+  }
+
+  // OBTENER DETALLE DE UUID
+  uuidDetail(uuid: string = null): string {
+
+    return `${apiEndPoint}/pdf/index?identifier=${ uuid }`;
+
   }
 
 }
