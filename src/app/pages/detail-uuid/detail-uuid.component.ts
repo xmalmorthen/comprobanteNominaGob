@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { WsStampingSATService } from 'src/app/services/service.index';
 import { DomSanitizer } from '@angular/platform-browser';
 
+declare const $: any;
+
 @Component({
   selector: 'app-detail-uuid',
   templateUrl: './detail-uuid.component.html',

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { Observable, Subscriber } from 'rxjs';
+import { Observable, Subscriber, Subject } from 'rxjs';
+import { Cacheable } from 'ngx-cacheable';
 
 // INTERFACES
 import { getEmisores_Response_Interface, responseService_Response_Interface, getAccess_Response_Interface, getAccess_Request_Interface, getComprobantesToken_Response_Interface, getComprobantesToken_Request_Interface } from '../interfaces/interfaces.index';
@@ -11,25 +12,23 @@ const apiEndPoint = 'http://localhost:9999';
 const apiVersion = 'apiV1';
 const apiAuth = "Basic eG1hbG1vcnRoZW46YjE2ZjU1MGQxNDdiZjkyZTk0NTUwNzRkOWVkZmUwMTM="
 
+const emisoresResponse$ = new Subject<void>();
+const comprobantesResponse$ = new Subject<void>();
+
 @Injectable({
   providedIn: 'root'
 })
 export class WsStampingSATService {
-
-  emisoresResponse: getEmisores_Response_Interface[] = null;
 
   constructor( 
     private http: HttpClient
   ) { }
 
   // OBTENER CATÁLOGO DE EMISORES
+  @Cacheable({
+    cacheBusterObserver: emisoresResponse$
+  })
   public emisores(rfc: string = null): Observable< getEmisores_Response_Interface[] > {
-
-    if (this.emisoresResponse) {
-      return new Observable<getEmisores_Response_Interface[]>( ( observer: Subscriber<getEmisores_Response_Interface[]> ) =>{
-        observer.next(this.emisoresResponse);
-      });
-    }
 
     const wsRequest = `${apiEndPoint}/${apiVersion}/get/getEmisores${ rfc ? `?rfc=${rfc}` : '' }`;
     let headers_object = new HttpHeaders({
@@ -40,8 +39,7 @@ export class WsStampingSATService {
     return this.http.get<responseService_Response_Interface>(wsRequest,{ headers: headers_object })
       .pipe(
         map( (response: responseService_Response_Interface) => {
-          this.emisoresResponse = <getEmisores_Response_Interface[]>response.Response;
-          return this.emisoresResponse;
+          return <getEmisores_Response_Interface[]>response.Response;
         })
       );
   }
@@ -107,6 +105,9 @@ export class WsStampingSATService {
   }
 
   // OBTENER COMPROBANTES
+  @Cacheable({
+    cacheBusterObserver: comprobantesResponse$
+  })
   getComprobantes( token: string, fechaInicio: string = null, fechaFin: string = null): Observable< getComprobantesToken_Response_Interface[] > {
     
     const wsRequest = `${apiEndPoint}/${apiVersion}/get/getStampListToken`;
@@ -131,8 +132,8 @@ export class WsStampingSATService {
 
   getXML( UUID: string ): void {
     const callUrl = `${apiEndPoint}/${apiVersion}/get/getStampingXML?identifier=${UUID}`;
-    window.open(callUrl, "_blank");
-    // window.location.href = callUrl;
+    // window.open(callUrl, "_blank");
+    window.location.href = callUrl;
   }
 
   getPDF( UUID: string ): void {
@@ -143,8 +144,8 @@ export class WsStampingSATService {
 
   getZip( UUID: string ): void {
     const callUrl = `${apiEndPoint}/${apiVersion}/get/getZipFiles?identifier=${UUID}`;
-    window.open(callUrl, "_blank");
-    // window.location.href = callUrl;
+    // window.open(callUrl, "_blank");
+    window.location.href = callUrl;
   }
 
   getZipMultiple( uuidList: string[] ): void {
@@ -154,8 +155,8 @@ export class WsStampingSATService {
 
     const callUrl = `${apiEndPoint}/${apiVersion}/get/getZipMultiple?identifier=${stringUUIDB64}`;
     
-    window.open(callUrl, "_blank");
-    // window.location.href = callUrl;
+    // window.open(callUrl, "_blank");
+    window.location.href = callUrl;
   }
 
   // OBTENER DETALLE DE UUID

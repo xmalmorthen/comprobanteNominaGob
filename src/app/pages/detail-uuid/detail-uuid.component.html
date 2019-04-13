@@ -2,6 +2,10 @@
   <h3 class="pageTitle mb-2">Comprobante de ingresos</h3>
   <h5>UUID <strong>[ {{ uuid }} ]</strong></h5>
   <div class="d-none d-lg-block">
+    <div *ngIf="iframeSrc.length == 0" class='text-center mt-2'>
+      <i class="fa fa-cog fa-spin" style='font-size: 15em!important;'></i>
+      <span class="sr-only">Cargando...</span>
+    </div>
     <iframe       
       type="text/html" 
       [src]="iframeSrc | urlSanitize"

@@ -10,8 +10,13 @@
 
 a{
     cursor: pointer;
+    color: initial;
 }
 
 .dataTables_info {
     white-space: normal!important;
+}
+
+table{
+    min-height: 300px;
 }

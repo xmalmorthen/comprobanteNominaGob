@@ -12,14 +12,12 @@ import { PipesModule } from '../pipes/pipes.module';
 import { MainComponent } from './pages.index';
 import { PagesComponent } from './pages.component';
 import { DetailUUIDComponent } from './detail-uuid/detail-uuid.component';
-import { UrlSanitizePipe } from '../pipes/url-sanitize.pipe';
 
 @NgModule({
   declarations: [
     MainComponent,
     PagesComponent,
-    DetailUUIDComponent,
-    UrlSanitizePipe
+    DetailUUIDComponent
   ],
   imports: [
     CommonModule,

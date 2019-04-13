@@ -1,4 +1,4 @@
-<div class="page-flexbox-wrapper">
+<div *ngIf="loaded" class="page-flexbox-wrapper animated fadeIn delay-1s">
   <header class="header">
     <img class="logo m-3" src="./assets/images/logo.png" alt="Gobierno del Estado de Colima">
   </header>
@@ -25,6 +25,7 @@
             <div class="form-group">
               <label>Dependencia o adscripción <sup>*</sup></label>
               <select2 
+                id="emisoresSelect"
                 formControlName="adscripcion" 
                 [data]="adscripcion"
                 [value]="select2Value"

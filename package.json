@@ -28,6 +28,7 @@
     "jquery": "^3.3.1",
     "moment": "^2.24.0",
     "ng-select2-component": "^7.0.0",
+    "ngx-cacheable": "^1.1.6",
     "popper": "^1.0.1",
     "popper.js": "^1.15.0",
     "rxjs": "~6.3.3",

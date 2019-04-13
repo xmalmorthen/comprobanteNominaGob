@@ -23,6 +23,8 @@ declare interface errModel_Interface {
 })
 export class LogInComponent implements OnInit {
 
+  loaded: boolean= false;
+
   frm: FormGroup;
   submitted = false;
 
@@ -39,9 +41,14 @@ export class LogInComponent implements OnInit {
     private wsStampingSATService: WsStampingSATService,
     private logInService: LogInService
   ) { 
+    $.LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin"});
+
+    
+    $('#frmLogin').LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin"});
     this.getEmisoresList()
       .subscribe ( (response: any[]) =>{
         this.adscripcion = response;
+       $('#frmLogin').LoadingOverlay("hide");
       },
       ( error: HttpErrorResponse ) =>{});
   }
@@ -52,6 +59,9 @@ export class LogInComponent implements OnInit {
       usuario: new FormControl('', [ Validators.required, Validators.minLength(12)] ),
       numtrabajador: new FormControl('', Validators.required)
     });
+
+    this.loaded = true;
+    $.LoadingOverlay("hide");
   }
 
   private getEmisoresList() : Observable< getEmisores_Response_Interface[] > {
@@ -62,6 +72,7 @@ export class LogInComponent implements OnInit {
           response.forEach(item => {
             dataParsed.push( { 'value': item.rfc, 'label': item.nombre } );
           });
+          
           return dataParsed;
         })
       );

@@ -33,7 +33,7 @@ export class MainComponent implements OnInit  {
   ngOnInit() {
     
     this.dataTable = $(this.table.nativeElement);
-    $(this.table.nativeElement).LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin"});
+    $(this.table.nativeElement).find('tbody').LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin"});
       
 
     this.wsStampingSATService.getComprobantes(this.logInService.loginModel.token)
@@ -62,7 +62,7 @@ export class MainComponent implements OnInit  {
           "order" : [[1, 'desc']],
           "initComplete": (settings, json) => {
         
-            $(this.table.nativeElement).LoadingOverlay("hide");
+            $(this.table.nativeElement).find('tbody').LoadingOverlay("hide");
 
           }});
 
@@ -77,16 +77,40 @@ export class MainComponent implements OnInit  {
 
   getXml(evt, uuid: string){
     evt.preventDefault();
+    Swal.fire({
+      position: 'top-end',
+      type: 'success',
+      title: 'Generando archivo XML',
+      footer: 'Favor de esperar',
+      timer: 1000,
+      showConfirmButton: false
+    });
     this.wsStampingSATService.getXML(uuid);
   }
 
   getPdf(evt, uuid: string){
     evt.preventDefault();
+    Swal.fire({
+      position: 'top-end',
+      type: 'success',
+      title: 'Generando archivo PDF',
+      footer: 'Favor de esperar',
+      timer: 1000,
+      showConfirmButton: false
+    });
     this.wsStampingSATService.getPDF(uuid);
   }
 
   getZip(evt, uuid: string){
     evt.preventDefault();
+    Swal.fire({
+      position: 'top-end',
+      type: 'success',
+      title: 'Generando archivo comprimido',
+      footer: 'Favor de esperar',
+      timer: 1000,
+      showConfirmButton: false
+    });
     this.wsStampingSATService.getZip(uuid);
   }
 
@@ -140,6 +164,15 @@ export class MainComponent implements OnInit  {
 
   getZipMultiple(evt){
     evt.preventDefault();
+
+    Swal.fire({
+      position: 'top-end',
+      type: 'success',
+      title: 'Generando archivo comprimido',
+      footer: 'Favor de esperar',
+      timer: 1000,
+      showConfirmButton: false
+    });
 
     const rows = this.dataTableObject.rows({ 'search': 'applied' }).nodes();
     const itemsSelecteds = $('input[type="checkbox"]:checked',rows);
