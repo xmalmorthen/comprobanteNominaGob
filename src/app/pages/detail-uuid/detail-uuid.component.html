@@ -1,6 +1,15 @@
 <div class="mx-5">
   <h3 class="pageTitle mb-2">Comprobante de ingresos</h3>
-  <h5>UUID <strong>[ {{ uuid }} ]</strong></h5>
+  
+  <div class="d-sm-flex justify-content-md-between">
+    <h5>UUID <strong>[ {{ uuid }} ]</strong></h5>
+    <a [routerLink]="['/principal']" class="btn btn-outline-secondary btn-lg" role="button"><i class="fa fa-th-list" aria-hidden="true"></i> Regresar a listado</a>
+  </div>
+  <div class='d-none d-lg-block animated slideInRight position-fixed fixedPanel p-3 pl-4 '>
+    <a (click)="getXml($event, uuid)" class='m-2' title='Descargar XML'><i class="fa fa fa-file-code-o fa-4x"></i></a>
+    <a (click)="getPdf($event, uuid)"  class='m-2' title='Descargar comprobante fiscal'><i class="fa fa fa-file-pdf-o fa-4x"></i></a>
+    <a (click)="getZip($event, uuid)"  class='m-2' title='Descargar XML y Comprobante fiscal en archivo zip comprimido'><i class="fa fa-file-archive-o fa-4x" aria-hidden="true"></i></a>
+  </div>  
   <div class="d-none d-lg-block">
     <div *ngIf="iframeSrc.length == 0" class='text-center mt-2'>
       <i class="fa fa-cog fa-spin" style='font-size: 15em!important;'></i>
@@ -11,5 +20,13 @@
       [src]="iframeSrc | urlSanitize"
       frameborder="0"
       allowfullscreen></iframe>
+  </div>
+  <div class="d-block d-lg-none m-5 text-center">
+    <h5>Descarga de archivos</h5>
+    <div class='my-3'>
+      <a (click)="getXml($event, uuid)" class='m-2' title='Descargar XML'><i class="fa fa fa-file-code-o fa-4x"></i></a>
+      <a (click)="getPdf($event, uuid)"  class='m-2' title='Descargar comprobante fiscal'><i class="fa fa fa-file-pdf-o fa-4x"></i></a>
+      <a (click)="getZip($event, uuid)"  class='m-2' title='Descargar XML y Comprobante fiscal en archivo zip comprimido'><i class="fa fa-file-archive-o fa-4x" aria-hidden="true"></i></a>
+    </div>  
   </div>
 </div>

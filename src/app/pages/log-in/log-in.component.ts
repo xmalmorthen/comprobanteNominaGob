@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Select2Data } from 'ng-select2-component/public_api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
@@ -16,6 +15,12 @@ declare interface errModel_Interface {
   msg?: string;  
 }
 
+declare interface rememberModel_Interface {
+  adscripcion: string;
+  usuario: string;
+  numtrabajador: string;
+}
+
 @Component({
   selector: 'app-log-in',
   templateUrl: './log-in.component.html',
@@ -28,36 +33,35 @@ export class LogInComponent implements OnInit {
   frm: FormGroup;
   submitted = false;
 
-  select2Value = '';
-
   err: errModel_Interface = {
     err: false
   };
-  
-  adscripcion: Select2Data = [];
+    
+  adscripcion: Observable< getEmisores_Response_Interface[] >
+  emisoreSelected;
 
   constructor(
     private router: Router,
     private wsStampingSATService: WsStampingSATService,
     private logInService: LogInService
-  ) { 
+  ) {     
     $.LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin"});
-
     
-    $('#frmLogin').LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin"});
-    this.getEmisoresList()
-      .subscribe ( (response: any[]) =>{
-        this.adscripcion = response;
-       $('#frmLogin').LoadingOverlay("hide");
-      },
-      ( error: HttpErrorResponse ) =>{});
+    this.adscripcion = this.getEmisoresList();
   }
 
   ngOnInit() {
+
+    let remeberSession: rememberModel_Interface = null;
+    if (localStorage.getItem('remember')){
+      remeberSession = <rememberModel_Interface>JSON.parse(localStorage.getItem('remember'));
+    }
+
     this.frm = new FormGroup({
-      adscripcion: new FormControl('', [ Validators.required ]),
-      usuario: new FormControl('', [ Validators.required, Validators.minLength(12)] ),
-      numtrabajador: new FormControl('', Validators.required)
+      adscripcion: new FormControl( remeberSession ? remeberSession.adscripcion : '', [ Validators.required ]),
+      usuario: new FormControl( remeberSession ? remeberSession.usuario : '', [ Validators.required, Validators.minLength(12)] ),
+      numtrabajador: new FormControl( remeberSession ? remeberSession.numtrabajador : '', Validators.required),
+      remember: new FormControl( remeberSession ? true : false )
     });
 
     this.loaded = true;
@@ -70,7 +74,7 @@ export class LogInComponent implements OnInit {
         map( (response: getEmisores_Response_Interface[]) => {
           let dataParsed: any = [];
           response.forEach(item => {
-            dataParsed.push( { 'value': item.rfc, 'label': item.nombre } );
+            dataParsed.push( { 'id': item.rfc, 'name': item.nombre } );
           });
           
           return dataParsed;
@@ -79,23 +83,7 @@ export class LogInComponent implements OnInit {
   }
 
   get f(): any { return this.frm.controls; }
-
-  searchAdscripcion(txt: string){
-    this.getEmisoresList()
-      .subscribe ( (response: any[]) =>{
-        this.adscripcion = txt ? response.filter( qry => qry.label.toLowerCase().indexOf(txt.toLowerCase()) > -1) : response;
-      },
-      ( error: HttpErrorResponse ) =>{});
-  }
-
-  openAdscripcion(): void{
-    this.getEmisoresList()
-      .subscribe ( (response: any[]) =>{
-        this.adscripcion = response;
-      },
-      ( error: HttpErrorResponse ) =>{});
-  }
-
+  
   onSubmit(): void{
 
     this.submitted = true;
@@ -115,6 +103,17 @@ export class LogInComponent implements OnInit {
       .subscribe( ( response: getAccess_Response_Interface) => {
 
         this.logInService.register( response, this.frm.value.usuario );
+
+        if (this.frm.value.remember) {
+          const remeberSession: rememberModel_Interface = {
+            adscripcion: this.frm.value.adscripcion,
+            usuario: this.frm.value.usuario,
+            numtrabajador: this.frm.value.numtrabajador
+          }
+          localStorage.setItem('remember',JSON.stringify(remeberSession));
+        } else 
+          localStorage.removeItem('remember');
+
         this.router.navigate( ['/principal'] );
 
       },

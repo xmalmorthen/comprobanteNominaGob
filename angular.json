@@ -30,7 +30,8 @@
               "src/styles.scss",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./src/assets/vendor/datatable/dataTables.bootstrap4.min.css",
-              "./src/assets/vendor/datatable/responsive.bootstrap4.min.css"
+              "./src/assets/vendor/datatable/responsive.bootstrap4.min.css",
+              "./node_modules/@ng-select/ng-select/themes/default.theme.css"
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",
@@ -100,7 +101,8 @@
               "src/styles.scss",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",              
               "./src/assets/vendor/datatable/dataTables.bootstrap4.min.css",
-              "./src/assets/vendor/datatable/responsive.bootstrap4.min.css"
+              "./src/assets/vendor/datatable/responsive.bootstrap4.min.css",
+              "./node_modules/@ng-select/ng-select/themes/default.theme.css"
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",

@@ -1,5 +1,14 @@
 <div class='container '>
-  <h1 class="pageTitle">Comprobante de ingresos</h1>
+  <div class="d-flex justify-content-end">
+    <div class="card" style="width: 60%;">
+      <div class="card-body">
+        <h4 class="card-title"><i class="fa fa-user-circle-o" aria-hidden="true"></i> {{ comprobantesTitular.nombre }}</h4>
+        <h6 class="card-subtitle mb-2 text-muted">{{ comprobantesTitular.emisor }}</h6>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="pageTitle">Comprobante de ingresos</h3>
   <br>
   <!-- BEGIN TABLE -->
   <table #tablaComprobantes class="table table-striped responsive compact" style="width:100%;">
@@ -24,7 +33,7 @@
         <td>{{ item.UUID }}</td>
         <td>{{ item.fechaTimbrado | date: 'dd/MM/yyyy'}}</td>
         <td class="d-sm-flex justify-content-md-between">
-            <a [routerLink]="['/detalle', item.UUID]" class='m-2' title='Detalle'><i class="fa fa fa-file-text-o fa-2x"></i></a>
+            <a [routerLink]="['/detalle', item.UUID]" class='m-2 d-none d-lg-block' title='Detalle'><i class="fa fa fa-file-text-o fa-2x"></i></a>
             <a (click)="getXml($event, item.UUID)" class='m-2' title='Descargar XML'><i class="fa fa fa-file-code-o fa-2x"></i></a>
             <a (click)="getPdf($event, item.UUID)"  class='m-2' title='Descargar comprobante fiscal'><i class="fa fa fa-file-pdf-o fa-2x"></i></a>
             <a (click)="getZip($event, item.UUID)"  class='m-2' title='Descargar XML y Comprobante fiscal en archivo zip comprimido'><i class="fa fa-file-archive-o fa-2x" aria-hidden="true"></i></a>

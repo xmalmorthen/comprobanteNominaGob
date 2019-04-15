@@ -1,10 +1,11 @@
 import { Component, ViewChild, OnInit, ChangeDetectorRef } from '@angular/core';
 
 // SERVICES
-import { WsStampingSATService, LogInService } from 'src/app/services/service.index';
-import { getComprobantesToken_Response_Interface } from 'src/app/interfaces/interfaces.index';
+import { WsStampingSATService, LogInService, WsCURPService } from 'src/app/services/service.index';
+import { getComprobantesToken_Response_Interface, infoCURP_Response_Interface, getUserData_Response_Interface, titular_Interface } from 'src/app/interfaces/interfaces.index';
 import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import { map } from 'rxjs/operators';
 
 declare const $: any;
 
@@ -22,10 +23,15 @@ export class MainComponent implements OnInit  {
   checkAll: boolean = false;
   itemsSelecteds: number = 0;
 
+  comprobantesTitular: titular_Interface = {
+    emisor: '',
+    nombre: ''    
+  };
   comprobantesList: getComprobantesToken_Response_Interface[] = [];
 
   constructor(
     private wsStampingSATService: WsStampingSATService,
+    private wsCURPService: WsCURPService,
     private logInService: LogInService,
     private chRef: ChangeDetectorRef
   ) {}
@@ -34,7 +40,27 @@ export class MainComponent implements OnInit  {
     
     this.dataTable = $(this.table.nativeElement);
     $(this.table.nativeElement).find('tbody').LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin"});
-      
+
+    this.wsStampingSATService.getUserData(this.logInService.loginModel.token)
+      .subscribe ( (response: getUserData_Response_Interface) => {
+        
+        this.wsCURPService.getData(response.CURP)
+          .pipe(
+            map( (response: infoCURP_Response_Interface) => {
+              return `${response.apellido1} ${ response.apellido2 ? response.apellido2 + ' ' : '' } ${ response.nombres}`;
+            })
+          )
+          .subscribe( (nombre: string) => {
+            this.comprobantesTitular.nombre = nombre;
+          },
+          ( error: HttpErrorResponse ) =>{
+            debugger;
+          });
+
+        this.comprobantesTitular.emisor = response.Emisor;
+
+      },
+      ( error: HttpErrorResponse ) =>{});
 
     this.wsStampingSATService.getComprobantes(this.logInService.loginModel.token)
       .subscribe( (response: getComprobantesToken_Response_Interface[]) => {
@@ -59,7 +85,7 @@ export class MainComponent implements OnInit  {
             { responsivePriority: 2, targets: 2 },
             { responsivePriority: 10001, targets: -1 }
           ],
-          "order" : [[1, 'desc']],
+          // "order" : [[1, 'desc']],
           "initComplete": (settings, json) => {
         
             $(this.table.nativeElement).find('tbody').LoadingOverlay("hide");
@@ -82,7 +108,7 @@ export class MainComponent implements OnInit  {
       type: 'success',
       title: 'Generando archivo XML',
       footer: 'Favor de esperar',
-      timer: 1000,
+      timer: 2000,
       showConfirmButton: false
     });
     this.wsStampingSATService.getXML(uuid);
@@ -95,7 +121,7 @@ export class MainComponent implements OnInit  {
       type: 'success',
       title: 'Generando archivo PDF',
       footer: 'Favor de esperar',
-      timer: 1000,
+      timer: 2000,
       showConfirmButton: false
     });
     this.wsStampingSATService.getPDF(uuid);
@@ -108,7 +134,7 @@ export class MainComponent implements OnInit  {
       type: 'success',
       title: 'Generando archivo comprimido',
       footer: 'Favor de esperar',
-      timer: 1000,
+      timer: 2000,
       showConfirmButton: false
     });
     this.wsStampingSATService.getZip(uuid);
@@ -170,7 +196,7 @@ export class MainComponent implements OnInit  {
       type: 'success',
       title: 'Generando archivo comprimido',
       footer: 'Favor de esperar',
-      timer: 1000,
+      timer: 2000,
       showConfirmButton: false
     });
 

@@ -24,34 +24,38 @@
             </ngb-alert>
             <div class="form-group">
               <label>Dependencia o adscripción <sup>*</sup></label>
-              <select2 
-                id="emisoresSelect"
-                formControlName="adscripcion" 
-                [data]="adscripcion"
-                [value]="select2Value"
-                customSearchEnabled="true" 
-                (search)="searchAdscripcion($event)" 
-                (open)="openAdscripcion()" 
-                autofocus 
-                tabIndex="1" 
-                [ngClass]="{ 'is-invalid': submitted && f.adscripcion.invalid }"></select2>
+              <ng-select 
+                #adscripcionList
+                [items]="adscripcion | async"
+                bindValue="id"
+                bindLabel="name"
+                loadingText="cargando..."
+                formControlName="adscripcion"
+                notFoundText="opción no encontrada"                
+                [ngClass]="{'is-invalid': submitted && f.adscripcion.invalid }"
+                autofocus>
+              </ng-select>
               <span *ngIf="submitted && f.adscripcion.invalid" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
             </div>
             <div class="form-group">
               <label>RFC o CURP <sup>*</sup></label>
-              <input type="text" formControlName="usuario" class="form-control form-control-sm" tabIndex="2" [ngClass]="{ 'is-invalid': submitted && f.usuario.invalid }"/>
+              <input type="text" formControlName="usuario" class="form-control form-control-sm"  [ngClass]="{ 'is-invalid': submitted && f.usuario.invalid }"/>
               <span *ngIf="submitted && f.usuario.invalid && f.usuario.errors?.required" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
               <span *ngIf="submitted && f.usuario.invalid && f.usuario.errors?.minlength" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> La longitud mínima es de {{ f.usuario.errors?.minlength.requiredLength }}</span>
             </div>
             <div class="form-group">
               <label>Número de trabajador <sup>*</sup></label>
-              <input type="text" formControlName="numtrabajador" class="form-control form-control-sm" tabIndex="3" [ngClass]="{ 'is-invalid': submitted && f.numtrabajador.invalid }"/>
+              <input type="text" formControlName="numtrabajador" class="form-control form-control-sm"  [ngClass]="{ 'is-invalid': submitted && f.numtrabajador.invalid }"/>
               <span *ngIf="submitted && f.numtrabajador.invalid" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
             </div>
-            <div>
-              * Información requerida        
+            <div class="d-flex justify-content-between">
+              <div class="form-check d-inline">
+                <input type="checkbox" class="form-check-input" id="rememberLogIn" formControlName="remember"           >
+                <label class="form-check-label" for="rememberLogIn">Recordar sesión</label>
+              </div>
+              <span class="text-muted">* Información requerida</span>
             </div>
-            <div class="text-right">
+            <div class="d-flex justify-content-end mt-1">
               <button type="submit" class="btn btn-black">Ingresar</button>
             </div>
           </form>

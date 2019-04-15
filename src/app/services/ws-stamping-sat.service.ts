@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { Observable, Subscriber, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Cacheable } from 'ngx-cacheable';
 
 // INTERFACES
-import { getEmisores_Response_Interface, responseService_Response_Interface, getAccess_Response_Interface, getAccess_Request_Interface, getComprobantesToken_Response_Interface, getComprobantesToken_Request_Interface } from '../interfaces/interfaces.index';
+import { getEmisores_Response_Interface, responseService_Response_Interface, getAccess_Response_Interface, getAccess_Request_Interface, getComprobantesToken_Response_Interface, getComprobantesToken_Request_Interface, getUserData_Response_Interface } from '../interfaces/interfaces.index';
 
 // CONSTANTES
-const apiEndPoint = 'http://localhost:9999';
+const apiEndPoint = 'http://apisnet.col.gob.mx/wsStampingSat_tmp';
 const apiVersion = 'apiV1';
 const apiAuth = "Basic eG1hbG1vcnRoZW46YjE2ZjU1MGQxNDdiZjkyZTk0NTUwNzRkOWVkZmUwMTM="
 
 const emisoresResponse$ = new Subject<void>();
 const comprobantesResponse$ = new Subject<void>();
+const userDataResponse$ = new Subject<void>();
 
 @Injectable({
   providedIn: 'root'
@@ -126,6 +127,26 @@ export class WsStampingSATService {
       .pipe(
         map( (response: responseService_Response_Interface) => {
           return <getComprobantesToken_Response_Interface[]>response.Response;
+        })
+      );
+  }
+
+  // OBTENER CATÁLOGO DE EMISORES
+  @Cacheable({
+    cacheBusterObserver: userDataResponse$
+  })
+  public getUserData(token: string): Observable< getUserData_Response_Interface > {
+
+    const wsRequest = `${apiEndPoint}/${apiVersion}/get/getUserData?token=${token}`;
+    let headers_object = new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': apiAuth
+    }); 
+    
+    return this.http.post<responseService_Response_Interface>(wsRequest, { token: token }, { headers: headers_object })
+      .pipe(
+        map( (response: responseService_Response_Interface) => {
+          return <getUserData_Response_Interface>response.Response;
         })
       );
   }
