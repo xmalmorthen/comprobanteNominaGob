@@ -9,12 +9,12 @@ import { LoginGuard } from './services/guards/login.guard';
 
 const routes: Routes = [
   { path: '', component: PagesComponent , canActivate: [ LoginGuard  ], children: [
-    { path: 'principal', component: MainComponent },    
-    { path: 'detalle/:uuid', component: DetailUUIDComponent },    
+    { path: 'principal', component: MainComponent, data: { title: 'Comprobantes de ingreso'} },    
+    { path: 'detalle/:uuid', component: DetailUUIDComponent, data: { title: 'Detalle del comprobante'} },    
     { path: '', redirectTo: 'principal', pathMatch: 'full' }
   ]},
-  { path: 'logIn', component: LogInComponent },
-  { path: '**', component: Page404Component }
+  { path: 'logIn', component: LogInComponent, data: { title: 'Inicio de sesión'} },
+  { path: '**', component: Page404Component, data: { title: 'Página no encontrada'} }
 ];
 
 @NgModule({
