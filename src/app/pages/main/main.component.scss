@@ -20,3 +20,19 @@ a{
 table{
     min-height: 300px;
 }
+
+.fixedPanel {
+    right: -10px;
+    bottom: 10%;
+    border-top: 2px solid #a9a9a9;
+    border-left: 2px solid #a9a9a9;
+    border-bottom: 2px solid #a9a9a9;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+    z-index: 10;
+    opacity: 0.7;
+}
+
+a{
+    cursor: pointer;
+}

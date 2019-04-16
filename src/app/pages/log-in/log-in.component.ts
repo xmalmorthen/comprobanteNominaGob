@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 // SERVICES INDEX
 import { WsStampingSATService, LogInService } from 'src/app/services/service.index';
-import { getEmisores_Response_Interface, getAccess_Response_Interface, responseService_Response_Interface, RESTService_Response_Interface } from 'src/app/interfaces/interfaces.index';
+import { getEmisores_Response_Interface, getAccess_Response_Interface, responseService_Response_Interface, RESTService_Response_Interface, recaptchaModel_Interface } from 'src/app/interfaces/interfaces.index';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -27,6 +27,14 @@ declare interface rememberModel_Interface {
   styleUrls: ['./log-in.component.scss']
 })
 export class LogInComponent implements OnInit {
+
+  @ViewChild('captchaElem') captchaElem; 
+
+  recaptchaModel: recaptchaModel_Interface = {
+    loaded: false,
+    ready: false,
+    success: false
+  }
 
   loaded: boolean= false;
 
@@ -61,6 +69,7 @@ export class LogInComponent implements OnInit {
       adscripcion: new FormControl( remeberSession ? remeberSession.adscripcion : '', [ Validators.required ]),
       usuario: new FormControl( remeberSession ? remeberSession.usuario : '', [ Validators.required, Validators.minLength(12)] ),
       numtrabajador: new FormControl( remeberSession ? remeberSession.numtrabajador : '', Validators.required),
+      recaptcha: new FormControl(),
       remember: new FormControl( remeberSession ? true : false )
     });
 
@@ -95,6 +104,19 @@ export class LogInComponent implements OnInit {
     $('#frmLogin').LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin"});
     this.frm.disabled
 
+    if (this.recaptchaModel.ready)
+      this.captchaElem.execute();
+  }
+
+  recaptchaHandleLoad (evt): void{
+    this.recaptchaModel.loaded= true;
+  }
+  
+  recaptchaHandleReady (evt): void{
+    this.recaptchaModel.ready= true;
+  }
+
+  recaptchaHandleSuccess (token: string): void {
     this.wsStampingSATService.getAccess(
       this.frm.value.usuario,
       this.frm.value.numtrabajador,
@@ -129,6 +151,15 @@ export class LogInComponent implements OnInit {
 
         $('#frmLogin').LoadingOverlay("hide");
       });
+
+  }
+  
+  recaptchaHandleError (evt): void{
+    this.recaptchaModel.err= true;
+  }
+
+  recaptchaHandleReset (evt): void{
+    this.recaptchaModel.success= false;
   }
 
 }

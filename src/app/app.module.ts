@@ -6,6 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { HttpClientModule } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
+import { NgxCaptchaModule } from 'ngx-captcha';
 
 // LOCALES
 import localeEsMX from '@angular/common/locales/es-MX';
@@ -29,6 +30,7 @@ registerLocaleData(localeEsMX, 'es-MX');
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxCaptchaModule,
     HttpClientModule,
     NgSelectModule,
     NgbModule,

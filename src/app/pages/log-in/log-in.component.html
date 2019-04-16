@@ -58,6 +58,19 @@
             <div class="d-flex justify-content-end mt-1">
               <button type="submit" class="btn btn-black">Ingresar</button>
             </div>
+            <ngx-invisible-recaptcha #captchaElem
+              siteKey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"              
+              useGlobalDomain="false"
+              theme="light"
+              type="image"
+              badge="bottomright"
+              formControlName="recaptcha"
+              (reset)="recaptchaHandleReset()"
+              (ready)="recaptchaHandleReady()"
+              (load)="recaptchaHandleLoad()"
+              (success)="recaptchaHandleSuccess($event)"              
+              (error)="recaptchaHandleError()">
+            </ngx-invisible-recaptcha>
           </form>
         </div>
       </div>

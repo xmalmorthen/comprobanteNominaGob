@@ -1,16 +1,20 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+// COMPONENTS
+import { PagesComponent } from './pages/pages.component';
+
 // INDEX COMPONENTS
 import { MainComponent, LogInComponent, DetailUUIDComponent } from './pages/pages.index';
 import { Page404Component } from './shared/shared.index';
-import { PagesComponent } from './pages/pages.component';
+
+// GUARDS
 import { LoginGuard } from './services/guards/login.guard';
 
 const routes: Routes = [
-  { path: '', component: PagesComponent , canActivate: [ LoginGuard  ], children: [
-    { path: 'principal', component: MainComponent, data: { title: 'Comprobantes de ingreso'} },    
-    { path: 'detalle/:uuid', component: DetailUUIDComponent, data: { title: 'Detalle del comprobante'} },    
+  { path: '', component: PagesComponent, children: [
+    { path: 'principal', component: MainComponent, canActivate: [ LoginGuard ], data: { title: 'Comprobantes de ingreso'} },    
+    { path: 'detalle/:uuid', component: DetailUUIDComponent, canActivate: [ LoginGuard ], data: { title: 'Detalle del comprobante'} },    
     { path: '', redirectTo: 'principal', pathMatch: 'full' }
   ]},
   { path: 'logIn', component: LogInComponent, data: { title: 'Inicio de sesión'} },

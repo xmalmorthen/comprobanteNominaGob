@@ -39,7 +39,7 @@ export class MainComponent implements OnInit  {
   ngOnInit() {
     
     this.dataTable = $(this.table.nativeElement);
-    $(this.table.nativeElement).find('tbody').LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin"});
+    // $(this.table.nativeElement).find('tbody').LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin"});
 
     this.wsStampingSATService.getUserData(this.logInService.loginModel.token)
       .subscribe ( (response: getUserData_Response_Interface) => {
@@ -88,7 +88,7 @@ export class MainComponent implements OnInit  {
           // "order" : [[1, 'desc']],
           "initComplete": (settings, json) => {
         
-            $(this.table.nativeElement).find('tbody').LoadingOverlay("hide");
+            // $(this.table.nativeElement).find('tbody').LoadingOverlay("hide");
 
           }});
 

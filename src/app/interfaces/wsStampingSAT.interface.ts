@@ -35,7 +35,10 @@ export interface getAccess_Response_Interface {
   id: 5,
   token: string;
   fCreated: string;
+  fRecicled?: string;
   fExpired: string;
+  sessionTime?: number;
+  remainSession?: number;
 }
 
 export interface getComprobantesToken_Request_Interface {
