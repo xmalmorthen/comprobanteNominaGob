@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { LogInService } from 'src/app/services/service.index';
 import Swal from 'sweetalert2';
 
@@ -8,6 +8,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+
+  @Input() menu: boolean = true;
 
   constructor(
     private logInService: LogInService

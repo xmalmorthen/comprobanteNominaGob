@@ -6,6 +6,7 @@ import { getComprobantesToken_Response_Interface, infoCURP_Response_Interface, g
 import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { map } from 'rxjs/operators';
+import * as moment from 'moment';
 
 declare const $: any;
 
@@ -69,29 +70,30 @@ export class MainComponent implements OnInit  {
 
         this.chRef.detectChanges();
 
-        $.fn.dataTable.moment( 'DD/MM/YYYY' );
+        moment.locale('es');
+        $.fn.dataTable.moment( 'L', 'es');
 
         this.dataTableObject = this.dataTable.DataTable({
           "responsive": true,
-          "stateSave": true,
           "pagingType": "simple",
           "language": {
             "url": "./assets/vendor/datatable/Spanish.txt"
           },
           "columnDefs": [
             {"orderable": false,"targets": [2,3]},
-            { type: 'date-eu', targets: 1 },
             { responsivePriority: 1, targets: 0 },
             { responsivePriority: 2, targets: 2 },
             { responsivePriority: 10001, targets: -1 }
           ],
-          // "order" : [[1, 'desc']],
-          "initComplete": (settings, json) => {
-        
-            // $(this.table.nativeElement).find('tbody').LoadingOverlay("hide");
-
-          }});
-
+          "order" : [[1, 'desc']],
+          "stateSave": true,
+          "stateSaveCallback": function(settings,data) {
+              localStorage.setItem( 'DataTableState', JSON.stringify(data) )
+          },
+          "stateLoadCallback": function(settings) {
+            return JSON.parse( localStorage.getItem( 'DataTableState' ) )
+          },
+          "initComplete": (settings, json) => {}});
       },
       ( error: HttpErrorResponse ) =>{});
   }
@@ -108,7 +110,7 @@ export class MainComponent implements OnInit  {
       type: 'success',
       title: 'Generando archivo XML',
       footer: 'Favor de esperar',
-      timer: 2000,
+      timer: 3500,
       showConfirmButton: false
     });
     this.wsStampingSATService.getXML(uuid);
@@ -121,7 +123,7 @@ export class MainComponent implements OnInit  {
       type: 'success',
       title: 'Generando archivo PDF',
       footer: 'Favor de esperar',
-      timer: 2000,
+      timer: 3500,
       showConfirmButton: false
     });
     this.wsStampingSATService.getPDF(uuid);
@@ -134,7 +136,7 @@ export class MainComponent implements OnInit  {
       type: 'success',
       title: 'Generando archivo comprimido',
       footer: 'Favor de esperar',
-      timer: 2000,
+      timer: 3500,
       showConfirmButton: false
     });
     this.wsStampingSATService.getZip(uuid);
@@ -196,7 +198,7 @@ export class MainComponent implements OnInit  {
       type: 'success',
       title: 'Generando archivo comprimido',
       footer: 'Favor de esperar',
-      timer: 2000,
+      timer: 3500,
       showConfirmButton: false
     });
 

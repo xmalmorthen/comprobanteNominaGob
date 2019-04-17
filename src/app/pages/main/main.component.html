@@ -45,7 +45,7 @@
       </tr>
       <tr *ngFor="let item of comprobantesList">
         <td>{{ item.UUID }}</td>
-        <td>{{ item.fechaTimbrado | date: 'dd/MM/yyyy'}}</td>
+        <td class='text-center'>{{ item.fechaTimbrado | date: 'dd/MM/yyyy'}}</td>
         <td class="d-sm-flex justify-content-md-between">
             <a [routerLink]="['/detalle', item.UUID]" class='m-2 d-none d-lg-block' title='Detalle'><i class="fa fa fa-file-text-o fa-2x"></i></a>
             <a (click)="getXml($event, item.UUID)" class='m-2' title='Descargar XML'><i class="fa fa fa-file-code-o fa-2x"></i></a>

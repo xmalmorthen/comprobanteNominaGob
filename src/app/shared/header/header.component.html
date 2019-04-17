@@ -7,7 +7,7 @@
 
   <div [ngClass]="{'collapse': collapsed, 'navbar-collapse': true}" class="collapse navbar-collapse" id="navbarTogglerDemo01">
     <h3 class='navbar-text mr-auto mt-lg-5 ml-lg-2'>Capital Humano - Gobierno del Estado de Colima</h3>
-    <ul class="navbar-nav mt-2 mt-lg-5 mr-lg-4">
+    <ul *ngIf="menu" class="navbar-nav mt-2 mt-lg-5 mr-lg-4">
       <li class="nav-item " routerLinkActive="active">
         <a [routerLink]="['/principal']" class="nav-link" title="Página principal">
           <i class="fa fa-home fa-2x" aria-hidden="true"></i> 
