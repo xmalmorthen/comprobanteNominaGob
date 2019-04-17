@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 // SERVICES INDEX
 import { WsStampingSATService, LogInService } from 'src/app/services/service.index';
 import { getEmisores_Response_Interface, getAccess_Response_Interface, responseService_Response_Interface, RESTService_Response_Interface, recaptchaModel_Interface } from 'src/app/interfaces/interfaces.index';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
 declare const $: any;

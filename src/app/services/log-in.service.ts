@@ -7,7 +7,8 @@ import Swal from 'sweetalert2';
 // INERFACES
 import { logIn_Interface, getAccess_Response_Interface } from '../interfaces/interfaces.index';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+
 
 
 @Injectable({
@@ -27,7 +28,7 @@ export class LogInService {
 
     this.checkSessionExpired()
       .subscribe ( (response: boolean)=> {
-        if (!response)
+        if (response)
           this.logOut();
       },
       (err) => {});
@@ -88,7 +89,6 @@ export class LogInService {
 
         });
     } else {
-      debugger;
       this.logOut();
     }
     return response;

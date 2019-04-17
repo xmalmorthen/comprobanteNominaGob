@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Title, Meta, MetaDefinition } from '@angular/platform-browser';
 import { Router, ActivationEnd } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 const __PrefixTitle: String = 'Gobierno Colima - ';
 
