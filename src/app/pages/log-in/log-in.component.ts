@@ -136,7 +136,7 @@ export class LogInComponent implements OnInit {
         } else 
           localStorage.removeItem('remember');
 
-        //this.router.navigate( ['/principal'] );
+        this.router.navigate( ['/principal'] );
 
       },
       ( error: HttpErrorResponse ) => {
