@@ -1,12 +1,18 @@
 <div class='container '>
 
-  <div class="row justify-content-end">
-    <div class="col-sm-12 col-md-8">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title"><i class="fa fa-user-circle-o" aria-hidden="true"></i> {{ comprobantesTitular.nombre }}</h4>
-          <h6 class="card-subtitle mb-2 text-muted">{{ comprobantesTitular.emisor }}</h6>
-        </div>
+  <div class="card-deck">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title"><i class="fa fa-user-circle-o" aria-hidden="true"></i> {{ comprobantesTitular.nombre }}</h4>
+        <h6 class="card-subtitle mb-2 text-muted">{{ comprobantesTitular.emisor }}</h6>
+      </div>
+    </div>
+    <div class="card countComprobantes">
+      <div class="card-body p-2">
+        <i class="fa fa-file-text-o fa-5x float-right"></i>
+        <h6 class="text-uppercase">Comprobantes</h6>
+        <h1 #counter class="counter text-center" style='font-size: 3em;' [countUp]="comprobantesList.length" [options]='{ duration: 3 }'>0</h1>
+        <span *ngIf="comprobantesList.length > 0" >Desde [ <strong>{{ comprobantesList[ comprobantesList.length - 1 ].fechaTimbrado | date: 'EEEE, dd/MMMM/yyyy'}}</strong> ] - Hasta [ <strong>{{ comprobantesList[ 0 ].fechaTimbrado | date: 'EEEE, dd/MMMM/yyyy'}}</strong> ]</span>
       </div>
     </div>
   </div>
@@ -19,7 +25,7 @@
     <div class="col-md-12">
       <h5 class='d-inline'>
         <span class="badge badge-success" style='font-size: 1em'> {{ itemsSelecteds }} </span> registros seleccionados
-        <a class="btn btn-default my-1" id="zip" (click)="getZipMultiple($event)" title='Descargar XML y Comprobante fiscal en archivo zip comprimido de los {{ itemsSelecteds }} registros seleccionados'>- <i class="fa fa-file-archive-o fa-2x" aria-hidden="true"></i> -</a>
+        <a class="btn btn-default my-1" id="zip" (click)="getZipMultiple($event)" title='Descargar XML y Comprobante fiscal en archivo zip comprimido de los {{ itemsSelecteds }} registros seleccionados'>- <i class="fa fa-file-archive-o fa-3x" aria-hidden="true"></i> -</a>
       </h5>
     </div>
   </div>

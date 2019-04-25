@@ -5,3 +5,8 @@ body {
   background-size: 500px;
   background-position: right bottom;
 }
+
+a:not(.nav-link):not(.btn) {
+  cursor: pointer!important;
+  color:  #0058b7!important;
+}

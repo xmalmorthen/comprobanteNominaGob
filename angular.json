@@ -43,7 +43,7 @@
               "./src/assets/vendor/datatable/responsive.bootstrap4.min.js",
               "./src/assets/vendor/moment/v2.8.4/moment.min.js",
               "./src/assets/vendor/moment/es.js",
-              "./src/assets/vendor/datatable/datetime-moment.js"              
+              "./src/assets/vendor/datatable/datetime-moment.js"
             ],
             "es5BrowserSupport": true
           },

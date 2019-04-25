@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from '../app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { CountUpModule } from 'countup.js-angular2';
 
 // PIPES
 import { PipesModule } from '../pipes/pipes.module';
@@ -24,7 +25,8 @@ import { DetailUUIDComponent } from './detail-uuid/detail-uuid.component';
     AppRoutingModule,
     FormsModule,
     SharedModule,
-    PipesModule
+    PipesModule,
+    CountUpModule
   ]
 })
 export class PagesModule { }

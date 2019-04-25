@@ -101,7 +101,7 @@ export class LogInComponent implements OnInit {
     if (!this.frm.valid)
       return;
 
-    $('#frmLogin').LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin"});
+    $('#frmLogin').LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin",zIndex: 1000});
     this.frm.disabled
 
     if (this.recaptchaModel.ready)
@@ -136,7 +136,7 @@ export class LogInComponent implements OnInit {
         } else 
           localStorage.removeItem('remember');
 
-        this.router.navigate( ['/principal'] );
+        //this.router.navigate( ['/principal'] );
 
       },
       ( error: HttpErrorResponse ) => {

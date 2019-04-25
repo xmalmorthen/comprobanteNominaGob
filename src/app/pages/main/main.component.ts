@@ -18,6 +18,7 @@ declare const $: any;
 export class MainComponent implements OnInit  {
   
   @ViewChild('tablaComprobantes') table;
+  @ViewChild('counter') counterData;
   dataTable: any;
   dataTableObject: any;
 
@@ -35,12 +36,12 @@ export class MainComponent implements OnInit  {
     private wsCURPService: WsCURPService,
     private logInService: LogInService,
     private chRef: ChangeDetectorRef
-  ) {}
+  ) {    
+  }
 
   ngOnInit() {
     
     this.dataTable = $(this.table.nativeElement);
-    // $(this.table.nativeElement).find('tbody').LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin"});
 
     this.wsStampingSATService.getUserData(this.logInService.loginModel.token)
       .subscribe ( (response: getUserData_Response_Interface) => {
