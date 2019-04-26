@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
+
 
 // SERVICES INDEX
 import { WsStampingSATService, LogInService } from 'src/app/services/service.index';
@@ -36,6 +38,8 @@ export class LogInComponent implements OnInit {
     success: false
   }
 
+  siteKey: string= null;
+
   loaded: boolean= false;
 
   frm: FormGroup;
@@ -56,6 +60,8 @@ export class LogInComponent implements OnInit {
     $.LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin"});
     
     this.adscripcion = this.getEmisoresList();
+
+    this.siteKey = environment.recaptcha.siteKey
   }
 
   ngOnInit() {
@@ -148,6 +154,8 @@ export class LogInComponent implements OnInit {
         } else {
           this.err.msg = error.message;
         }
+
+        this.captchaElem.resetCaptcha();
 
         $('#frmLogin').LoadingOverlay("hide");
       });

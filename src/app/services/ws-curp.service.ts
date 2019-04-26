@@ -7,11 +7,12 @@ import { Cacheable } from 'ngx-cacheable';
 
 // INTERFACES
 import { responseService_Response_Interface, infoCURP_Response_Interface } from '../interfaces/interfaces.index';
+import { environment } from '../../environments/environment';
 
 // CONSTANTES
-const apiEndPoint = 'http://apisnet.col.gob.mx/wscuRP_tmp';
-const apiVersion = 'apiV1';
-const apiAuth = "Basic eG1hbG1vcnRoZW46YjE2ZjU1MGQxNDdiZjkyZTk0NTUwNzRkOWVkZmUwMTM="
+const apiEndPoint = environment.apis.wscuRP.endPoint;
+const apiVersion = environment.apis.wscuRP.apiVersion;
+const apiAuth = environment.apis.wscuRP.apiAuth;
 
 const curpResponse$ = new Subject<void>();
 

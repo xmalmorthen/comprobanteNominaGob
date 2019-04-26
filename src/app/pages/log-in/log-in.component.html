@@ -59,7 +59,7 @@
               <button type="submit" class="btn btn-black">Ingresar</button>
             </div>
             <ngx-invisible-recaptcha #captchaElem
-              siteKey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"              
+              [siteKey]="siteKey"
               useGlobalDomain="false"
               theme="light"
               type="image"

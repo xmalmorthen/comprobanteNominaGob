@@ -7,11 +7,12 @@ import { Cacheable } from 'ngx-cacheable';
 
 // INTERFACES
 import { getEmisores_Response_Interface, responseService_Response_Interface, getAccess_Response_Interface, getAccess_Request_Interface, getComprobantesToken_Response_Interface, getComprobantesToken_Request_Interface, getUserData_Response_Interface } from '../interfaces/interfaces.index';
+import { environment } from '../../environments/environment';
 
 // CONSTANTES
-const apiEndPoint = 'http://apisnet.col.gob.mx/wsStampingSat_tmp';
-const apiVersion = 'apiV1';
-const apiAuth = "Basic eG1hbG1vcnRoZW46YjE2ZjU1MGQxNDdiZjkyZTk0NTUwNzRkOWVkZmUwMTM="
+const apiEndPoint = environment.apis.wsStampingSat.endPoint;
+const apiVersion = environment.apis.wsStampingSat.apiVersion;
+const apiAuth = environment.apis.wsStampingSat.apiAuth;
 
 const emisoresResponse$ = new Subject<void>();
 const comprobantesResponse$ = new Subject<void>();
