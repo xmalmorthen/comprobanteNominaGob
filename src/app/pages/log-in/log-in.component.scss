@@ -45,6 +45,10 @@
     font-weight: 300;
 }
 
+a {
+    cursor: pointer;
+}
+
 @media screen and (max-width: 1280px){
     .logo {
         width: 300px;
@@ -96,7 +100,7 @@
     color: #fff;
 }
 
-form {
+.form {
     border: 1px solid #cacaca!important;
     border-radius: 5px;
     padding: 1em;

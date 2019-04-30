@@ -6,7 +6,10 @@ export {
     getAccess_Request_Interface,
     getComprobantesToken_Request_Interface,
     getComprobantesToken_Response_Interface,
-    getUserData_Response_Interface
+    getUserData_Response_Interface,
+    getActivationToken_Response_Interface,
+    Token_getAccess_Response_Interface,
+    EmpleadoRef_getAccess_Response_Interface
 } from './wsStampingSAT.interface';
 export { infoCURP_Response_Interface } from './wsCURP.interface';
 export { logIn_Interface } from './logIn.interface';

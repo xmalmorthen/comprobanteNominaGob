@@ -6,7 +6,8 @@ export interface responseService_Response_Interface {
             | getAccess_Response_Interface 
             | getComprobantesToken_Response_Interface[] 
             | infoCURP_Response_Interface 
-            | getUserData_Response_Interface;
+            | getUserData_Response_Interface
+            | getActivationToken_Response_Interface;
 }
 
 export interface RESTService_Response_Interface {
@@ -24,22 +25,53 @@ export interface getEmisores_Response_Interface {
   nombre: string;
 }
 
+//getAcces - REQUEST
 export interface getAccess_Request_Interface {
   rfc?: string;
   curp?: string;
   noCtrl: string;
   emisorRFC: string;
+  contrasenia?: string;
+  correo?: string;
 }
 
+//getAcces - RESPONSE
 export interface getAccess_Response_Interface {
-  id: 5,
+  TokenAccess?: Token_getAccess_Response_Interface;
+  EmpleadoRef?: EmpleadoRef_getAccess_Response_Interface;
+  TokenActivation?: Token_getAccess_Response_Interface;
+}
+
+export interface Token_getAccess_Response_Interface {
+  id: number;
   token: string;
-  fCreated: string;
+  fCreated?: string;
   fRecicled?: string;
-  fExpired: string;
+  fExpired?: any;
+
   sessionTime?: number;
   remainSession?: number;
 }
+
+export interface EmpleadoRef_getAccess_Response_Interface {
+  id: number;
+  primerApellido: string;
+  segundoApellido?: string;
+  nombres: string;
+  rfc: string;
+  curp: string;
+  noCtrl: string;
+  emisorRFC: string;
+  correo?: string;
+}
+
+export interface getActivationToken_Response_Interface  {
+  TokenRef:Token_getAccess_Response_Interface
+  EmpleadoRef: EmpleadoRef_getAccess_Response_Interface
+}
+
+/**************************************************** */
+
 
 export interface getComprobantesToken_Request_Interface {
   token: string;
@@ -64,3 +96,6 @@ export interface getUserData_Response_Interface {
   EmisorRFC: string;
   Emisor: string;
 }
+
+
+

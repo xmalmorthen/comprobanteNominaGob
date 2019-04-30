@@ -17,10 +17,23 @@
     </div>
     <div class="main">
       <div class="col-md-10 col-lg-9 col-sm-12">
-        <div class="login-form">
-          <form id="frmLogin" [formGroup]="frm" (ngSubmit)="onSubmit()" novalidate>
+        <div *ngIf="activationErr.code != 2">
+          <form  id="frmLogin" class='form' [formGroup]="frm" (ngSubmit)="onSubmit()" novalidate>
             <ngb-alert *ngIf="err.err" [dismissible]="false" type="danger">
               <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error!</strong> {{ err.msg }}
+            </ngb-alert>            
+            <ngb-alert *ngIf="activationErr.err && activationErr.code == 3" [dismissible]="false" type="warning">
+              <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Acceso no permitido, <span class='text-danger'>activación requerida!</span></strong><br><br>
+              Debe activar el ingreso a la plataforma a través de un correo electrónico que se le hizo llegar a la cuenta <strong> {{ activationErr.msg }}</strong>, es posible que se encuentre en lista de correo SPAM.<br><br>
+              <a class='btn btn-outline-warning' title='Reenviar correo'> Reenviar correo de activación </a> en caso de no haberlo recibido. <br><br>
+              <h6 class='text-muted text-right' style='font-size: .8em'>Si no reconoce la cuenta de correo de activación favor de comunicarse <br>al tel. <a href="tel:003121220995"> xxx </a> en atención de capital humano.</h6>
+            </ngb-alert>
+            <ngb-alert *ngIf="activationSuccessModel != null" [dismissible]="false" type="success">
+              <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Activación!</strong><br>
+              Se ha enviado un correo electrónico a la cuenta <strong>{{ activationSuccessModel.EmpleadoRef.correo }}</strong>, 
+              es posible que se encuentre en lista de correo SPAM. <br>
+              Favor de seguir las instrucciones para concluir el proceso de activación.<br><br>
+              <a class='btn btn-outline-warning' title='Reenviar correo'> Reenviar correo de activación </a> en caso de no haberlo recibido. <br><br>
             </ngb-alert>
             <div class="form-group">
               <label>Dependencia o adscripción <sup>*</sup></label>
@@ -56,7 +69,7 @@
               <span class="text-muted">* Información requerida</span>
             </div>
             <div class="d-flex justify-content-end mt-1">
-              <button type="submit" class="btn btn-black">Ingresar</button>
+              <button type="submit" class="btn btn-outline-success">Ingresar</button>
             </div>
             <ngx-invisible-recaptcha #captchaElem
               [siteKey]="siteKey"
@@ -72,6 +85,9 @@
               (error)="recaptchaHandleError()">
             </ngx-invisible-recaptcha>
           </form>
+          <div class="form" id="frmActivation" *ngIf="activationErr.err && activationErr.code == 2">
+            <app-activacion [tokenRef]='activationErr.msg' (cancel)='activationErr.err = false; activationErr.code = null;' (success)='activationSuccess($event)' ></app-activacion>
+          </div>
         </div>
       </div>
     </div>

@@ -16,14 +16,17 @@ import { PagesModule } from './pages/pages.module';
 
 // INDEX COMPONENTS
 import { AppComponent } from './app.component';
-import { LogInComponent } from './pages/pages.index';
+import { LogInComponent, ActivacionComponent } from './pages/pages.index';
+import { BlockCopyPasteDirective } from './directives/block-copy-paste.directive';
 
 registerLocaleData(localeEsMX, 'es-MX');
 
 @NgModule({
   declarations: [
     AppComponent,
-    LogInComponent
+    LogInComponent,
+    ActivacionComponent,
+    BlockCopyPasteDirective
   ],
   imports: [
     BrowserModule,

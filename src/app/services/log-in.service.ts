@@ -40,22 +40,22 @@ export class LogInService {
 
     if (sessionUserData) {
       
-      const fCreated = moment(sessionUserData.fRecicled ? sessionUserData.fRecicled : sessionUserData.fCreated, "DD/MM/YYYY HH:mm:ss A");
-      const fExpired = moment(sessionUserData.fExpired, "DD/MM/YYYY HH:mm:ss A");
+      const fCreated = moment(sessionUserData.TokenAccess.fRecicled ? sessionUserData.TokenAccess.fRecicled : sessionUserData.TokenAccess.fCreated, "DD/MM/YYYY HH:mm:ss A");
+      const fExpired = moment(sessionUserData.TokenAccess.fExpired, "DD/MM/YYYY HH:mm:ss A");
       const sessionTime = fExpired.diff( fCreated, 'seconds');
 
-      sessionUserData.sessionTime= sessionTime;
-      sessionUserData.remainSession= sessionTime;
+      sessionUserData.TokenAccess.sessionTime= sessionTime;
+      sessionUserData.TokenAccess.remainSession= sessionTime;
 
       localStorage.setItem('sessionUserData', JSON.stringify(sessionUserData) );
 
       this.loginModel = {
         logged: true,
         expired: false,
-        token: sessionUserData.token,
-        fCreated: sessionUserData.fCreated,
-        fRecicled: sessionUserData.fRecicled,
-        fExpired: sessionUserData.fExpired,
+        token: sessionUserData.TokenAccess.token,
+        fCreated: sessionUserData.TokenAccess.fCreated,
+        fRecicled: sessionUserData.TokenAccess.fRecicled,
+        fExpired: sessionUserData.TokenAccess.fExpired,
         sessionTime: sessionTime,
         remainSession: sessionTime
       };
@@ -101,14 +101,14 @@ export class LogInService {
         const sessionUserData: getAccess_Response_Interface= <getAccess_Response_Interface>JSON.parse(localStorage.getItem('sessionUserData'));
         if (sessionUserData){
 
-          const fCreated = moment(sessionUserData.fRecicled ? sessionUserData.fRecicled : sessionUserData.fCreated, "DD/MM/YYYY HH:mm:ss A");
-          const fExpired = moment(sessionUserData.fExpired, "DD/MM/YYYY HH:mm:ss A");
+          const fCreated = moment(sessionUserData.TokenAccess.fRecicled ? sessionUserData.TokenAccess.fRecicled : sessionUserData.TokenAccess.fCreated, "DD/MM/YYYY HH:mm:ss A");
+          const fExpired = moment(sessionUserData.TokenAccess.fExpired, "DD/MM/YYYY HH:mm:ss A");
           const sessionTime = fExpired.diff( fCreated, 'seconds');
 
-          sessionUserData.remainSession -= 60;
+          sessionUserData.TokenAccess.remainSession -= 60;
           localStorage.setItem('sessionUserData', JSON.stringify(sessionUserData) );
 
-          if( sessionUserData.remainSession == 120 ){
+          if( sessionUserData.TokenAccess.remainSession == 120 ){
             
             let timerInterval;
 
@@ -121,7 +121,7 @@ export class LogInService {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                timer: sessionUserData.remainSession * 1000,
+                timer: sessionUserData.TokenAccess.remainSession * 1000,
                 onBeforeOpen: ()=> {
                     timerInterval = setInterval(function() {
                         var content = Swal.getContent();
@@ -155,7 +155,7 @@ export class LogInService {
 
             observer.next (false);
 
-          } else if ( sessionUserData.remainSession <= 0){
+          } else if ( sessionUserData.TokenAccess.remainSession <= 0){
             this.logOut();
             Swal.fire( {
               title: 'Sesión',

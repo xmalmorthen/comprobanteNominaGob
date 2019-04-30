@@ -1,0 +1,42 @@
+<div *ngIf="tokenRef != null">
+  <h3>Bienvenid@!</h3>
+  <h5 class='text-muted'>{{ tokenRef.EmpleadoRef.primerApellido + ' ' + ( tokenRef.EmpleadoRef.segundoApellido.length > 0 ? tokenRef.EmpleadoRef.segundoApellido + ' ' : '' ) + tokenRef.EmpleadoRef.nombres }}</h5>
+  <p class='text-justify'>Por única vez, para cuidar la integridad y seguridad de la información que provee ésta plataforma,
+  se requiere que active el acceso por medio de confirmación vía correo electrónico, 
+  por lo tanto se requiere que introduzca una cuenta válida en donde se le hará llegar la liga de activaqción.</p>
+  <form id="frmLogin" class='form' [formGroup]="frm" (ngSubmit)="onSubmit()" novalidate>
+    <ngb-alert *ngIf="err.err" [dismissible]="false" type="danger">
+      <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error!</strong> {{ err.msg }}
+    </ngb-alert>                
+    <div class="form-group">
+      <label>Correo electrónico</label>      
+      <input type="email" appBlockCopyPaste formControlName="correo" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.correo.invalid }" autofocus/>
+      <span *ngIf="submitted && f.correo.invalid && f.correo.errors?.required" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
+      <span *ngIf="submitted && f.correo.invalid && f.correo.errors?.email" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Formato de correo electrónico inválido</span>
+    </div>
+    <div class="form-group">
+      <label>Confirmar correo electrónico</label>      
+      <input type="email" appBlockCopyPaste formControlName="correoConfirm" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.correoConfirm.invalid }"/>
+      <span *ngIf="submitted && f.correoConfirm.invalid && f.correoConfirm.errors?.required" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
+      <span *ngIf="submitted && f.correoConfirm.invalid && f.correoConfirm.errors?.email" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Formato de correo electrónico inválido</span>
+      <span *ngIf="submitted && !f.correoConfirm.invalid && frm.errors?.correosMatch && !frm.pristine" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> La cuenta de correo no coincide</span>
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>      
+      <input type="email" appBlockCopyPaste formControlName="contrasenia" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.contrasenia.invalid }"/>
+      <span *ngIf="submitted && f.contrasenia.invalid && f.contrasenia.errors?.required" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
+      <span *ngIf="submitted && f.contrasenia.invalid && f.contrasenia.errors?.minlength" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> La longitud mínima es de {{ f.contrasenia.errors?.minlength.requiredLength }}</span>      
+    </div>
+    <div class="form-group">
+      <label>Confirmar constraseña</label>
+      <input type="email" appBlockCopyPaste formControlName="contraseniaConfirm" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.contraseniaConfirm.invalid }"/>
+      <span *ngIf="submitted && f.contraseniaConfirm.invalid && f.contraseniaConfirm.errors?.required" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
+      <span *ngIf="submitted && f.contraseniaConfirm.invalid && f.contraseniaConfirm.errors?.minlength" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> La longitud mínima es de {{ f.contraseniaConfirm.errors?.minlength.requiredLength }}</span>
+      <span *ngIf="submitted && !f.contraseniaConfirm.invalid && frm.errors?.contraseniasMatch && !frm.pristine" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> La contraseña no coincide</span>
+    </div>
+    <div class="d-flex justify-content-end mt-1">
+      <button type="submit" class="btn btn-outline-success mr-2">Enviar correo de activación</button>
+      <a (click)='cancelEvt()' class="btn btn-outline-danger">Cancelar</a>
+    </div>   
+  </form>
+</div>

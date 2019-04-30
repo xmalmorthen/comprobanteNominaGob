@@ -6,7 +6,7 @@ import { Subject } from 'rxjs/Subject';
 import { Cacheable } from 'ngx-cacheable';
 
 // INTERFACES
-import { getEmisores_Response_Interface, responseService_Response_Interface, getAccess_Response_Interface, getAccess_Request_Interface, getComprobantesToken_Response_Interface, getComprobantesToken_Request_Interface, getUserData_Response_Interface } from '../interfaces/interfaces.index';
+import { getEmisores_Response_Interface, responseService_Response_Interface, getAccess_Response_Interface, getAccess_Request_Interface, getComprobantesToken_Response_Interface, getComprobantesToken_Request_Interface, getUserData_Response_Interface, getActivationToken_Response_Interface } from '../interfaces/interfaces.index';
 import { environment } from '../../environments/environment';
 
 // CONSTANTES
@@ -48,7 +48,7 @@ export class WsStampingSATService {
   }
 
   // OBTENER TOKEN DE ACCESO
-  getAccess(usr: string, noCtrl: string, emisorRFC: string): Observable< getAccess_Response_Interface > {
+  getAccess(usr: string, noCtrl: string, emisorRFC: string): Observable< responseService_Response_Interface > {
     
     const wsRequest = `${apiEndPoint}/${apiVersion}/get/getAccess`;
     let headers_object = new HttpHeaders({
@@ -68,7 +68,60 @@ export class WsStampingSATService {
     return this.http.post<responseService_Response_Interface>(wsRequest, model, { headers: headers_object })
       .pipe(
         map( (response: responseService_Response_Interface) => {
-          return <getAccess_Response_Interface>response.Response;
+
+          return <responseService_Response_Interface>response;
+          
+        })
+      );
+  }
+
+  // OBTENER TOKEN DE ACCESO
+  getActivationToken(
+    usr: string, 
+    noCtrl: string, 
+    emisorRFC: string,
+    contrasenia: string,
+    correo: string
+    ): Observable< getActivationToken_Response_Interface > {
+    
+    const wsRequest = `${apiEndPoint}/${apiVersion}/get/getActivationToken`;
+    let headers_object = new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': apiAuth
+    }); 
+    
+    let model: getAccess_Request_Interface = {      
+      noCtrl : noCtrl,
+      emisorRFC: emisorRFC,
+      contrasenia: btoa(contrasenia),
+      correo: correo
+    }
+    if (usr.length == 18)
+      model.curp = usr;
+    else
+      model.rfc = usr;
+
+    return this.http.post<responseService_Response_Interface>(wsRequest, model, { headers: headers_object })
+      .pipe(
+        map( (response: responseService_Response_Interface) => {
+          return <getActivationToken_Response_Interface>response.Response;
+        })
+      );
+  }
+
+  // REMOVER TOKEN DE ACCESO
+  removeAccessToken(id: number, token: string, emp: number): Observable< boolean > {
+    
+    const wsRequest = `${apiEndPoint}/${apiVersion}/get/removeAccessToken`;
+    let headers_object = new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': apiAuth
+    }); 
+    
+    return this.http.post<responseService_Response_Interface>(wsRequest, { id, token, emp }, { headers: headers_object })
+      .pipe(
+        map( (response: responseService_Response_Interface) => {
+          return true;
         })
       );
   }

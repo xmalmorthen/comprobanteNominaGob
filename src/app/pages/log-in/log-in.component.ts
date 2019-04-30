@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
 
 // SERVICES INDEX
 import { WsStampingSATService, LogInService } from 'src/app/services/service.index';
-import { getEmisores_Response_Interface, getAccess_Response_Interface, responseService_Response_Interface, RESTService_Response_Interface, recaptchaModel_Interface } from 'src/app/interfaces/interfaces.index';
+import { getEmisores_Response_Interface, getAccess_Response_Interface, responseService_Response_Interface, RESTService_Response_Interface, recaptchaModel_Interface, getActivationToken_Response_Interface } from 'src/app/interfaces/interfaces.index';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
@@ -15,6 +15,12 @@ declare const $: any;
 declare interface errModel_Interface {
   err: boolean;
   msg?: string;  
+}
+
+declare interface activationErrModel_Interface {
+  err: boolean;
+  code?: number;
+  msg?: string | getAccess_Response_Interface;
 }
 
 declare interface rememberModel_Interface {
@@ -48,6 +54,12 @@ export class LogInComponent implements OnInit {
   err: errModel_Interface = {
     err: false
   };
+
+  activationErr: activationErrModel_Interface = {
+    err: false
+  }
+
+  activationSuccessModel: getActivationToken_Response_Interface = null;
     
   adscripcion: Observable< getEmisores_Response_Interface[] >
   emisoreSelected;
@@ -103,6 +115,7 @@ export class LogInComponent implements OnInit {
 
     this.submitted = true;
     this.err.err = false;
+    this.activationSuccessModel = null;
     
     if (!this.frm.valid)
       return;
@@ -128,21 +141,44 @@ export class LogInComponent implements OnInit {
       this.frm.value.numtrabajador,
       this.frm.value.adscripcion
     )
-      .subscribe( ( response: getAccess_Response_Interface) => {
+      .subscribe( ( response: responseService_Response_Interface) => {
 
-        this.logInService.register( response, this.frm.value.usuario );
+        switch (response.RESTService.StatusCode) {
+          //acceso concedido                    
+          case '1':
 
-        if (this.frm.value.remember) {
-          const remeberSession: rememberModel_Interface = {
-            adscripcion: this.frm.value.adscripcion,
-            usuario: this.frm.value.usuario,
-            numtrabajador: this.frm.value.numtrabajador
-          }
-          localStorage.setItem('remember',JSON.stringify(remeberSession));
-        } else 
-          localStorage.removeItem('remember');
+            this.logInService.register( <getAccess_Response_Interface>response.Response , this.frm.value.usuario );
 
-        this.router.navigate( ['/principal'] );
+            if (this.frm.value.remember) {
+              const remeberSession: rememberModel_Interface = {
+                adscripcion: this.frm.value.adscripcion,
+                usuario: this.frm.value.usuario,
+                numtrabajador: this.frm.value.numtrabajador
+              }
+              localStorage.setItem('remember',JSON.stringify(remeberSession));
+            } else 
+              localStorage.removeItem('remember');
+
+            this.router.navigate( ['/principal'] );
+
+          break;
+          //requiere generar token de activación
+          case '2':
+
+            this.activationErr.msg = <getAccess_Response_Interface>response.Response;
+            this.activationErr.err = true;
+            this.activationErr.code = 2;
+            $('#frmLogin').LoadingOverlay("hide");
+
+          break;
+          //requiere activar token
+          case '3':
+            this.activationErr.err = true;
+            this.activationErr.code = 3;
+            this.activationErr.msg = response.RESTService.Message.split("|", 2)[1];            
+            $('#frmLogin').LoadingOverlay("hide");
+          break;
+        }
 
       },
       ( error: HttpErrorResponse ) => {
@@ -168,6 +204,14 @@ export class LogInComponent implements OnInit {
 
   recaptchaHandleReset (evt): void{
     this.recaptchaModel.success= false;
+  }
+
+  activationSuccess ( evt ): void { 
+
+    this.activationSuccessModel = evt;
+    this.activationErr.err = false;
+    this.activationErr.code = null;
+
   }
 
 }

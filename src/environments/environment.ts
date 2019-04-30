@@ -10,7 +10,8 @@ export const environment = {
       apiAuth: 'Basic eG1hbG1vcnRoZW46YjE2ZjU1MGQxNDdiZjkyZTk0NTUwNzRkOWVkZmUwMTM='
     },
     wsStampingSat: {
-      endPoint: 'http://apisnet.col.gob.mx/wsStampingSat_tmp',
+      // endPoint: 'http://apisnet.col.gob.mx/wsStampingSat_tmp',
+      endPoint: 'http://localhost:9999',      
       apiVersion: 'apiV1',
       apiAuth: 'Basic eG1hbG1vcnRoZW46YjE2ZjU1MGQxNDdiZjkyZTk0NTUwNzRkOWVkZmUwMTM='
     }
