@@ -13,6 +13,7 @@ import localeEsMX from '@angular/common/locales/es-MX';
 
 // MODULES
 import { PagesModule } from './pages/pages.module';
+import { SharedModule } from './shared/shared.module';
 
 // INDEX COMPONENTS
 import { AppComponent } from './app.component';
@@ -26,7 +27,7 @@ registerLocaleData(localeEsMX, 'es-MX');
     AppComponent,
     LogInComponent,
     ActivacionComponent,
-    BlockCopyPasteDirective
+    BlockCopyPasteDirective,    
   ],
   imports: [
     BrowserModule,
@@ -37,7 +38,8 @@ registerLocaleData(localeEsMX, 'es-MX');
     HttpClientModule,
     NgSelectModule,
     NgbModule,
-    PagesModule
+    PagesModule,
+    SharedModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' }

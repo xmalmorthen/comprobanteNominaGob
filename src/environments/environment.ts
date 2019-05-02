@@ -14,6 +14,10 @@ export const environment = {
       endPoint: 'http://localhost:9999',      
       apiVersion: 'apiV1',
       apiAuth: 'Basic eG1hbG1vcnRoZW46YjE2ZjU1MGQxNDdiZjkyZTk0NTUwNzRkOWVkZmUwMTM='
+    },
+    wsMailSender:{
+      endPoint: 'http://www.openapis.col.gob.mx/correos/v3/enviar',      
+      apiAuth: 'Basic Y29tcHJvYmF0ZU5vbWluYTpNazBYSFI='
     }
   }
 };

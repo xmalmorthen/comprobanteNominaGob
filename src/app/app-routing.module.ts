@@ -17,7 +17,8 @@ const routes: Routes = [
     { path: 'detalle/:uuid', component: DetailUUIDComponent, canActivate: [ LoginGuard ], data: { title: 'Detalle del comprobante'} },
     { path: '', redirectTo: 'principal', pathMatch: 'full' }
   ]},
-  { path: 'logIn', component: LogInComponent, data: { title: 'Inicio de sesión'} },
+  { path: 'logIn', component: LogInComponent, data: { title: 'Inicio de sesión'} },  
+  { path: 'activacion', component: ActivacionComponent, data: { title: 'Activación de acceso'} },
   { path: 'activacion/:token', component: ActivacionComponent, data: { title: 'Activación de acceso'} },
   { path: '**', component: Page404Component, data: { title: 'Página no encontrada'} }
 ];

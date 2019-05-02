@@ -3,10 +3,14 @@
         <app-header [menu]='false'></app-header>
     </header>
     <div class="body-content animated fadeIn">
-      <div class='text-center' style='margin-top: 10%;'>
+      <div *ngIf="!errorModel" class='text-center' style='margin-top: 10%;'>
         <h1 class="" style='font-size: 10em;'>404 <i class="fa fa-file"></i></h1>
         <p class="">La página <strong>NO</strong> existe.</p>      
         <a [routerLink]="['/principal']" class="btn btn-outline-primary">Ir a página principal</a>
+      </div>
+      <div *ngIf="errorModel" class='text-center' style='margin-top: 10%;'>        
+        <h1 style='font-size: 10em;'><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error!</h1>
+        <h1 class="" >{{ errorModel.msg }}</h1>
       </div>
     </div>
     <footer class="animated fadeInUp fast">

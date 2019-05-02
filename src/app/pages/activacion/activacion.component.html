@@ -23,13 +23,13 @@
     </div>
     <div class="form-group">
       <label>Contraseña</label>      
-      <input type="email" appBlockCopyPaste formControlName="contrasenia" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.contrasenia.invalid }"/>
+      <input type="password" appBlockCopyPaste formControlName="contrasenia" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.contrasenia.invalid }"/>
       <span *ngIf="submitted && f.contrasenia.invalid && f.contrasenia.errors?.required" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
       <span *ngIf="submitted && f.contrasenia.invalid && f.contrasenia.errors?.minlength" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> La longitud mínima es de {{ f.contrasenia.errors?.minlength.requiredLength }}</span>      
     </div>
     <div class="form-group">
       <label>Confirmar constraseña</label>
-      <input type="email" appBlockCopyPaste formControlName="contraseniaConfirm" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.contraseniaConfirm.invalid }"/>
+      <input type="password" appBlockCopyPaste formControlName="contraseniaConfirm" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.contraseniaConfirm.invalid }"/>
       <span *ngIf="submitted && f.contraseniaConfirm.invalid && f.contraseniaConfirm.errors?.required" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
       <span *ngIf="submitted && f.contraseniaConfirm.invalid && f.contraseniaConfirm.errors?.minlength" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> La longitud mínima es de {{ f.contraseniaConfirm.errors?.minlength.requiredLength }}</span>
       <span *ngIf="submitted && !f.contraseniaConfirm.invalid && frm.errors?.contraseniasMatch && !frm.pristine" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> La contraseña no coincide</span>
@@ -40,3 +40,4 @@
     </div>   
   </form>
 </div>
+<app-page404 *ngIf="err.err" [errorModel]="err"></app-page404>

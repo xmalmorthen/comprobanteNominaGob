@@ -17,77 +17,108 @@
     </div>
     <div class="main">
       <div class="col-md-10 col-lg-9 col-sm-12">
-        <div *ngIf="activationErr.code != 2">
-          <form  id="frmLogin" class='form' [formGroup]="frm" (ngSubmit)="onSubmit()" novalidate>
-            <ngb-alert *ngIf="err.err" [dismissible]="false" type="danger">
-              <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error!</strong> {{ err.msg }}
-            </ngb-alert>            
-            <ngb-alert *ngIf="activationErr.err && activationErr.code == 3" [dismissible]="false" type="warning">
-              <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Acceso no permitido, <span class='text-danger'>activación requerida!</span></strong><br><br>
-              Debe activar el ingreso a la plataforma a través de un correo electrónico que se le hizo llegar a la cuenta <strong> {{ activationErr.msg }}</strong>, es posible que se encuentre en lista de correo SPAM.<br><br>
-              <a class='btn btn-outline-warning' title='Reenviar correo'> Reenviar correo de activación </a> en caso de no haberlo recibido. <br><br>
-              <h6 class='text-muted text-right' style='font-size: .8em'>Si no reconoce la cuenta de correo de activación favor de comunicarse <br>al tel. <a href="tel:003121220995"> xxx </a> en atención de capital humano.</h6>
-            </ngb-alert>
-            <ngb-alert *ngIf="activationSuccessModel != null" [dismissible]="false" type="success">
-              <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Activación!</strong><br>
-              Se ha enviado un correo electrónico a la cuenta <strong>{{ activationSuccessModel.EmpleadoRef.correo }}</strong>, 
-              es posible que se encuentre en lista de correo SPAM. <br>
-              Favor de seguir las instrucciones para concluir el proceso de activación.<br><br>
-              <a class='btn btn-outline-warning' title='Reenviar correo'> Reenviar correo de activación </a> en caso de no haberlo recibido. <br><br>
-            </ngb-alert>
-            <div class="form-group">
-              <label>Dependencia o adscripción <sup>*</sup></label>
-              <ng-select 
-                #adscripcionList
-                [items]="adscripcion | async"
-                bindValue="id"
-                bindLabel="name"
-                loadingText="cargando..."
-                formControlName="adscripcion"
-                notFoundText="opción no encontrada"                
-                [ngClass]="{'is-invalid': submitted && f.adscripcion.invalid }"
-                autofocus>
-              </ng-select>
-              <span *ngIf="submitted && f.adscripcion.invalid" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
+        <form *ngIf="activationErr.code != 2 && !isActive" id="frmLogin" class='form' [formGroup]="frm" (ngSubmit)="onSubmit()" novalidate>
+          <!-- ALERT - error general -->
+          <ngb-alert *ngIf="err.err" [dismissible]="false" type="danger">
+            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error!</strong> {{ err.msg }}
+          </ngb-alert>
+          <!-- ALERT - cuenta no activada -->
+          <ngb-alert *ngIf="activationErr.err && activationErr.code == 3" [dismissible]="false" type="warning">
+            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Acceso no permitido, <span class='text-danger'>activación requerida!</span></strong><br><br>
+            Debe activar el ingreso a la plataforma a través de un correo electrónico que se le hizo llegar a la cuenta <strong> {{ activationErr.msg.EmpleadoRef.correo }}</strong>, es posible que se encuentre en lista de correo SPAM.<br><br>
+            <a class='btn btn-outline-warning' title='Reenviar correo' (click)="resendMail($event,activationErr.msg.EmpleadoRef, activationErr.msg.TokenActivation)"> Reenviar correo de activación </a> en caso de no haberlo recibido. <br><br>
+            <h6 class='text-muted text-right' style='font-size: .8em'>Si no reconoce la cuenta de correo de activación favor de comunicarse <br>al tel. <a href="tel:003121220995"> xxx </a> en el área de atención de capital humano.</h6>            
+          </ngb-alert>
+          <!-- ALERT - notificación de correo de activación -->
+          <ngb-alert *ngIf="activationSuccessModel != null && !activationErr.err" [dismissible]="false" type="success">
+            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Activación!</strong><br>
+            Se ha enviado un correo electrónico a la cuenta <strong>{{ activationSuccessModel.EmpleadoRef.correo }}</strong>, 
+            es posible que se encuentre en lista de correo SPAM. <br>
+            Favor de seguir las instrucciones para concluir el proceso de activación.<br><br>
+            <a class='btn btn-outline-warning' title='Reenviar correo' (click)="resendMail($event,activationSuccessModel.EmpleadoRef,activationSuccessModel.TokenRef)"> Reenviar correo de activación </a> en caso de no haberlo recibido. <br><br>
+          </ngb-alert>
+          <!-- ALERT - error de envío de correo -->
+          <ngb-alert *ngIf="activationErr.err && activationErr.code == 4" [dismissible]="false" type="warning">
+            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Activación!</strong><br>
+            Ocurió un error al intentar enviar el correo electrónico, <strong>favor intentarlo de nuevo.</strong><br><br>
+            <a class='btn btn-outline-warning' title='Reenviar correo' (click)="resendMail($event,activationSuccessModel.EmpleadoRef,activationSuccessModel.TokenRef)"> Reenviar correo de activación </a><br><br>
+            <h6 class='text-muted text-right' style='font-size: .8em'>Si el problema persiste favor de ponerse en contácto al tel. <a href="tel:003121220995"> xxx </a> en el área de atención de capital humano.</h6>
+          </ngb-alert>
+          <!-- ALERT - token activado -->
+          <ngb-alert *ngIf="activationToken === true" [dismissible]="false" type="success">
+            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Activación!</strong><br>
+            Activación de acceso a la plataforma realizada y concluida con éxito.
+          </ngb-alert>
+          <ngb-alert *ngIf="activationToken === false" [dismissible]="false" type="warning">
+            <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Activación!</strong><br>
+            Ocurrió un error en el proceso de activación, <strong>Favor intentarlo de nuevo.</strong><br><br>
+            <h6 class='text-muted text-right' style='font-size: .8em'>Si el problema persiste favor de ponerse en contácto al tel. <a href="tel:003121220995"> xxx </a> en el área de atención de capital humano.</h6>
+          </ngb-alert>
+          <div class="form-group">
+            <label>Dependencia o adscripción <sup>*</sup></label>
+            <ng-select 
+              #adscripcionList
+              [items]="adscripcion | async"
+              bindValue="id"
+              bindLabel="name"
+              loadingText="cargando..."
+              formControlName="adscripcion"
+              notFoundText="opción no encontrada"                
+              [ngClass]="{'is-invalid': submitted && f.adscripcion.invalid }"
+              autofocus>
+            </ng-select>
+            <span *ngIf="submitted && f.adscripcion.invalid" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
+          </div>
+          <div class="form-group">
+            <label>RFC o CURP <sup>*</sup></label>
+            <input type="text" formControlName="usuario" class="form-control form-control-sm"  [ngClass]="{ 'is-invalid': submitted && f.usuario.invalid }"/>
+            <span *ngIf="submitted && f.usuario.invalid && f.usuario.errors?.required" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
+            <span *ngIf="submitted && f.usuario.invalid && f.usuario.errors?.minlength" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> La longitud mínima es de {{ f.usuario.errors?.minlength.requiredLength }}</span>
+          </div>
+          <div class="form-group">
+            <label>Número de trabajador <sup>*</sup></label>
+            <input type="text" formControlName="numtrabajador" class="form-control form-control-sm"  [ngClass]="{ 'is-invalid': submitted && f.numtrabajador.invalid }"/>
+            <span *ngIf="submitted && f.numtrabajador.invalid" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
+          </div>
+          <div class="d-flex justify-content-between">
+            <div class="form-check d-inline">
+              <input type="checkbox" class="form-check-input" id="rememberLogIn" formControlName="remember"           >
+              <label class="form-check-label" for="rememberLogIn">Recordar sesión</label>
             </div>
+            <span class="text-muted">* Información requerida</span>
+          </div>
+          <div class="d-flex justify-content-end mt-1">
+            <button type="submit" class="btn btn-outline-success">Ingresar</button>
+          </div>
+          <ngx-invisible-recaptcha #captchaElem
+            [siteKey]="siteKey"
+            useGlobalDomain="false"
+            theme="light"
+            type="image"
+            badge="bottomright"
+            formControlName="recaptcha"
+            (reset)="recaptchaHandleReset()"
+            (ready)="recaptchaHandleReady()"
+            (load)="recaptchaHandleLoad()"
+            (success)="recaptchaHandleSuccess($event)"              
+            (error)="recaptchaHandleError()">
+          </ngx-invisible-recaptcha>
+        </form>
+        <div class="form" id="frmActivation" *ngIf="activationErr.err && activationErr.code == 2">
+          <app-activacion [tokenRef]='activationErr.msg' (cancel)='activationErr.err = false; activationErr.code = null;' (success)='activationSuccess($event)' ></app-activacion>
+        </div>
+        <div class="form" *ngIf="isActive && !activationErr.err">
+          <form id="frmPass" [formGroup]="frmContrasenia" (ngSubmit)="onSubmitPass()" novalidate>
             <div class="form-group">
-              <label>RFC o CURP <sup>*</sup></label>
-              <input type="text" formControlName="usuario" class="form-control form-control-sm"  [ngClass]="{ 'is-invalid': submitted && f.usuario.invalid }"/>
-              <span *ngIf="submitted && f.usuario.invalid && f.usuario.errors?.required" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
-              <span *ngIf="submitted && f.usuario.invalid && f.usuario.errors?.minlength" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> La longitud mínima es de {{ f.usuario.errors?.minlength.requiredLength }}</span>
-            </div>
-            <div class="form-group">
-              <label>Número de trabajador <sup>*</sup></label>
-              <input type="text" formControlName="numtrabajador" class="form-control form-control-sm"  [ngClass]="{ 'is-invalid': submitted && f.numtrabajador.invalid }"/>
-              <span *ngIf="submitted && f.numtrabajador.invalid" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
-            </div>
-            <div class="d-flex justify-content-between">
-              <div class="form-check d-inline">
-                <input type="checkbox" class="form-check-input" id="rememberLogIn" formControlName="remember"           >
-                <label class="form-check-label" for="rememberLogIn">Recordar sesión</label>
-              </div>
-              <span class="text-muted">* Información requerida</span>
+              <label>Contraseña</label>
+              <input type="password" formControlName="contrasenia" class="form-control form-control-lg"  [ngClass]="{ 'is-invalid': submitted && f.contrasenia.invalid }"/>
+              <span *ngIf="submitted && f.contrasenia.invalid && f.contrasenia.errors?.required" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
+              <span *ngIf="submitted && f.contrasenia.invalid && f.contrasenia.errors?.minlength" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> La longitud mínima es de {{ f.contrasenia.errors?.minlength.requiredLength }}</span>
             </div>
             <div class="d-flex justify-content-end mt-1">
-              <button type="submit" class="btn btn-outline-success">Ingresar</button>
+              <button type="submit" class="btn btn-outline-success">Continuar</button>
             </div>
-            <ngx-invisible-recaptcha #captchaElem
-              [siteKey]="siteKey"
-              useGlobalDomain="false"
-              theme="light"
-              type="image"
-              badge="bottomright"
-              formControlName="recaptcha"
-              (reset)="recaptchaHandleReset()"
-              (ready)="recaptchaHandleReady()"
-              (load)="recaptchaHandleLoad()"
-              (success)="recaptchaHandleSuccess($event)"              
-              (error)="recaptchaHandleError()">
-            </ngx-invisible-recaptcha>
-          </form>
-          <div class="form" id="frmActivation" *ngIf="activationErr.err && activationErr.code == 2">
-            <app-activacion [tokenRef]='activationErr.msg' (cancel)='activationErr.err = false; activationErr.code = null;' (success)='activationSuccess($event)' ></app-activacion>
-          </div>
+        </form>
         </div>
       </div>
     </div>

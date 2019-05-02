@@ -109,6 +109,24 @@ export class WsStampingSATService {
       );
   }
 
+  // ACTIVAR TOKEN DE ACCESO  
+  activateAccessToken(token: string): Observable< getActivationToken_Response_Interface > {
+    
+    const wsRequest = `${apiEndPoint}/${apiVersion}/get/activateAccessToken`;
+    let headers_object = new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': apiAuth
+    });
+
+    return this.http.post<responseService_Response_Interface>(wsRequest, { token }, { headers: headers_object })
+      .pipe(
+        map( (response: responseService_Response_Interface) => {
+          return <getActivationToken_Response_Interface>response.Response;
+        })
+      );
+  }
+
+
   // REMOVER TOKEN DE ACCESO
   removeAccessToken(id: number, token: string, emp: number): Observable< boolean > {
     

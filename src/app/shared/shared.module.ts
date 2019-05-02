@@ -4,8 +4,7 @@ import { RouterModule } from '@angular/router';
 import { HeaderComponent, FooterComponent, Page404Component } from './shared.index';
 
 @NgModule({
-  declarations: [
-    
+  declarations: [    
     HeaderComponent,
     FooterComponent,
     Page404Component
@@ -16,7 +15,8 @@ import { HeaderComponent, FooterComponent, Page404Component } from './shared.ind
   ],
   exports: [
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    Page404Component
   ]
 })
 export class SharedModule { }

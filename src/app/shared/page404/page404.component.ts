@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
+// INTERFACES
+import { errModel_Interface } from 'src/app/interfaces/interfaces.index';
 
 @Component({
   selector: 'app-page404',
@@ -7,9 +10,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class Page404Component implements OnInit {
 
+  @Input() errorModel: errModel_Interface= null;
+
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
 }

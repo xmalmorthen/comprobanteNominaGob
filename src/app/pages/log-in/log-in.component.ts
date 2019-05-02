@@ -2,25 +2,23 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
+import { Router, ActivatedRoute } from '@angular/router';
+
 import { environment } from '../../../environments/environment';
 
+import * as mailTemplates from '../../templates/mail/v1.json';
 
 // SERVICES INDEX
-import { WsStampingSATService, LogInService } from 'src/app/services/service.index';
-import { getEmisores_Response_Interface, getAccess_Response_Interface, responseService_Response_Interface, RESTService_Response_Interface, recaptchaModel_Interface, getActivationToken_Response_Interface } from 'src/app/interfaces/interfaces.index';
-import { Observable } from 'rxjs/Observable';
-import { Router } from '@angular/router';
+import { WsStampingSATService, LogInService, GobMailSenderService } from 'src/app/services/service.index';
+import { getEmisores_Response_Interface, getAccess_Response_Interface, responseService_Response_Interface, RESTService_Response_Interface, recaptchaModel_Interface, getActivationToken_Response_Interface, EmpleadoRef_getAccess_Response_Interface, Token_getAccess_Response_Interface, errModel_Interface } from 'src/app/interfaces/interfaces.index';
 
 declare const $: any;
-declare interface errModel_Interface {
-  err: boolean;
-  msg?: string;  
-}
 
 declare interface activationErrModel_Interface {
   err: boolean;
   code?: number;
-  msg?: string | getAccess_Response_Interface;
+  msg?: getAccess_Response_Interface | string;
 }
 
 declare interface rememberModel_Interface {
@@ -49,6 +47,7 @@ export class LogInComponent implements OnInit {
   loaded: boolean= false;
 
   frm: FormGroup;
+  frmContrasenia: FormGroup;
   submitted = false;
 
   err: errModel_Interface = {
@@ -59,6 +58,10 @@ export class LogInComponent implements OnInit {
     err: false
   }
 
+  isActive: boolean = false;
+
+  activationToken: boolean= null;
+
   activationSuccessModel: getActivationToken_Response_Interface = null;
     
   adscripcion: Observable< getEmisores_Response_Interface[] >
@@ -66,7 +69,9 @@ export class LogInComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private wsStampingSATService: WsStampingSATService,
+    private gobMailSenderService: GobMailSenderService,
     private logInService: LogInService
   ) {     
     $.LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin"});
@@ -77,6 +82,9 @@ export class LogInComponent implements OnInit {
   }
 
   ngOnInit() {
+    
+    if (this.route.snapshot.queryParamMap.get('activationToken') != null)
+      this.activationToken = Boolean(this.route.snapshot.queryParamMap.get('activationToken'));
 
     let remeberSession: rememberModel_Interface = null;
     if (localStorage.getItem('remember')){
@@ -92,7 +100,7 @@ export class LogInComponent implements OnInit {
     });
 
     this.loaded = true;
-    $.LoadingOverlay("hide");
+    $.LoadingOverlay("hide");    
   }
 
   private getEmisoresList() : Observable< getEmisores_Response_Interface[] > {
@@ -147,19 +155,28 @@ export class LogInComponent implements OnInit {
           //acceso concedido                    
           case '1':
 
-            this.logInService.register( <getAccess_Response_Interface>response.Response , this.frm.value.usuario );
+            this.frmContrasenia = new FormGroup({
+              contrasenia: new FormControl( '', [ Validators.required, Validators.minLength(8) ])
+            });
 
-            if (this.frm.value.remember) {
-              const remeberSession: rememberModel_Interface = {
-                adscripcion: this.frm.value.adscripcion,
-                usuario: this.frm.value.usuario,
-                numtrabajador: this.frm.value.numtrabajador
-              }
-              localStorage.setItem('remember',JSON.stringify(remeberSession));
-            } else 
-              localStorage.removeItem('remember');
+            this.activationErr.err = false;
+            this.activationErr.code = 1;
+            this.isActive = true;
+            $('#frmLogin').LoadingOverlay("hide");
+            
+            // this.logInService.register( <getAccess_Response_Interface>response.Response , this.frm.value.usuario );
 
-            this.router.navigate( ['/principal'] );
+            // if (this.frm.value.remember) {
+            //   const remeberSession: rememberModel_Interface = {
+            //     adscripcion: this.frm.value.adscripcion,
+            //     usuario: this.frm.value.usuario,
+            //     numtrabajador: this.frm.value.numtrabajador
+            //   }
+            //   localStorage.setItem('remember',JSON.stringify(remeberSession));
+            // } else 
+            //   localStorage.removeItem('remember');
+
+            // this.router.navigate( ['/principal'] );
 
           break;
           //requiere generar token de activación
@@ -168,20 +185,25 @@ export class LogInComponent implements OnInit {
             this.activationErr.msg = <getAccess_Response_Interface>response.Response;
             this.activationErr.err = true;
             this.activationErr.code = 2;
+            this.captchaElem.resetCaptcha();
             $('#frmLogin').LoadingOverlay("hide");
 
           break;
           //requiere activar token
           case '3':
+            
             this.activationErr.err = true;
             this.activationErr.code = 3;
-            this.activationErr.msg = response.RESTService.Message.split("|", 2)[1];            
+            this.activationErr.msg = <getAccess_Response_Interface>response.Response;
+            this.captchaElem.resetCaptcha();
             $('#frmLogin').LoadingOverlay("hide");
+
           break;
         }
 
       },
       ( error: HttpErrorResponse ) => {
+
         this.err.err = true;
 
         if (error.error.RESTService){
@@ -207,11 +229,67 @@ export class LogInComponent implements OnInit {
   }
 
   activationSuccess ( evt ): void { 
-
+    
     this.activationSuccessModel = evt;
-    this.activationErr.err = false;
-    this.activationErr.code = null;
-
+    this.sendMail( this.activationSuccessModel.EmpleadoRef, this.activationSuccessModel.TokenRef );
+    
   }
+
+  resendMail( evt: any, empleadoRef: EmpleadoRef_getAccess_Response_Interface, tokenRef: Token_getAccess_Response_Interface): void{
+    evt.preventDefault();
+
+    this.sendMail( empleadoRef, tokenRef);
+  }
+
+  sendMail(empleado: EmpleadoRef_getAccess_Response_Interface, token: Token_getAccess_Response_Interface): void {
+    
+    $('#frmLogin').LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin",zIndex: 1000});
+
+    const mailTemplate = mailTemplates.v1;
+    const nombre = empleado.primerApellido + ' ' + ( empleado.segundoApellido ? empleado.segundoApellido + ' ' : '') + empleado.nombres;
+    const linkRef = `${location.origin}/#/activacion/${token.token}`;
+    let templateParsed = mailTemplate.split('{{LINK}}').join(linkRef);
+    templateParsed = templateParsed.split('{{NOMBRE}}').join(nombre);
+
+    this.gobMailSenderService.sendMail( 
+      empleado.correo,
+      'Gobierno Colima - Activación de acceso a plataforma [ Comprobantes de Nómina ]',
+      templateParsed).subscribe ( (response: Boolean) => {
+
+        if (response) {
+
+          this.activationErr.err = false;
+          this.activationErr.code = null;
+
+        } else {
+
+          this.activationErr.err = true;
+          this.activationErr.code = 4;
+
+        }
+
+        this.activationSuccessModel = {
+          EmpleadoRef: empleado,
+          TokenRef: token
+        }
+
+        $('#frmLogin').LoadingOverlay("hide");
+
+      },
+      ( error: HttpErrorResponse ) => {
+
+        this.activationErr.err = true;
+        this.activationErr.code = 4;
+
+        this.activationSuccessModel = {
+          EmpleadoRef: empleado,
+          TokenRef: token
+        }
+
+        $('#frmLogin').LoadingOverlay("hide");
+
+      });
+
+  }  
 
 }

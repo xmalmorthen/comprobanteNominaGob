@@ -1,15 +1,15 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { getAccess_Response_Interface, Token_getAccess_Response_Interface, getActivationToken_Response_Interface, RESTService_Response_Interface } from 'src/app/interfaces/interfaces.index';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { WsStampingSATService } from 'src/app/services/service.index';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+
+// SERVICES
+import { WsStampingSATService } from 'src/app/services/service.index';
+
+// INTERFACES
+import { getAccess_Response_Interface, getActivationToken_Response_Interface, RESTService_Response_Interface, errModel_Interface } from 'src/app/interfaces/interfaces.index';
 
 declare const $: any;
-
-declare interface errModel_Interface {
-  err: boolean;
-  msg?: string;  
-}
 
 @Component({
   selector: 'app-activacion',
@@ -30,29 +30,63 @@ export class ActivacionComponent implements OnInit {
     err: false
   };
 
+  token: string = null;
+
   constructor(
+    private activatedRouter: ActivatedRoute,
+    private router: Router,
     private wsStampingSATService: WsStampingSATService
   ) {}
 
   ngOnInit() {
-    // this.tokenRef = {
-    //   id : '1',
-    //   token: 'BB0F4984-D8EC-4265-895C-FDC01B6AED6A',
-    //   emp: 877,
-    //   primerApellido: 'Rueda',
-    //   segundoApellido: 'Aguilar',
-    //   nombres: 'Miguel Angel'
-    // }
 
-    this.frm = new FormGroup({
-      correo: new FormControl( '', [ Validators.required, Validators.email ]),
-      correoConfirm: new FormControl ( '', [ Validators.required, Validators.email ]),
-      contrasenia: new FormControl( '',[ Validators.required, Validators.minLength(8) ] ),
-      contraseniaConfirm: new FormControl( '',[ Validators.required, Validators.minLength(8) ] ),
-    }, { validators: [ 
-            this.correosMatch( 'correo', 'correoConfirm' ),
-            this.contraseniasMatch( 'contrasenia', 'contraseniaConfirm' )
-          ] });
+    this.token = this.activatedRouter.snapshot.paramMap.get('token');    
+
+    if (!this.token){
+      if (this.tokenRef) {
+        this.frm = new FormGroup({
+          correo: new FormControl( 'xmal.morthen@gmail.com', [ Validators.required, Validators.email ]),
+          correoConfirm: new FormControl ( 'xmal.morthen@gmail.com', [ Validators.required, Validators.email ]),
+          contrasenia: new FormControl( '..121212qw',[ Validators.required, Validators.minLength(8) ] ),
+          contraseniaConfirm: new FormControl( '..121212qw',[ Validators.required, Validators.minLength(8) ] ),
+        }, { validators: [ 
+                this.correosMatch( 'correo', 'correoConfirm' ),
+                this.contraseniasMatch( 'contrasenia', 'contraseniaConfirm' )
+              ] });
+      } else {
+        this.err.err = true;
+        this.err.msg = 'Token de acceso no especificado.';
+      }
+    } else {
+      // verificar que existe token
+
+      this.wsStampingSATService.activateAccessToken( this.token )
+      .subscribe ( (response: getActivationToken_Response_Interface) => {
+
+        debugger;
+
+        this.err.err = false;
+        this.err.msg = 'Activación de acceso a la plataforma realizada y concluida con éxito.';
+
+        this.router.navigate( [ '/logIn' ], { queryParams: { activationToken : this.err.err } } );
+
+      },
+      ( error: HttpErrorResponse ) => {
+
+        this.err.err = true;
+
+        /*if (error.error.RESTService){
+          const restServiceResponse: RESTService_Response_Interface = error.error.RESTService;
+          this.err.msg = restServiceResponse.Message;
+        } else {
+          this.err.msg = error.message;
+        }*/
+
+        this.router.navigate( [ '/logIn' ], { queryParams: { activationToken : this.err.err } } );
+
+      });
+      
+    }
     
   }
 
