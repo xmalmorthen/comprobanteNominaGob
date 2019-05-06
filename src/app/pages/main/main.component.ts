@@ -1,19 +1,21 @@
-import { Component, ViewChild, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
 
 // SERVICES
 import { WsStampingSATService, LogInService, WsCURPService } from 'src/app/services/service.index';
-import { getComprobantesToken_Response_Interface, infoCURP_Response_Interface, getUserData_Response_Interface, titular_Interface } from 'src/app/interfaces/interfaces.index';
+import { getComprobantesToken_Response_Interface, infoCURP_Response_Interface, getUserData_Response_Interface, titular_Interface, getAccess_Response_Interface } from 'src/app/interfaces/interfaces.index';
 import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
+import { Router } from '@angular/router';
 
 declare const $: any;
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss']
+  styleUrls: ['./main.component.scss'],
+  // host: {'window:beforeunload':'$.LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin",zIndex: 1000});'}
 })
 export class MainComponent implements OnInit  {
   
@@ -35,34 +37,19 @@ export class MainComponent implements OnInit  {
     private wsStampingSATService: WsStampingSATService,
     private wsCURPService: WsCURPService,
     private logInService: LogInService,
-    private chRef: ChangeDetectorRef
-  ) {    
-  }
+    private chRef: ChangeDetectorRef,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     
     this.dataTable = $(this.table.nativeElement);
+    this.dataTable.LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin",zIndex: 1000});
 
-    this.wsStampingSATService.getUserData(this.logInService.loginModel.token)
-      .subscribe ( (response: getUserData_Response_Interface) => {
-        
-        this.wsCURPService.getData(response.CURP)
-          .pipe(
-            map( (response: infoCURP_Response_Interface) => {
-              return `${response.apellido1} ${ response.apellido2 ? response.apellido2 + ' ' : '' } ${ response.nombres}`;
-            })
-          )
-          .subscribe( (nombre: string) => {
-            this.comprobantesTitular.nombre = nombre;
-          },
-          ( error: HttpErrorResponse ) =>{
-            debugger;
-          });
-
-        this.comprobantesTitular.emisor = response.Emisor;
-
-      },
-      ( error: HttpErrorResponse ) =>{});
+    const sessionUserData: getAccess_Response_Interface = <getAccess_Response_Interface>JSON.parse(localStorage.getItem('sessionUserData'));
+    
+    this.comprobantesTitular.nombre = sessionUserData.EmpleadoRef.primerApellido + ' ' + ( sessionUserData.EmpleadoRef.segundoApellido ? sessionUserData.EmpleadoRef.segundoApellido + ' ' : '' ) + sessionUserData.EmpleadoRef.nombres;
+    this.comprobantesTitular.emisor = sessionUserData.EmpleadoRef.emisor;
 
     this.wsStampingSATService.getComprobantes(this.logInService.loginModel.token)
       .subscribe( (response: getComprobantesToken_Response_Interface[]) => {
@@ -95,13 +82,17 @@ export class MainComponent implements OnInit  {
             return JSON.parse( localStorage.getItem( 'DataTableState' ) )
           },
           "initComplete": (settings, json) => {}});
+
+          this.dataTable.LoadingOverlay("hide");
       },
       ( error: HttpErrorResponse ) =>{});
   }
 
-  showDetail(evt, uuid: string){
-    evt.preventDefault();
-    debugger;
+  getPreview(evt, uuid:string){
+    if (uuid) {
+      $.LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin",zIndex: 1000});
+      this.router.navigate( [ '/detalle', uuid ] );
+    }
   }
 
   getXml(evt, uuid: string){

@@ -28,6 +28,7 @@ export class DetailUUIDComponent implements OnInit {
 
     this.iframeSrc = this.wsStampingSATService.uuidDetail( this.uuid );
 
+    $.LoadingOverlay("hide");
   }
 
   getXml(evt, uuid: string){

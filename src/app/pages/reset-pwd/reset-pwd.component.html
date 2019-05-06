@@ -1,0 +1,28 @@
+<div *ngIf="token != null && loaded" class="main">
+  <h3>Recuperación de contraseña!</h3>  
+  <form id="frm" class='form' [formGroup]="frm" (ngSubmit)="onSubmit()" novalidate>
+    <ngb-alert *ngIf="err.err" [dismissible]="false" type="danger">
+      <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error!</strong> {{ err.msg }}
+    </ngb-alert>
+    <div class="form-group">
+      <label>Nueva contraseña</label>      
+      <input type="password" appBlockCopyPaste formControlName="contrasenia" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.contrasenia.invalid }" autofocus/>
+      <span *ngIf="submitted && f.contrasenia.invalid && f.contrasenia.errors?.required" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
+      <span *ngIf="submitted && f.contrasenia.invalid && f.contrasenia.errors?.minlength" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> La longitud mínima es de {{ f.contrasenia.errors?.minlength.requiredLength }}</span>      
+    </div>
+    <div class="form-group">
+      <label>Confirmar constraseña</label>
+      <input type="password" appBlockCopyPaste formControlName="contraseniaConfirm" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.contraseniaConfirm.invalid }"/>
+      <span *ngIf="submitted && f.contraseniaConfirm.invalid && f.contraseniaConfirm.errors?.required" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Información requerida</span>
+      <span *ngIf="submitted && f.contraseniaConfirm.invalid && f.contraseniaConfirm.errors?.minlength" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> La longitud mínima es de {{ f.contraseniaConfirm.errors?.minlength.requiredLength }}</span>
+      <span *ngIf="submitted && !f.contraseniaConfirm.invalid && frm.errors?.contraseniasMatch && !frm.pristine" class="text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> La contraseña no coincide</span>
+    </div>
+    <div class="d-flex justify-content-end mt-1">
+      <button type="submit" class="btn btn-outline-success mr-2">Actualizar contraseña</button>
+      <a (click)='cancelEvt()' class="btn btn-outline-danger">Cancelar</a>
+    </div>   
+  </form>
+</div>
+<div *ngIf="err.err" class="main">
+  <app-page404 [errorModel]="err" [header]='false' [footer]='false'></app-page404>
+</div>

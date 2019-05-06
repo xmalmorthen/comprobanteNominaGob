@@ -5,7 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { PagesComponent } from './pages/pages.component';
 
 // INDEX COMPONENTS
-import { MainComponent, LogInComponent, DetailUUIDComponent, ActivacionComponent } from './pages/pages.index';
+import { MainComponent, LogInComponent, DetailUUIDComponent, ActivacionComponent, ResetPWDComponent } from './pages/pages.index';
 import { Page404Component } from './shared/shared.index';
 
 // GUARDS
@@ -20,6 +20,8 @@ const routes: Routes = [
   { path: 'logIn', component: LogInComponent, data: { title: 'Inicio de sesión'} },  
   { path: 'activacion', component: ActivacionComponent, data: { title: 'Activación de acceso'} },
   { path: 'activacion/:token', component: ActivacionComponent, data: { title: 'Activación de acceso'} },
+  { path: 'nuevaContrasenia', component: ResetPWDComponent, data: { title: 'Actualizar contraseña de acceso'} },
+  { path: 'nuevaContrasenia/:token', component: ResetPWDComponent, data: { title: 'Actualizar contraseña de acceso'} },
   { path: '**', component: Page404Component, data: { title: 'Página no encontrada'} }
 ];
 

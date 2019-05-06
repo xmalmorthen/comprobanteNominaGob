@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
 // INERFACES
-import { logIn_Interface, getAccess_Response_Interface } from '../interfaces/interfaces.index';
+import { logIn_Interface, getAccess_Response_Interface, Token_getAccess_Response_Interface } from '../interfaces/interfaces.index';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
@@ -39,23 +39,28 @@ export class LogInService {
     sessionUserData= !sessionUserData ? <getAccess_Response_Interface>JSON.parse(localStorage.getItem('sessionUserData')) : sessionUserData;
 
     if (sessionUserData) {
-      
-      const fCreated = moment(sessionUserData.TokenAccess.fRecicled ? sessionUserData.TokenAccess.fRecicled : sessionUserData.TokenAccess.fCreated, "DD/MM/YYYY HH:mm:ss A");
-      const fExpired = moment(sessionUserData.TokenAccess.fExpired, "DD/MM/YYYY HH:mm:ss A");
+
+      let _sessionUserData: any= sessionUserData.TokenAccess ? sessionUserData.TokenAccess : sessionUserData;
+
+      const fCreated = moment(_sessionUserData.fRecicled != null ? _sessionUserData.fRecicled : _sessionUserData.fCreated, "DD/MM/YYYY HH:mm:ss A");
+      const fExpired = moment(_sessionUserData.fExpired, "DD/MM/YYYY HH:mm:ss A");
       const sessionTime = fExpired.diff( fCreated, 'seconds');
 
-      sessionUserData.TokenAccess.sessionTime= sessionTime;
-      sessionUserData.TokenAccess.remainSession= sessionTime;
+      _sessionUserData.sessionTime= sessionTime;
+      _sessionUserData.remainSession= sessionTime;
 
-      localStorage.setItem('sessionUserData', JSON.stringify(sessionUserData) );
+      let sessionUserDataStorage: getAccess_Response_Interface= !sessionUserData.EmpleadoRef ? <getAccess_Response_Interface>JSON.parse(localStorage.getItem('sessionUserData')) : sessionUserData;
+      sessionUserDataStorage.TokenAccess = _sessionUserData;
+
+      localStorage.setItem('sessionUserData', JSON.stringify(sessionUserDataStorage) );
 
       this.loginModel = {
         logged: true,
         expired: false,
-        token: sessionUserData.TokenAccess.token,
-        fCreated: sessionUserData.TokenAccess.fCreated,
-        fRecicled: sessionUserData.TokenAccess.fRecicled,
-        fExpired: sessionUserData.TokenAccess.fExpired,
+        token: _sessionUserData.token,
+        fCreated: _sessionUserData.fCreated,
+        fRecicled: _sessionUserData.fRecicled,
+        fExpired: _sessionUserData.fExpired,
         sessionTime: sessionTime,
         remainSession: sessionTime
       };
@@ -66,7 +71,7 @@ export class LogInService {
       }
   }
 
-  register ( sessionUserData: getAccess_Response_Interface, user: string ): void {
+  register ( sessionUserData: getAccess_Response_Interface): void {
     
     this.makeSessionModel( sessionUserData );
 
@@ -84,7 +89,7 @@ export class LogInService {
     if (response){
       this.wsStampingSATService.recicleSession(this.loginModel.token)
         .subscribe( ( response: getAccess_Response_Interface ) => {                    
-          
+
           this.makeSessionModel( response );
 
         });
@@ -101,11 +106,22 @@ export class LogInService {
         const sessionUserData: getAccess_Response_Interface= <getAccess_Response_Interface>JSON.parse(localStorage.getItem('sessionUserData'));
         if (sessionUserData){
 
-          const fCreated = moment(sessionUserData.TokenAccess.fRecicled ? sessionUserData.TokenAccess.fRecicled : sessionUserData.TokenAccess.fCreated, "DD/MM/YYYY HH:mm:ss A");
-          const fExpired = moment(sessionUserData.TokenAccess.fExpired, "DD/MM/YYYY HH:mm:ss A");
+          let _sessionUserData: any= sessionUserData.TokenAccess ? sessionUserData.TokenAccess : sessionUserData;
+
+          const fCreated = moment(_sessionUserData.fRecicled ? _sessionUserData.fRecicled : _sessionUserData.fCreated, "DD/MM/YYYY HH:mm:ss A");
+          const fExpired = moment(_sessionUserData.fExpired, "DD/MM/YYYY HH:mm:ss A");
           const sessionTime = fExpired.diff( fCreated, 'seconds');
 
-          sessionUserData.TokenAccess.remainSession -= 60;
+          _sessionUserData.remainSession -= 60;
+
+          let sessionUserDataStorage: getAccess_Response_Interface= !sessionUserData.EmpleadoRef ? <getAccess_Response_Interface>JSON.parse(localStorage.getItem('sessionUserData')) : sessionUserData;
+          sessionUserDataStorage.TokenAccess = _sessionUserData;
+
+          localStorage.setItem('sessionUserData', JSON.stringify(sessionUserDataStorage) );
+
+
+          sessionUserData.TokenAccess = _sessionUserData;
+
           localStorage.setItem('sessionUserData', JSON.stringify(sessionUserData) );
 
           if( sessionUserData.TokenAccess.remainSession == 120 ){

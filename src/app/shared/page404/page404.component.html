@@ -1,8 +1,8 @@
-<div class="page-flexbox-wrapper">
-    <header class="animated fadeInDown fast">
+<div [ngClass]="{'page-flexbox-wrapper': header && footer}">
+    <header *ngIf="header" class="animated fadeInDown fast">
         <app-header [menu]='false'></app-header>
     </header>
-    <div class="body-content animated fadeIn">
+    <div [ngClass]="{'body-content': header && footer}" class="animated fadeIn">
       <div *ngIf="!errorModel" class='text-center' style='margin-top: 10%;'>
         <h1 class="" style='font-size: 10em;'>404 <i class="fa fa-file"></i></h1>
         <p class="">La página <strong>NO</strong> existe.</p>      
@@ -13,7 +13,7 @@
         <h1 class="" >{{ errorModel.msg }}</h1>
       </div>
     </div>
-    <footer class="animated fadeInUp fast">
+    <footer *ngIf="footer" class="animated fadeInUp fast">
         <app-footer></app-footer>
     </footer>
 </div>

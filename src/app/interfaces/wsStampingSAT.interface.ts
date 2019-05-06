@@ -62,6 +62,7 @@ export interface EmpleadoRef_getAccess_Response_Interface {
   curp: string;
   noCtrl: string;
   emisorRFC: string;
+  emisor?: string;
   correo?: string;
 }
 

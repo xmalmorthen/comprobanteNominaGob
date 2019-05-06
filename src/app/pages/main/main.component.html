@@ -53,7 +53,7 @@
         <td>{{ item.UUID }}</td>
         <td class='text-center'>{{ item.fechaTimbrado | date: 'dd/MM/yyyy'}}</td>
         <td class="d-sm-flex justify-content-md-between">
-            <a [routerLink]="['/detalle', item.UUID]" class='m-2 d-none d-lg-block' title='Detalle'><i class="fa fa fa-file-text-o fa-2x"></i></a>
+            <a (click)="getPreview($event, item.UUID)" class='m-2 d-none d-lg-block' title='Detalle'><i class="fa fa fa-file-text-o fa-2x"></i></a>
             <a (click)="getXml($event, item.UUID)" class='m-2' title='Descargar XML'><i class="fa fa fa-file-code-o fa-2x"></i></a>
             <a (click)="getPdf($event, item.UUID)"  class='m-2' title='Descargar comprobante fiscal'><i class="fa fa fa-file-pdf-o fa-2x"></i></a>
             <a (click)="getZip($event, item.UUID)"  class='m-2' title='Descargar XML y Comprobante fiscal en archivo zip comprimido'><i class="fa fa-file-archive-o fa-2x" aria-hidden="true"></i></a>

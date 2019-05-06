@@ -11,6 +11,8 @@ import { errModel_Interface } from 'src/app/interfaces/interfaces.index';
 export class Page404Component implements OnInit {
 
   @Input() errorModel: errModel_Interface= null;
+  @Input() header: Boolean= true;
+  @Input() footer: Boolean= true;
 
   constructor() { }
 

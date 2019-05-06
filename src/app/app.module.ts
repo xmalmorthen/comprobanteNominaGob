@@ -17,7 +17,7 @@ import { SharedModule } from './shared/shared.module';
 
 // INDEX COMPONENTS
 import { AppComponent } from './app.component';
-import { LogInComponent, ActivacionComponent } from './pages/pages.index';
+import { LogInComponent, ActivacionComponent, ResetPWDComponent } from './pages/pages.index';
 import { BlockCopyPasteDirective } from './directives/block-copy-paste.directive';
 
 registerLocaleData(localeEsMX, 'es-MX');
@@ -27,7 +27,8 @@ registerLocaleData(localeEsMX, 'es-MX');
     AppComponent,
     LogInComponent,
     ActivacionComponent,
-    BlockCopyPasteDirective,    
+    ResetPWDComponent,
+    BlockCopyPasteDirective,
   ],
   imports: [
     BrowserModule,

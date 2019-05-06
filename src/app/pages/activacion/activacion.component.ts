@@ -63,8 +63,6 @@ export class ActivacionComponent implements OnInit {
       this.wsStampingSATService.activateAccessToken( this.token )
       .subscribe ( (response: getActivationToken_Response_Interface) => {
 
-        debugger;
-
         this.err.err = false;
         this.err.msg = 'Activación de acceso a la plataforma realizada y concluida con éxito.';
 
@@ -75,12 +73,12 @@ export class ActivacionComponent implements OnInit {
 
         this.err.err = true;
 
-        /*if (error.error.RESTService){
+        if (error.error.RESTService){
           const restServiceResponse: RESTService_Response_Interface = error.error.RESTService;
           this.err.msg = restServiceResponse.Message;
         } else {
           this.err.msg = error.message;
-        }*/
+        }
 
         this.router.navigate( [ '/logIn' ], { queryParams: { activationToken : this.err.err } } );
 

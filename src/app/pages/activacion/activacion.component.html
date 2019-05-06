@@ -40,4 +40,6 @@
     </div>   
   </form>
 </div>
-<app-page404 *ngIf="err.err" [errorModel]="err"></app-page404>
+<div *ngIf="err.err" class="main">
+  <app-page404 [errorModel]="err" [header]='false' [footer]='false'></app-page404>
+</div>

@@ -18,7 +18,7 @@ import { DetailUUIDComponent } from './detail-uuid/detail-uuid.component';
   declarations: [
     MainComponent,
     PagesComponent,
-    DetailUUIDComponent
+    DetailUUIDComponent    
   ],
   imports: [
     CommonModule,

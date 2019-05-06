@@ -48,7 +48,7 @@ export class WsStampingSATService {
   }
 
   // OBTENER TOKEN DE ACCESO
-  getAccess(usr: string, noCtrl: string, emisorRFC: string): Observable< responseService_Response_Interface > {
+  getAccess(usr: string, noCtrl: string, emisorRFC: string, contrasenia?: string): Observable< responseService_Response_Interface > {
     
     const wsRequest = `${apiEndPoint}/${apiVersion}/get/getAccess`;
     let headers_object = new HttpHeaders({
@@ -58,7 +58,8 @@ export class WsStampingSATService {
     
     let model: getAccess_Request_Interface = {      
       noCtrl : noCtrl,
-      emisorRFC: emisorRFC
+      emisorRFC: emisorRFC,
+      contrasenia: contrasenia ? btoa(contrasenia) : null
     }
     if (usr.length == 18)
       model.curp = usr;
@@ -90,12 +91,14 @@ export class WsStampingSATService {
       'Authorization': apiAuth
     }); 
     
+
     let model: getAccess_Request_Interface = {      
       noCtrl : noCtrl,
       emisorRFC: emisorRFC,
       contrasenia: btoa(contrasenia),
       correo: correo
     }
+    
     if (usr.length == 18)
       model.curp = usr;
     else

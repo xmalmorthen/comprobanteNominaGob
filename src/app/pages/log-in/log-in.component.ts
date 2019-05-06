@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
@@ -7,7 +7,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { environment } from '../../../environments/environment';
 
-import * as mailTemplates from '../../templates/mail/v1.json';
+import * as activationToken from '../../templates/mail/activationToken.json';
+import * as rememberPWD from '../../templates/mail/rememberPWD.json';
 
 // SERVICES INDEX
 import { WsStampingSATService, LogInService, GobMailSenderService } from 'src/app/services/service.index';
@@ -34,12 +35,14 @@ declare interface rememberModel_Interface {
 })
 export class LogInComponent implements OnInit {
 
-  @ViewChild('captchaElem') captchaElem; 
-
+  @ViewChild('captchaElem') captchaElem;
+  @ViewChild('submitFrm') submitFrm: ElementRef;
+  
   recaptchaModel: recaptchaModel_Interface = {
     loaded: false,
     ready: false,
-    success: false
+    success: false,
+    err: false
   }
 
   siteKey: string= null;
@@ -49,6 +52,7 @@ export class LogInComponent implements OnInit {
   frm: FormGroup;
   frmContrasenia: FormGroup;
   submitted = false;
+  submittedPass = false;
 
   err: errModel_Interface = {
     err: false
@@ -72,7 +76,8 @@ export class LogInComponent implements OnInit {
     private route: ActivatedRoute,
     private wsStampingSATService: WsStampingSATService,
     private gobMailSenderService: GobMailSenderService,
-    private logInService: LogInService
+    private logInService: LogInService,
+    private cdr: ChangeDetectorRef
   ) {     
     $.LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin"});
     
@@ -97,10 +102,17 @@ export class LogInComponent implements OnInit {
       numtrabajador: new FormControl( remeberSession ? remeberSession.numtrabajador : '', Validators.required),
       recaptcha: new FormControl(),
       remember: new FormControl( remeberSession ? true : false )
-    });
+    });    
 
     this.loaded = true;
     $.LoadingOverlay("hide");    
+  }
+
+  ngAfterViewInit () {
+    if (this.frm.valid){
+      this.submitFrm.nativeElement.focus();
+      this.cdr.detectChanges();
+    }
   }
 
   private getEmisoresList() : Observable< getEmisores_Response_Interface[] > {
@@ -118,6 +130,7 @@ export class LogInComponent implements OnInit {
   }
 
   get f(): any { return this.frm.controls; }
+  get fc(): any { return this.frmContrasenia.controls; }
   
   onSubmit(): void{
 
@@ -128,11 +141,11 @@ export class LogInComponent implements OnInit {
     if (!this.frm.valid)
       return;
 
-    $('#frmLogin').LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin",zIndex: 1000});
-    this.frm.disabled
-
-    if (this.recaptchaModel.ready)
+    if (this.recaptchaModel.ready) {
+      $('#frmLogin').LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin",zIndex: 1000});
       this.captchaElem.execute();
+    }
+
   }
 
   recaptchaHandleLoad (evt): void{
@@ -144,6 +157,7 @@ export class LogInComponent implements OnInit {
   }
 
   recaptchaHandleSuccess (token: string): void {
+    
     this.wsStampingSATService.getAccess(
       this.frm.value.usuario,
       this.frm.value.numtrabajador,
@@ -160,46 +174,21 @@ export class LogInComponent implements OnInit {
             });
 
             this.activationErr.err = false;
-            this.activationErr.code = 1;
             this.isActive = true;
-            $('#frmLogin').LoadingOverlay("hide");
-            
-            // this.logInService.register( <getAccess_Response_Interface>response.Response , this.frm.value.usuario );
 
-            // if (this.frm.value.remember) {
-            //   const remeberSession: rememberModel_Interface = {
-            //     adscripcion: this.frm.value.adscripcion,
-            //     usuario: this.frm.value.usuario,
-            //     numtrabajador: this.frm.value.numtrabajador
-            //   }
-            //   localStorage.setItem('remember',JSON.stringify(remeberSession));
-            // } else 
-            //   localStorage.removeItem('remember');
+          break;          
+          case '2': //requiere generar token de activación        
+          case '3': //requiere activar token
 
-            // this.router.navigate( ['/principal'] );
-
-          break;
-          //requiere generar token de activación
-          case '2':
-
-            this.activationErr.msg = <getAccess_Response_Interface>response.Response;
             this.activationErr.err = true;
-            this.activationErr.code = 2;
             this.captchaElem.resetCaptcha();
-            $('#frmLogin').LoadingOverlay("hide");
-
-          break;
-          //requiere activar token
-          case '3':
-            
-            this.activationErr.err = true;
-            this.activationErr.code = 3;
-            this.activationErr.msg = <getAccess_Response_Interface>response.Response;
-            this.captchaElem.resetCaptcha();
-            $('#frmLogin').LoadingOverlay("hide");
 
           break;
         }
+
+        this.activationErr.code = Number(response.RESTService.StatusCode);
+        this.activationErr.msg = <getAccess_Response_Interface>response.Response;
+        $('#frmLogin').LoadingOverlay("hide");
 
       },
       ( error: HttpErrorResponse ) => {
@@ -221,7 +210,8 @@ export class LogInComponent implements OnInit {
   }
   
   recaptchaHandleError (evt): void{
-    this.recaptchaModel.err= true;
+    debugger;
+    this.recaptchaModel.err= true;    
   }
 
   recaptchaHandleReset (evt): void{
@@ -235,9 +225,9 @@ export class LogInComponent implements OnInit {
     
   }
 
+  resend: boolean= false;
   resendMail( evt: any, empleadoRef: EmpleadoRef_getAccess_Response_Interface, tokenRef: Token_getAccess_Response_Interface): void{
     evt.preventDefault();
-
     this.sendMail( empleadoRef, tokenRef);
   }
 
@@ -245,7 +235,7 @@ export class LogInComponent implements OnInit {
     
     $('#frmLogin').LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin",zIndex: 1000});
 
-    const mailTemplate = mailTemplates.v1;
+    const mailTemplate = activationToken.v1;
     const nombre = empleado.primerApellido + ' ' + ( empleado.segundoApellido ? empleado.segundoApellido + ' ' : '') + empleado.nombres;
     const linkRef = `${location.origin}/#/activacion/${token.token}`;
     let templateParsed = mailTemplate.split('{{LINK}}').join(linkRef);
@@ -273,6 +263,8 @@ export class LogInComponent implements OnInit {
           TokenRef: token
         }
 
+        this.resend = true;
+
         $('#frmLogin').LoadingOverlay("hide");
 
       },
@@ -291,5 +283,87 @@ export class LogInComponent implements OnInit {
       });
 
   }  
+
+  actualizationPWD: Boolean = false;
+  rememberPWD( evt: any, modelRef: getAccess_Response_Interface){
+    $('#frmPass').LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin",zIndex: 1000});
+
+    const mailTemplate = rememberPWD.v1;
+    const nombre = modelRef.EmpleadoRef.primerApellido + ' ' + ( modelRef.EmpleadoRef.segundoApellido ? modelRef.EmpleadoRef.segundoApellido + ' ' : '') + modelRef.EmpleadoRef.nombres;
+    const linkRef = `${location.origin}/#/nuevaContrasenia/${modelRef.TokenAccess.token}`;
+    let templateParsed = mailTemplate.split('{{LINK}}').join(linkRef);
+    templateParsed = templateParsed.split('{{NOMBRE}}').join(nombre);
+
+    this.actualizationPWD = true;
+    this.isActive = false;
+    $('#frmPass').LoadingOverlay("hide");
+
+    this.gobMailSenderService.sendMail( 
+      modelRef.EmpleadoRef.correo,
+      'Gobierno Colima - Actualización de contraseña de acceso a plataforma [ Comprobantes de Nómina ]',
+      templateParsed).subscribe ( (response: Boolean) => {
+
+        this.actualizationPWD = response;
+        $('#frmPass').LoadingOverlay("hide");
+
+      },
+      ( error: HttpErrorResponse ) => {
+
+        this.actualizationPWD = false;
+        $('#frmPass').LoadingOverlay("hide");
+
+      });
+
+  }
+
+  onSubmitPass(): void {
+
+    this.submittedPass = true;
+
+    if (!this.frmContrasenia.valid)
+      return;
+
+    this.frmContrasenia.disabled;
+    $('#frmPass').LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin",zIndex: 1000});
+
+    const empleadoRef = <EmpleadoRef_getAccess_Response_Interface>(<getAccess_Response_Interface>this.activationErr.msg).EmpleadoRef;
+
+    this.wsStampingSATService.getAccess(
+      empleadoRef.rfc,
+      empleadoRef.noCtrl,
+      empleadoRef.emisorRFC,
+      this.frmContrasenia.value.contrasenia
+    )
+      .subscribe( ( response: responseService_Response_Interface) => {
+
+        this.logInService.register( <getAccess_Response_Interface>response.Response );
+
+        if (this.frm.value.remember) {
+          const remeberSession: rememberModel_Interface = {
+            adscripcion: this.frm.value.adscripcion,
+            usuario: this.frm.value.usuario,
+            numtrabajador: this.frm.value.numtrabajador
+          }
+          localStorage.setItem('remember',JSON.stringify(remeberSession));
+        } else 
+          localStorage.removeItem('remember');
+
+        this.router.navigate( ['/principal'] );
+
+      },
+      ( error: HttpErrorResponse ) => {
+
+        this.err.err = true;
+
+        if (error.error.RESTService){
+          const restServiceResponse: RESTService_Response_Interface = error.error.RESTService;
+          this.err.msg = restServiceResponse.Message;
+        } else {
+          this.err.msg = error.message;
+        }        
+
+        $('#frmPass').LoadingOverlay("hide");
+      });
+  }
 
 }
