@@ -242,7 +242,9 @@ export class LogInComponent implements OnInit {
     const mailTemplate = activationToken.v1;
     const nombre = empleado.primerApellido + ' ' + ( empleado.segundoApellido ? empleado.segundoApellido + ' ' : '') + empleado.nombres;
     const linkRef = `${location.origin}${location.pathname}#/acceso/activacion/${token.token}`;
+    const logoRef = `${location.origin}${location.pathname}assets/images/logo.png`;
     let templateParsed = mailTemplate.split('{{LINK}}').join(linkRef);
+    templateParsed = templateParsed.split('{{LOGO}}').join(logoRef);
     templateParsed = templateParsed.split('{{NOMBRE}}').join(nombre);
 
     this.gobMailSenderService.sendMail( 
@@ -295,7 +297,9 @@ export class LogInComponent implements OnInit {
     const mailTemplate = rememberPWD.v1;
     const nombre = modelRef.EmpleadoRef.primerApellido + ' ' + ( modelRef.EmpleadoRef.segundoApellido ? modelRef.EmpleadoRef.segundoApellido + ' ' : '') + modelRef.EmpleadoRef.nombres;
     const linkRef = `${location.origin}${location.pathname}/#/acceso/nuevaContrasenia/${modelRef.TokenAccess.token}`;
+    const logoRef = `${location.origin}${location.pathname}assets/images/logo.png`;
     let templateParsed = mailTemplate.split('{{LINK}}').join(linkRef);
+    templateParsed = templateParsed.split('{{LOGO}}').join(logoRef);
     templateParsed = templateParsed.split('{{NOMBRE}}').join(nombre);
 
     this.actualizationPWD = true;
