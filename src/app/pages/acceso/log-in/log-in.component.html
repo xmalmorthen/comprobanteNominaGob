@@ -55,6 +55,10 @@
         es posible que se encuentre en lista de correo SPAM.<br>
         Favor de seguir las instrucciones especificadas en el correo para concluir el proceso de recuperación de contraseña de acceso.
       </ngb-alert>
+      <ngb-alert *ngIf="changePassword" [dismissible]="false" type="success">
+        <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Recuperación de contraseña de acceso!</strong><br>
+        Se ha actualizado la contraseña de acceso, favor de ingresar con su nueva contraseña.
+      </ngb-alert>
       <div class="form-group">
         <label>Dependencia o adscripción <sup>*</sup></label>
         <ng-select 

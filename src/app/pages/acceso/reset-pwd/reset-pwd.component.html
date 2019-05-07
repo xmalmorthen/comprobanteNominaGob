@@ -20,9 +20,9 @@
     <div class="d-flex justify-content-end mt-1">
       <button type="submit" class="btn btn-outline-success mr-2">Actualizar contraseña</button>
       <a (click)='cancelEvt()' class="btn btn-outline-danger">Cancelar</a>
-    </div>   
+    </div>
   </form>
 </div>
-<div *ngIf="err.err" class="main">
+<div *ngIf="err.err && !submitted" class="main">
   <app-page404 [errorModel]="err" [header]='false' [footer]='false'></app-page404>
 </div>

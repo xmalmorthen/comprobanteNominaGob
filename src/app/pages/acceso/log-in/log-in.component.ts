@@ -5,10 +5,10 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { environment } from '../../../environments/environment';
+import { environment } from 'src/environments/environment';
 
-import * as activationToken from '../../templates/mail/activationToken.json';
-import * as rememberPWD from '../../templates/mail/rememberPWD.json';
+import * as activationToken from 'src/assets/templates/mail/activationToken.json';
+import * as rememberPWD from 'src/assets/templates/mail/rememberPWD.json';
 
 // SERVICES INDEX
 import { WsStampingSATService, LogInService, GobMailSenderService } from 'src/app/services/service.index';
@@ -65,6 +65,7 @@ export class LogInComponent implements OnInit {
   isActive: boolean = false;
 
   activationToken: boolean= null;
+  changePassword: boolean= false;
 
   activationSuccessModel: getActivationToken_Response_Interface = null;
     
@@ -90,6 +91,9 @@ export class LogInComponent implements OnInit {
     
     if (this.route.snapshot.queryParamMap.get('activationToken') != null)
       this.activationToken = Boolean(this.route.snapshot.queryParamMap.get('activationToken'));
+
+    if (this.route.snapshot.queryParamMap.get('changePassword') != null)
+      this.changePassword = Boolean(this.route.snapshot.queryParamMap.get('changePassword'));
 
     let remeberSession: rememberModel_Interface = null;
     if (localStorage.getItem('remember')){
@@ -237,7 +241,7 @@ export class LogInComponent implements OnInit {
 
     const mailTemplate = activationToken.v1;
     const nombre = empleado.primerApellido + ' ' + ( empleado.segundoApellido ? empleado.segundoApellido + ' ' : '') + empleado.nombres;
-    const linkRef = `${location.origin}/#/activacion/${token.token}`;
+    const linkRef = `${location.origin}${location.pathname}#/acceso/activacion/${token.token}`;
     let templateParsed = mailTemplate.split('{{LINK}}').join(linkRef);
     templateParsed = templateParsed.split('{{NOMBRE}}').join(nombre);
 
@@ -290,7 +294,7 @@ export class LogInComponent implements OnInit {
 
     const mailTemplate = rememberPWD.v1;
     const nombre = modelRef.EmpleadoRef.primerApellido + ' ' + ( modelRef.EmpleadoRef.segundoApellido ? modelRef.EmpleadoRef.segundoApellido + ' ' : '') + modelRef.EmpleadoRef.nombres;
-    const linkRef = `${location.origin}/#/nuevaContrasenia/${modelRef.TokenAccess.token}`;
+    const linkRef = `${location.origin}${location.pathname}/#/acceso/nuevaContrasenia/${modelRef.TokenAccess.token}`;
     let templateParsed = mailTemplate.split('{{LINK}}').join(linkRef);
     templateParsed = templateParsed.split('{{NOMBRE}}').join(nombre);
 

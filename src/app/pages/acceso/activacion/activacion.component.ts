@@ -45,10 +45,10 @@ export class ActivacionComponent implements OnInit {
     if (!this.token){
       if (this.tokenRef) {
         this.frm = new FormGroup({
-          correo: new FormControl( 'xmal.morthen@gmail.com', [ Validators.required, Validators.email ]),
-          correoConfirm: new FormControl ( 'xmal.morthen@gmail.com', [ Validators.required, Validators.email ]),
-          contrasenia: new FormControl( '..121212qw',[ Validators.required, Validators.minLength(8) ] ),
-          contraseniaConfirm: new FormControl( '..121212qw',[ Validators.required, Validators.minLength(8) ] ),
+          correo: new FormControl( '', [ Validators.required, Validators.email ]),
+          correoConfirm: new FormControl ( '', [ Validators.required, Validators.email ]),
+          contrasenia: new FormControl( '',[ Validators.required, Validators.minLength(8) ] ),
+          contraseniaConfirm: new FormControl( '',[ Validators.required, Validators.minLength(8) ] ),
         }, { validators: [ 
                 this.correosMatch( 'correo', 'correoConfirm' ),
                 this.contraseniasMatch( 'contrasenia', 'contraseniaConfirm' )
@@ -66,7 +66,7 @@ export class ActivacionComponent implements OnInit {
         this.err.err = false;
         this.err.msg = 'Activación de acceso a la plataforma realizada y concluida con éxito.';
 
-        this.router.navigate( [ '/logIn' ], { queryParams: { activationToken : this.err.err } } );
+        this.router.navigate( [ 'acceso/logIn' ], { queryParams: { activationToken : this.err.err } } );
 
       },
       ( error: HttpErrorResponse ) => {
@@ -80,7 +80,7 @@ export class ActivacionComponent implements OnInit {
           this.err.msg = error.message;
         }
 
-        this.router.navigate( [ '/logIn' ], { queryParams: { activationToken : this.err.err } } );
+        this.router.navigate( [ 'acceso/logIn' ], { queryParams: { activationToken : this.err.err } } );
 
       });
       

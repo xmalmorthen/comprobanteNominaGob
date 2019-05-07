@@ -13,6 +13,6 @@ export class LoginGuard implements CanActivate  {
   ){}
 
   async canActivate() {
-    return await this.logInService.sessionActive() ? true : this.router.navigate( [ 'logIn' ] );
+    return await this.logInService.sessionActive() ? true : this.router.navigate( [ 'acceso/logIn' ] );
   }
 }

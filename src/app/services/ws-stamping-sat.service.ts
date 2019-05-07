@@ -181,6 +181,25 @@ export class WsStampingSATService {
       );
   }
 
+  // CAMBIAR CONTRASEÑA
+  changePassword(token: string, pwd: string): Observable< boolean > {
+    
+    const wsRequest = `${apiEndPoint}/${apiVersion}/get/changePassword`;
+    let headers_object = new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': apiAuth
+    }); 
+
+    const contrasenia: string= btoa(pwd);
+    
+    return this.http.post<responseService_Response_Interface>(wsRequest, { token, fCreated: contrasenia }, { headers: headers_object })
+      .pipe(
+        map( (response: responseService_Response_Interface) => {
+          return true;
+        })
+      );
+  }
+
   // OBTENER COMPROBANTES
   @Cacheable({
     cacheBusterObserver: comprobantesResponse$

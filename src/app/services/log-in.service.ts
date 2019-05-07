@@ -194,7 +194,7 @@ export class LogInService {
   logOut (){
     localStorage.removeItem('sessionUserData');
     this.makeSessionModel();
-    this.router.navigate( [ 'logIn' ] );
+    this.router.navigate( [ 'acceso/logIn' ] );
   }
 
 }

@@ -1,21 +1,19 @@
-import { Component, ViewChild, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
+import { Component, ViewChild, OnInit, ChangeDetectorRef } from '@angular/core';
 
 // SERVICES
-import { WsStampingSATService, LogInService, WsCURPService } from 'src/app/services/service.index';
-import { getComprobantesToken_Response_Interface, infoCURP_Response_Interface, getUserData_Response_Interface, titular_Interface, getAccess_Response_Interface } from 'src/app/interfaces/interfaces.index';
 import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
-import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
+import { titular_Interface, getComprobantesToken_Response_Interface, getAccess_Response_Interface } from 'src/app/interfaces/interfaces.index';
+import { WsStampingSATService, LogInService } from 'src/app/services/service.index';
 
 declare const $: any;
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss'],
-  // host: {'window:beforeunload':'$.LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin",zIndex: 1000});'}
+  styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit  {
   
@@ -35,7 +33,6 @@ export class MainComponent implements OnInit  {
 
   constructor(
     private wsStampingSATService: WsStampingSATService,
-    private wsCURPService: WsCURPService,
     private logInService: LogInService,
     private chRef: ChangeDetectorRef,
     private router: Router
