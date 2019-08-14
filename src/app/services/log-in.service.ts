@@ -84,14 +84,15 @@ export class LogInService {
       return false;
     }
 
-    const response = await this.wsStampingSATService.checkSession(this.loginModel.token).toPromise();
-    
+    let response = null;
+    try {
+      response = await this.wsStampingSATService.checkSession(this.loginModel.token).toPromise();
+    } catch (error) {}
+
     if (response){
       this.wsStampingSATService.recicleSession(this.loginModel.token)
         .subscribe( ( response: getAccess_Response_Interface ) => {                    
-
           this.makeSessionModel( response );
-
         });
     } else {
       this.logOut();

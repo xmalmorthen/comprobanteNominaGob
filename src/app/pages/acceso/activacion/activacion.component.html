@@ -1,9 +1,11 @@
 <div *ngIf="tokenRef != null">
   <h3>Bienvenid@!</h3>
   <h5 class='text-muted'>{{ tokenRef.EmpleadoRef.primerApellido + ' ' + ( tokenRef.EmpleadoRef.segundoApellido.length > 0 ? tokenRef.EmpleadoRef.segundoApellido + ' ' : '' ) + tokenRef.EmpleadoRef.nombres }}</h5>
-  <p class='text-justify'>Por única vez, para cuidar la integridad y seguridad de la información que provee ésta plataforma,
-  se requiere que active el acceso por medio de confirmación vía correo electrónico, 
-  por lo tanto se requiere que introduzca una cuenta válida en donde se le hará llegar la liga de activaqción.</p>
+  <p class='text-justify'>
+    Por única vez, para cuidar la integridad y seguridad de la información que provee esta plataforma,
+    se requiere que active el acceso por medio de confirmación vía correo electrónico, 
+    por lo tanto se requiere que introduzca una cuenta válida en donde se le hará llegar la liga de activación.
+  </p>
   <form id="frmLogin" class='form' [formGroup]="frm" (ngSubmit)="onSubmit()" novalidate>
     <ngb-alert *ngIf="err.err" [dismissible]="false" type="danger">
       <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error!</strong> {{ err.msg }}

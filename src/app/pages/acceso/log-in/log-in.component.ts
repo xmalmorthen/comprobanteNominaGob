@@ -102,7 +102,7 @@ export class LogInComponent implements OnInit {
 
     this.frm = new FormGroup({
       adscripcion: new FormControl( remeberSession ? remeberSession.adscripcion : '', [ Validators.required ]),
-      usuario: new FormControl( remeberSession ? remeberSession.usuario : '', [ Validators.required, Validators.minLength(12)] ),
+      usuario: new FormControl( remeberSession ? remeberSession.usuario : '', [ Validators.required, Validators.minLength(13)] ),
       numtrabajador: new FormControl( remeberSession ? remeberSession.numtrabajador : '', Validators.required),
       recaptcha: new FormControl(),
       remember: new FormControl( remeberSession ? true : false )
@@ -136,7 +136,7 @@ export class LogInComponent implements OnInit {
   get f(): any { return this.frm.controls; }
   get fc(): any { return this.frmContrasenia.controls; }
   
-  onSubmit(): void{
+  async onSubmit(){
 
     this.submitted = true;
     this.err.err = false;
@@ -146,8 +146,16 @@ export class LogInComponent implements OnInit {
       return;
 
     if (this.recaptchaModel.ready) {
+      
       $('#frmLogin').LoadingOverlay("show", {image: "",fontawesome: "fa fa-cog fa-spin",zIndex: 1000});
-      this.captchaElem.execute();
+
+      const fncCaptchaExecute = () => {
+        this.captchaElem.execute();
+      }
+
+      const resultCaptchaExecute = await fncCaptchaExecute();
+      $('#frmLogin').LoadingOverlay("hide");  
+
     }
 
   }
@@ -161,7 +169,12 @@ export class LogInComponent implements OnInit {
   }
 
   recaptchaHandleSuccess (token: string): void {
-    
+
+    if (!token) {
+      $('#frmLogin').LoadingOverlay("hide");
+      return;
+    }
+
     this.wsStampingSATService.getAccess(
       this.frm.value.usuario,
       this.frm.value.numtrabajador,
@@ -214,8 +227,12 @@ export class LogInComponent implements OnInit {
   }
   
   recaptchaHandleError (evt): void{
-    debugger;
     this.recaptchaModel.err= true;    
+  }
+
+  recaptchaHandleExpire (evt): void {
+    this.recaptchaModel.ready = false;
+    this.captchaElem.reloadCaptcha();
   }
 
   recaptchaHandleReset (evt): void{
@@ -242,7 +259,7 @@ export class LogInComponent implements OnInit {
     const mailTemplate = activationToken.v1;
     const nombre = empleado.primerApellido + ' ' + ( empleado.segundoApellido ? empleado.segundoApellido + ' ' : '') + empleado.nombres;
     const linkRef = `${location.origin}${location.pathname}#/acceso/activacion/${token.token}`;
-    const logoRef = `${location.origin}${location.pathname}assets/images/logo.png`;
+    const logoRef = `${location.origin}${location.pathname}assets/images/logoMailHeader.png`;
     let templateParsed = mailTemplate.split('{{LINK}}').join(linkRef);
     templateParsed = templateParsed.split('{{LOGO}}').join(logoRef);
     templateParsed = templateParsed.split('{{NOMBRE}}').join(nombre);
@@ -297,21 +314,18 @@ export class LogInComponent implements OnInit {
     const mailTemplate = rememberPWD.v1;
     const nombre = modelRef.EmpleadoRef.primerApellido + ' ' + ( modelRef.EmpleadoRef.segundoApellido ? modelRef.EmpleadoRef.segundoApellido + ' ' : '') + modelRef.EmpleadoRef.nombres;
     const linkRef = `${location.origin}${location.pathname}/#/acceso/nuevaContrasenia/${modelRef.TokenAccess.token}`;
-    const logoRef = `${location.origin}${location.pathname}assets/images/logo.png`;
+    const logoRef = `${location.origin}${location.pathname}assets/images/logoMailHeader.png`;
     let templateParsed = mailTemplate.split('{{LINK}}').join(linkRef);
     templateParsed = templateParsed.split('{{LOGO}}').join(logoRef);
     templateParsed = templateParsed.split('{{NOMBRE}}').join(nombre);
-
-    this.actualizationPWD = true;
-    this.isActive = false;
-    $('#frmPass').LoadingOverlay("hide");
 
     this.gobMailSenderService.sendMail( 
       modelRef.EmpleadoRef.correo,
       'Gobierno Colima - Actualización de contraseña de acceso a plataforma [ Comprobantes de Nómina ]',
       templateParsed).subscribe ( (response: Boolean) => {
 
-        this.actualizationPWD = response;
+        this.actualizationPWD = true;
+        this.isActive = false;
         $('#frmPass').LoadingOverlay("hide");
 
       },

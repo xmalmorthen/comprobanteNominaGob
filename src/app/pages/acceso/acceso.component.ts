@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccesoComponent implements OnInit {
 
+  manualURL: string = null;
+
   constructor() { }
 
   ngOnInit() {
+
+    this.manualURL = `${location.origin}/assets/MANUAL_DE_REGISTRO_PARA_DESCARGAR_RECIBOS_DE_NOMINA.pdf`;
+
   }
 
 }

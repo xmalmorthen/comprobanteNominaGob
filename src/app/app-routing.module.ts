@@ -23,8 +23,8 @@ const routes: Routes = [
     { path: 'nuevaContrasenia/:token', component: ResetPWDComponent, data: { title: 'Actualizar contraseña de acceso'} }
   ]},
   { path: '', component: PagesComponent, children: [
-    { path: 'principal', component: MainComponent, canActivate: [ LoginGuard ], data: { title: 'Comprobantes de ingreso'} },    
-    { path: 'detalle/:uuid', component: DetailUUIDComponent, canActivate: [ LoginGuard ], data: { title: 'Detalle del comprobante'} },
+    { path: 'principal', component: MainComponent, canActivate: [ LoginGuard ], data: { title: 'Panel Principal'} },    
+    { path: 'detalle/:uuid', component: DetailUUIDComponent, canActivate: [ LoginGuard ], data: { title: 'Detalle de recibo de nómina'} },
     { path: '', redirectTo: 'principal', pathMatch: 'full' }
   ]},
   { path: '**', component: Page404Component, data: { title: 'Página no encontrada'} }

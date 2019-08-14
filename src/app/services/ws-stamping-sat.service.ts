@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { map, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs/internal/observable/throwError';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Cacheable } from 'ngx-cacheable';
@@ -160,6 +161,9 @@ export class WsStampingSATService {
       .pipe(
         map( (response: responseService_Response_Interface) => {
           return response.Response ? true : false;
+        }),
+        catchError( (err: HttpErrorResponse) => {          
+          return throwError( err.error.RESTService ? err.error.RESTService.Message : err.error);
         })
       );
   }

@@ -3,8 +3,7 @@ import { Title, Meta, MetaDefinition } from '@angular/platform-browser';
 import { Router, ActivationEnd } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
-
-const __PrefixTitle: String = 'Gobierno Colima - ';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +18,7 @@ export class AppComponent {
     private meta: Meta) {
 
       this.setPageTitle().subscribe( event => {
-        this.title.setTitle( __PrefixTitle + event.title );
+        this.title.setTitle( environment.labels.prefixTitle + ' - ' + event.title );
         this.setMetaPage();
       });
   }
@@ -39,9 +38,9 @@ export class AppComponent {
       content: this.title.getTitle()
     };
 
-    this.meta.updateTag({ name: 'description', content: `Gobierno del Estado de Colima - Comprobantes de ingresos - Página [ ${this.title.getTitle()} ]` });
-    this.meta.updateTag({ name: 'author', content: 'ICSIC Gobierno del Estado de Colima [ XMAL ]' });
-    this.meta.updateTag({ name: 'keywords', content: `GobCol, Ingresos, Nómina, Gobierno Colima, Colima, SAT, Comprobantes, ${this.title.getTitle()}` });
+    this.meta.updateTag({ name: 'description', content: `Gobierno del Estado de Colima - Recibos de Nómina - Página [ ${this.title.getTitle()} ]` });
+    this.meta.updateTag({ name: 'author', content: 'ICSIC - Gobierno del Estado de Colima [ XMAL ]' });
+    this.meta.updateTag({ name: 'keywords', content: `GobCol, Recibo, Recibos, Nómina, Gobierno Colima, Colima, SAT, ${this.title.getTitle()}` });
   }
 
 }

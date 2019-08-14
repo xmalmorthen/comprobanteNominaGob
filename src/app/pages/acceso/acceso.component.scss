@@ -1,38 +1,42 @@
 .page-flexbox-wrapper{
-  display: flex;
-  min-height: 100vh;
+  display: flex;  
+  display: -ms-flexbox;
+
   flex-direction: column;
+  -ms-flex-direction: column;
+
+  min-height: 100vh;
 }
 
 .Site-content {
-  flex: 1;
+   flex: 1;
+   -ms-flex: 1; 
 }
 
-.header, .footer {
-    z-index: 2;
-    background-color: white;
+.header{
+    background-color: #f9f9f9;    
+    border-bottom: 8px solid #343a40
+}
+
+.footer {
+    background-color: #f9f9f950;    
+    border-top: 2px solid #343a40
+}
+
+.foterContent{
+    margin: 1em 2em;
 }
 
 .logo {
     width: 400px;
 }
 
-.sidenav {
-    height: 100%;
-    background-color: #000;
-    overflow-x: hidden;
-    padding-top: 20px;
+.sideNavInfo{
+    max-width: 40%!important;
 }
 
-.main-text{
-    margin-top: 20%;
-    padding: 60px;
-    color: #fff;
-    text-align: justify;
-}
-
-.main-text h2{
-    font-weight: 300;
+.bodyRouter {
+    width: 100%!important;
 }
 
 @media screen and (max-width: 1280px){
@@ -41,24 +45,8 @@
     }
 }
 
-@media screen and (min-width: 768px){
-    .sidenav{
-        width: 40%;
-        position: fixed;
-        z-index: 1;
-        top: 0;
-        left: 0;
-    }      
-}
-
-@media screen and (max-width: 768px){
-    .main-text{
-        margin-top: 5%;
-        padding: 30px;
-        color: #fff;
+@media screen and (max-width: 992px){
+    .sideNavInfo {
+        min-width: 100%!important;
     }
-}
-
-@media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
 }

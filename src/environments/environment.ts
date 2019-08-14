@@ -1,17 +1,21 @@
 export const environment = {
   production: false,
+  labels:{
+    prefixTitle: 'Gobierno Colima - Recibos de Nómina'
+  },
   recaptcha: {
-    siteKey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+    //siteKey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI' //key de prueba
+    siteKey: '6Lc41J4UAAAAAFHaMaKZ3g_20mgDXszi2yQZBcE-'
   },
   apis: {
     wscuRP: {
-      endPoint: 'http://apisnet.col.gob.mx/wscuRP_tmp',
+      endPoint: 'http://apisnet.col.gob.mx/wscuRP',
       apiVersion: 'apiV1',
       apiAuth: 'Basic eG1hbG1vcnRoZW46YjE2ZjU1MGQxNDdiZjkyZTk0NTUwNzRkOWVkZmUwMTM='
     },
     wsStampingSat: {
-      // endPoint: 'http://apisnet.col.gob.mx/wsStampingSat_tmp',
-      endPoint: 'http://localhost:9999',      
+      endPoint: 'http://apisnet.col.gob.mx/wsStampingSat',
+      // endPoint: 'http://localhost:9999',      
       apiVersion: 'apiV1',
       apiAuth: 'Basic eG1hbG1vcnRoZW46YjE2ZjU1MGQxNDdiZjkyZTk0NTUwNzRkOWVkZmUwMTM='
     },

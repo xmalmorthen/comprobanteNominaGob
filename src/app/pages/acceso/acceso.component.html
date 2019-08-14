@@ -2,20 +2,32 @@
     <header class="header">
         <img class="logo m-3" src="./assets/images/logo.png" alt="Gobierno del Estado de Colima">
     </header>
-    <div class="Site-content">
-        <div class="sidenav">
-            <div class="main-text">
-            <h2>
-                Comprobantes<br />
-                de Nómina
-            </h2>
+    <div class="Site-content d-flex flex-lg-row flex-column ">
+        <div class="sideNavInfo bg-dark text-white text-justify p-4">
+            <h2><strong class='display-4'>Recibos</strong> de Nómina</h2>
+            <br>
             <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad harum vero quae voluptate quasi sapiente provident excepturi alias laboriosam odit. Ducimus, explicabo dolorum aut temporibus reprehenderit nesciunt odio molestias aperiam.
+                De acuerdo con las reformas fiscales aprobadas, el Gobierno del Estado de Colima está obligado en términos de la fracción III del artículo 99 de la Ley del Impuesto Sobre la Renta (LISR), a expedir y entregar los comprobantes fiscales a las personas que tengan ingresos por Sueldos y Salarios.
             </p>
-            </div>
+            <p>
+                Con la finalidad de cumplir con estas disposiciones, ponemos a su disposición este portal que le permite consultar y descargar los Comprobantes Fiscales Digitales por Internet (CFDI).
+            </p>                
         </div>
-        <router-outlet></router-outlet>
-        <br>
+        <div class="bodyRouter">
+            <router-outlet ></router-outlet>
+        </div>
     </div>
-    <footer class="footer"></footer>
+    <footer class="footer">
+        <div class="foterContent">
+            <h3><i class="fa fa-info-circle fa-2x" aria-hidden="true"></i> Consulte el <a [href]="manualURL" target="_blank" rel="noopener noreferrer">MANUAL DE REGISTRO PARA DESCARGAR RECIBO DE NÓMINA</a></h3>
+            <hr>
+            <h4>AVISO DE PRIVACIDAD</h4>
+            <ul>
+                <li>La Dirección General de Capital Humano, de la Secretaría de Administración y Gestión Pública es la responsable del tratamiento de los datos personales que se proporcionen.</li>
+                <li>Los datos personales que sean recabados, serán utilizados en el registro para el nuevo Sistema de Recibos de Nómina.</li>
+                <li>Se informa que no se realizaran transferencias de datos personales, salvo aquellas que sean estrictamente necesarias para la realización de un trámite o servicio; así como para atender requerimientos de información de una autoridad competente, debidamente fundada o motivada.</li>
+                <li>Usted podrá consultar el aviso de privacidad integral en: <a href="http://www.col.gob.mx/transparencia/archivos/portal/2018071116205460_Aviso-Privacidad-SAyGP_2019.pdf" target="_blank" rel="noopener noreferrer">Aviso de Privacidad</a></li>
+            </ul>
+        </div>
+    </footer>
 </div>

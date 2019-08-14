@@ -10,7 +10,7 @@
     <div class="card countComprobantes">
       <div class="card-body p-2">
         <i class="fa fa-file-text-o fa-5x float-right"></i>
-        <h6 class="text-uppercase">Comprobantes</h6>
+        <h6 class="text-uppercase">Recibos</h6>
         <h1 #counter class="counter text-center" style='font-size: 3em;' [countUp]="comprobantesList.length" [options]='{ duration: 3 }'>0</h1>
         <span *ngIf="comprobantesList.length > 0" >Desde [ <strong>{{ comprobantesList[ comprobantesList.length - 1 ].fechaTimbrado | date: 'EEEE, dd/MMMM/yyyy'}}</strong> ] - Hasta [ <strong>{{ comprobantesList[ 0 ].fechaTimbrado | date: 'EEEE, dd/MMMM/yyyy'}}</strong> ]</span>
       </div>
@@ -18,7 +18,7 @@
   </div>
   
   <br>
-  <h3 class="pageTitle">Comprobante de ingresos</h3>
+  <h3 class="pageTitle">Recibos de Nómina</h3>
   <br>
   
   <div *ngIf="itemsSelecteds > 1" class="row animated slideInRight position-fixed fixedPanel p-3 pl-4 d-none d-md-block">

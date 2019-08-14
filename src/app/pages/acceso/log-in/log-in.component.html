@@ -1,4 +1,4 @@
-<div *ngIf="loaded" class="main">
+<div *ngIf="loaded" class="main pt-3 pb-3">
   <div class="col-md-10 col-lg-9 col-sm-12">
     <form *ngIf="activationErr.code != 2 && !isActive" id="frmLogin" class='form' [formGroup]="frm" (ngSubmit)="onSubmit()" novalidate>
       <!-- ALERT - error general -->
@@ -8,9 +8,15 @@
       <!-- ALERT - cuenta no activada -->
       <ngb-alert *ngIf="activationErr.err && activationErr.code == 3 && !resend" [dismissible]="false" type="warning">
         <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Acceso no permitido, <span class='text-danger'>activación requerida!</span></strong><br><br>
-        Debe activar el ingreso a la plataforma a través de un correo electrónico que se le hizo llegar a la cuenta <strong> {{ activationErr.msg.EmpleadoRef.correo }}</strong>, es posible que se encuentre en lista de correo SPAM.<br><br>
-        <a class='btn btn-outline-warning' title='Reenviar correo' (click)="resendMail($event,activationErr.msg.EmpleadoRef, activationErr.msg.TokenActivation)"> Reenviar correo de activación </a> en caso de no haberlo recibido. <br><br>
-        <h6 class='text-muted text-right' style='font-size: .8em'>Si no reconoce la cuenta de correo de activación favor de comunicarse <br>al tel. <a href="tel:003121220995"> xxx </a> en el área de atención de capital humano.</h6>            
+        <span class="text-justify">
+          Debe activar el ingreso a la plataforma a través de un correo electrónico que se le hizo llegar a la cuenta 
+          <strong> {{ activationErr.msg.EmpleadoRef.correo }}</strong>, es posible que se encuentre en lista de correo SPAM.<br><br>
+          <a class='btn btn-outline-warning' title='Reenviar correo' (click)="resendMail($event,activationErr.msg.EmpleadoRef, activationErr.msg.TokenActivation)"> Reenviar correo de activación </a> en caso de no haberlo recibido. 
+        </span>
+        <br><br>
+        <h6 class='text-muted text-right' style='font-size: .8em'>
+          Si no reconoce la cuenta de correo de activación favor de comunicarse <br>a la <a href="tel:003162000;20218"> Dirección General de Capital Humano [ 3162000 extensión 20218 ]</a>.
+        </h6>
       </ngb-alert>
       <!-- ALERT - notificación de correo de activación -->
       <ngb-alert *ngIf="activationSuccessModel != null && !activationErr.err && !resend" [dismissible]="false" type="success">
@@ -25,14 +31,16 @@
         <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Activación!</strong><br>
         Ocurió un error al intentar enviar el correo electrónico, <strong>favor intentarlo de nuevo.</strong><br><br>
         <a class='btn btn-outline-warning' title='Reenviar correo' (click)="resendMail($event,activationSuccessModel.EmpleadoRef,activationSuccessModel.TokenRef)"> Reenviar correo de activación </a><br><br>
-        <h6 class='text-muted text-right' style='font-size: .8em'>Si el problema persiste favor de ponerse en contácto al tel. <a href="tel:003121220995"> xxx </a> en el área de atención de capital humano.</h6>
+        <h6 class='text-muted text-right' style='font-size: .8em'>Si el problema persiste favor de comunicarse <br>a la <a href="tel:003162000;20218"> Dirección General de Capital Humano [ 3162000 extensión 20218 ]</a>.</h6>
       </ngb-alert>
       <!-- ALERT - error de envío de correo -->
       <ngb-alert *ngIf="resend" [dismissible]="false" type="success">            
         <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Reenvío de correo!</strong><br>
-        Se ha reenviado el correo electrónico a la cuenta <strong>{{ activationSuccessModel.EmpleadoRef.correo }}</strong>, 
-        es posible que se encuentre en lista de correo SPAM.<br>
-        Favor de seguir las instrucciones especificadas en el correo para concluir el proceso de activación.
+        <span class="text-justify">
+          Se ha reenviado el correo electrónico a la cuenta <strong>{{ activationSuccessModel.EmpleadoRef.correo }}</strong>, 
+          es posible que se encuentre en lista de correo SPAM.<br>
+          Favor de seguir las instrucciones especificadas en el correo para concluir el proceso de activación.
+        </span>
       </ngb-alert>
       <!-- ALERT - token activado -->
       <ngb-alert *ngIf="activationToken === true" [dismissible]="false" type="success">
@@ -42,12 +50,12 @@
       <ngb-alert *ngIf="activationToken === false" [dismissible]="false" type="warning">
         <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Activación!</strong><br>
         Ocurrió un error en el proceso de activación, <strong>Favor intentarlo de nuevo.</strong><br><br>
-        <h6 class='text-muted text-right' style='font-size: .8em'>Si el problema persiste favor de ponerse en contácto al tel. <a href="tel:003121220995"> xxx </a> en el área de atención de capital humano.</h6>
+        <h6 class='text-muted text-right' style='font-size: .8em'>Si el problema persiste favor de comunicarse <br>a la <a href="tel:003162000;20218"> Dirección General de Capital Humano [ 3162000 extensión 20218 ]</a>.</h6>
       </ngb-alert>      
       <ngb-alert *ngIf="(!recaptchaModel.ready || recaptchaModel.err) && submitted" [dismissible]="false" type="danger">
         <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Recaptcha!</strong><br>
         Ocurrió un error al cargar el RECAPTCHA, <strong>Favor actualizar la página.</strong><br><br>
-        <h6 class='text-muted text-right' style='font-size: .8em'>Si el problema persiste favor de ponerse en contácto al tel. <a href="tel:003121220995"> xxx </a> en el área de atención de capital humano.</h6>
+        <h6 class='text-muted text-right' style='font-size: .8em'>Si el problema persiste favor de comunicarse <br>a la <a href="tel:003162000;20218"> Dirección General de Capital Humano [ 3162000 extensión 20218 ]</a>.</h6>
       </ngb-alert>
       <ngb-alert *ngIf="actualizationPWD && !isActive" [dismissible]="false" type="success">
         <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Recuperación de contraseña de acceso!</strong><br>
@@ -92,6 +100,7 @@
         </div>
         <span class="text-muted">* Información requerida</span>
       </div>
+      <br>
       <ngx-invisible-recaptcha #captchaElem
         [siteKey]="siteKey"
         useGlobalDomain="false"
@@ -102,7 +111,8 @@
         (reset)="recaptchaHandleReset()"
         (ready)="recaptchaHandleReady()"
         (load)="recaptchaHandleLoad()"
-        (success)="recaptchaHandleSuccess($event)"              
+        (success)="recaptchaHandleSuccess($event)"
+        (expire)="recaptchaHandleExpire()"
         (error)="recaptchaHandleError()">
       </ngx-invisible-recaptcha>
       <div class="d-flex justify-content-end mt-1">

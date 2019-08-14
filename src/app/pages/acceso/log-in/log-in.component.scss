@@ -3,20 +3,20 @@ a {
 }
 
 .main {
-    padding: 0px 10px;
+    
 }
 
-@media screen and (min-width: 768px){
-    .main{
-        margin-left: 40%;        
-    }    
-}
+// @media screen and (min-width: 768px){
+//     .main{
+//         margin-left: 40%;        
+//     }    
+// }
 
-@media screen and (max-width: 768px){
-    .main{
-        margin-top: 10px;        
-    }    
-}
+// @media screen and (max-width: 768px){
+//     .main{
+//         margin-top: 10px;        
+//     }    
+// }
 
 .form {
     border: 1px solid #cacaca!important;
