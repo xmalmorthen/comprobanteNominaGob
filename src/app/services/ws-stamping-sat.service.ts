@@ -109,6 +109,9 @@ export class WsStampingSATService {
       .pipe(
         map( (response: responseService_Response_Interface) => {
           return <getActivationToken_Response_Interface>response.Response;
+        }),
+        catchError( (err: HttpErrorResponse) => {          
+          return throwError( err );
         })
       );
   }

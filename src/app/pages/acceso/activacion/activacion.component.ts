@@ -151,6 +151,10 @@ export class ActivacionComponent implements OnInit {
         this.err.msg = error.message;
       }
 
+      this.err.err = true;
+      this.frm.enabled;
+      $('#frmActivation').LoadingOverlay("hide");
+
     });
 
   }
