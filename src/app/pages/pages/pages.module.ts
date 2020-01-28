@@ -10,6 +10,7 @@ import { CountUpModule } from 'countup.js-angular2';
 
 // PIPES
 import { PipesModule } from 'src/app/pipes/pipes.module';
+import { OrderModule } from 'ngx-order-pipe';
 
 // COMPONENTS
 import { MainComponent, DetailUUIDComponent, PagesComponent } from './pages.index';
@@ -26,7 +27,8 @@ import { MainComponent, DetailUUIDComponent, PagesComponent } from './pages.inde
     FormsModule,
     SharedModule,
     PipesModule,
-    CountUpModule
+    CountUpModule,
+    OrderModule
   ]
 })
 export class PagesModule { }

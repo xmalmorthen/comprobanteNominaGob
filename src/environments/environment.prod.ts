@@ -4,7 +4,7 @@ export const environment = {
     prefixTitle: 'Gobierno Colima - Recibos de Nómina'
   },
   recaptcha: {
-    siteKey: '6Lc41J4UAAAAAFHaMaKZ3g_20mgDXszi2yQZBcE-'
+    siteKey: '6Ld8oNMUAAAAABvk-R0FoGJ6cRdTrCn3y3kN4KJ7'
   },
   apis: {
     wscuRP: {

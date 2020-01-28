@@ -5,6 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
+import { OrderPipe } from 'ngx-order-pipe';
 import { titular_Interface, getComprobantesToken_Response_Interface, getAccess_Response_Interface } from 'src/app/interfaces/interfaces.index';
 import { WsStampingSATService, LogInService } from 'src/app/services/service.index';
 
@@ -35,7 +36,8 @@ export class MainComponent implements OnInit  {
     private wsStampingSATService: WsStampingSATService,
     private logInService: LogInService,
     private chRef: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private orderPipe: OrderPipe
   ) {}
 
   ngOnInit() {
@@ -53,6 +55,8 @@ export class MainComponent implements OnInit  {
                
         this.comprobantesList = response;
 
+        // this.comprobantesList = this.orderPipe.transform(response, 'id');
+
         this.chRef.detectChanges();
 
         moment.locale('es');
@@ -65,13 +69,15 @@ export class MainComponent implements OnInit  {
             "url": "./assets/vendor/datatable/Spanish.txt"
           },
           "columnDefs": [
-            {"orderable": false,"targets": [2,3]},
+            {"orderable": false,"targets": [4,5]},
             { responsivePriority: 1, targets: 0 },
+            { responsivePriority: 1, targets: 1 },
             { responsivePriority: 2, targets: 2 },
+            { responsivePriority: 3, targets: 4 },
             { responsivePriority: 10001, targets: -1 }
           ],
-          "order" : [[1, 'desc']],
-          "stateSave": true,
+          "order" : [[0, 'desc']],
+          // "stateSave": true,
           "stateSaveCallback": function(settings,data) {
               localStorage.setItem( 'DataTableState', JSON.stringify(data) )
           },
@@ -83,7 +89,7 @@ export class MainComponent implements OnInit  {
           this.dataTable.LoadingOverlay("hide");
       },
       ( error: HttpErrorResponse ) =>{});
-  }
+  }  
 
   getPreview(evt, uuid:string){
     if (uuid) {
