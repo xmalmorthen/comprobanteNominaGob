@@ -259,9 +259,11 @@ export class WsStampingSATService {
     window.location.href = callUrl;
   }
 
-  getPDF( UUID: string ): void {
+  getPDF( UUID: string ): Observable<Blob> {
     const callUrl = `${apiEndPoint}/${apiVersion}/get/getStampPDF?identifier=${UUID}`;
-    window.open(callUrl, "_blank");
+    return this.http.get(callUrl, { responseType: 'blob' });
+
+    //window.open(callUrl);
     // window.location.href = callUrl;
   }
 
