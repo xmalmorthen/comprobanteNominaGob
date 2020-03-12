@@ -18,6 +18,19 @@
   </div>
   
   <br>
+  <h3 class="pageTitle">Constancia Anual de Percepciones y Deducciones</h3>
+  <br>
+  <!-- BEGIN -->
+  <div class="card">
+    <div class="card-body">
+      <div class="btn-group text-center" role="group" aria-label="Botones para obtener constancia anual de percepciones y deducciones ">
+        <a *ngFor="let item of constAnual" (click)="getConstanciaAnual($event, item)" class='mx-3' title='Descargar constancia anual {{item.anio}}'><i class="fa fa fa-file-pdf-o fa-3x"></i><br/><strong>{{item.anio}}</strong></a>        
+      </div>
+    </div>
+  </div>
+  <!-- /BEGIN -->
+
+  <br>
   <h3 class="pageTitle">Recibos de Nómina</h3>
   <br>
   
@@ -28,7 +41,7 @@
         <a class="btn btn-default my-1" id="zip" (click)="getZipMultiple($event)" title='Descargar XML y Comprobante fiscal en archivo zip comprimido de los {{ itemsSelecteds }} registros seleccionados'>- <i class="fa fa-file-archive-o fa-3x" aria-hidden="true"></i> -</a>
       </h5>
     </div>
-  </div>
+  </div>  
 
   <!-- BEGIN TABLE -->
   <table #tablaComprobantes class="table table-striped responsive compact" style="width:100%;">

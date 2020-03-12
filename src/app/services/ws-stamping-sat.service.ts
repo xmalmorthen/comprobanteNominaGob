@@ -7,8 +7,18 @@ import { Subject } from 'rxjs/Subject';
 import { Cacheable } from 'ngx-cacheable';
 
 // INTERFACES
-import { getEmisores_Response_Interface, responseService_Response_Interface, getAccess_Response_Interface, getAccess_Request_Interface, getComprobantesToken_Response_Interface, getComprobantesToken_Request_Interface, getUserData_Response_Interface, getActivationToken_Response_Interface } from '../interfaces/interfaces.index';
+import { 
+        getEmisores_Response_Interface, 
+        responseService_Response_Interface, 
+        getAccess_Response_Interface, 
+        getAccess_Request_Interface, 
+        getComprobantesToken_Response_Interface, 
+        getComprobantesToken_Request_Interface, 
+        getUserData_Response_Interface, 
+        getActivationToken_Response_Interface, 
+        constanciaAnual } from '../interfaces/interfaces.index';
 import { environment } from '../../environments/environment';
+
 
 // CONSTANTES
 const apiEndPoint = environment.apis.wsStampingSat.endPoint;
@@ -272,6 +282,22 @@ export class WsStampingSATService {
     // window.open(callUrl, "_blank");
     window.location.href = callUrl;
   }
+
+  getConstanciaAnualPDF( item: constanciaAnual ): Observable<Blob> {
+    const callUrl = `${apiEndPoint}/${apiVersion}/get/getConstanciaAnualPDF?noCtrl=${item.noCtrl}&rfc=${item.rfc}&anio=${item.anio}`;
+    return this.http.get(callUrl, { responseType: 'blob' });
+  }
+
+  // getConstanciaAnualPDF( item: constanciaAnual ): Observable<Blob> {
+  //   const callUrl = item.url;
+  //   let headers_object = new HttpHeaders({
+  //     'Authorization': 'Basic d2ViY2FwZDpyQUl1V3BLSldxbEh3Zz09'
+  //   }); 
+
+  //   debugger;
+
+  //   return this.http.get(callUrl, { responseType: 'blob', headers: headers_object });
+  // }
 
   getZipMultiple( uuidList: string[] ): void {
 

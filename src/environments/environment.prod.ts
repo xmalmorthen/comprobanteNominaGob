@@ -21,5 +21,6 @@ export const environment = {
       endPoint: 'http://www.openapis.col.gob.mx/correos/v3/enviar',      
       apiAuth: 'Basic Y29tcHJvYmF0ZU5vbWluYTpNazBYSFI='
     }
-  }
+  },
+  constanciaAnualInicio: 2019 //Año de inicio de expedición de constancia anual de percepciones
 };
