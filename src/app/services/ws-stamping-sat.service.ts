@@ -263,29 +263,45 @@ export class WsStampingSATService {
       );
   }
 
-  getXML( UUID: string ): void {
-    const callUrl = `${apiEndPoint}/${apiVersion}/get/getStampingXML?identifier=${UUID}`;
+  getXML( UUID: string ): Observable<Blob> {
+
+    const headers_object = new HttpHeaders({'Authorization': apiAuth});
+    const wsRequest = `${apiEndPoint}/${apiVersion}/get/getStampingXML?identifier=${UUID}`;
+    return this.http.get(wsRequest, { responseType: 'blob', headers: headers_object });
+
+    /****************************************************************************/
+    /*const callUrl = `${apiEndPoint}/${apiVersion}/get/getStampingXML?identifier=${UUID}`;
     // window.open(callUrl, "_blank");
     window.location.href = callUrl;
+    */
   }
 
   getPDF( UUID: string ): Observable<Blob> {
+    const headers_object = new HttpHeaders({'Authorization': apiAuth});
     const callUrl = `${apiEndPoint}/${apiVersion}/get/getStampPDF?identifier=${UUID}`;
-    return this.http.get(callUrl, { responseType: 'blob' });
+    return this.http.get(callUrl, { responseType: 'blob', headers: headers_object });
 
     //window.open(callUrl);
     // window.location.href = callUrl;
   }
 
-  getZip( UUID: string ): void {
+  getZip( UUID: string ): Observable<Blob> {
+    const headers_object = new HttpHeaders({'Authorization': apiAuth});
+    const callUrl = `${apiEndPoint}/${apiVersion}/get/getZipFiles?identifier=${UUID}`;
+    return this.http.get(callUrl, { responseType: 'blob', headers: headers_object });
+
+    /***************************************************************************************************/
+    /*
     const callUrl = `${apiEndPoint}/${apiVersion}/get/getZipFiles?identifier=${UUID}`;
     // window.open(callUrl, "_blank");
     window.location.href = callUrl;
+    */
   }
 
   getConstanciaAnualPDF( item: constanciaAnual ): Observable<Blob> {
+    const headers_object = new HttpHeaders({'Authorization': apiAuth});
     const callUrl = `${apiEndPoint}/${apiVersion}/get/getConstanciaAnualPDF?noCtrl=${item.noCtrl}&rfc=${item.rfc}&anio=${item.anio}`;
-    return this.http.get(callUrl, { responseType: 'blob' });
+    return this.http.get(callUrl, { responseType: 'blob', headers: headers_object });
   }
 
   // getConstanciaAnualPDF( item: constanciaAnual ): Observable<Blob> {
@@ -299,15 +315,20 @@ export class WsStampingSATService {
   //   return this.http.get(callUrl, { responseType: 'blob', headers: headers_object });
   // }
 
-  getZipMultiple( uuidList: string[] ): void {
+  getZipMultiple( uuidList: string[] ): Observable<Blob> {
 
     const stringUUIDList =  uuidList.join(","); 
     const stringUUIDB64 = btoa(stringUUIDList);
-
-    const callUrl = `${apiEndPoint}/${apiVersion}/get/getZipMultiple?identifier=${stringUUIDB64}`;
     
+    const headers_object = new HttpHeaders({'Authorization': apiAuth});
+    const callUrl = `${apiEndPoint}/${apiVersion}/get/getZipMultiple?identifier=${stringUUIDB64}`;
+    return this.http.get(callUrl, { responseType: 'blob', headers: headers_object });
+
+    /*
+    const callUrl = `${apiEndPoint}/${apiVersion}/get/getZipMultiple?identifier=${stringUUIDB64}`;
     // window.open(callUrl, "_blank");
     window.location.href = callUrl;
+    */
   }
 
   // OBTENER DETALLE DE UUID
