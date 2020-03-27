@@ -105,8 +105,6 @@ export class MainComponent implements OnInit  {
         });
       }
 
-      console.log(this.constAnual);
-
   }  
 
   getPreview(evt, uuid:string){
@@ -126,7 +124,7 @@ export class MainComponent implements OnInit  {
       timer: 3500,
       showConfirmButton: false
     });
-    this.wsStampingSATService.getXML(uuid)
+    this.wsStampingSATService.getXML(uuid, this.logInService.loginModel.token)
     .subscribe(x => {
             // It is necessary to create a new blob object with mime-type explicitly set
             // otherwise only Chrome works like it should
@@ -167,7 +165,7 @@ export class MainComponent implements OnInit  {
       timer: 3500,
       showConfirmButton: false
     });
-    this.wsStampingSATService.getPDF(uuid)
+    this.wsStampingSATService.getPDF(uuid, this.logInService.loginModel.token)
     .subscribe(x => {
             // It is necessary to create a new blob object with mime-type explicitly set
             // otherwise only Chrome works like it should
@@ -208,7 +206,7 @@ export class MainComponent implements OnInit  {
       timer: 3500,
       showConfirmButton: false
     });
-    this.wsStampingSATService.getZip(uuid)
+    this.wsStampingSATService.getZip(uuid, this.logInService.loginModel.token)
     .subscribe(x => {
             // It is necessary to create a new blob object with mime-type explicitly set
             // otherwise only Chrome works like it should
@@ -249,7 +247,7 @@ export class MainComponent implements OnInit  {
       timer: 3500,
       showConfirmButton: false
     });
-    this.wsStampingSATService.getConstanciaAnualPDF(item)
+    this.wsStampingSATService.getConstanciaAnualPDF(item, this.logInService.loginModel.token)
     .subscribe(x => {
             // It is necessary to create a new blob object with mime-type explicitly set
             // otherwise only Chrome works like it should
@@ -359,7 +357,7 @@ export class MainComponent implements OnInit  {
       uuidList.push($(item).data('uuid'));
     });
 
-    this.wsStampingSATService.getZipMultiple(uuidList)
+    this.wsStampingSATService.getZipMultiple(uuidList, this.logInService.loginModel.token)
     .subscribe(x => {
             // It is necessary to create a new blob object with mime-type explicitly set
             // otherwise only Chrome works like it should

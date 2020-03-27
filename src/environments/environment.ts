@@ -11,13 +11,13 @@ export const environment = {
     wscuRP: {
       endPoint: 'http://apisnet.col.gob.mx/wscuRP',
       apiVersion: 'apiV1',
-      apiAuth: 'Basic eG1hbG1vcnRoZW46YjE2ZjU1MGQxNDdiZjkyZTk0NTUwNzRkOWVkZmUwMTM='
+      apiAuth: 'Basic aWNzaWM6MjA4M2FmMTc2ZDBmNDcwM2NkZDE1MzlhMWUxZTc3MmY='
     },
     wsStampingSat: {
-      //endPoint: 'http://apisnet.col.gob.mx/wsStampingSat',
-      endPoint: 'http://localhost:9999',      
+      endPoint: 'http://apisnet.col.gob.mx/wsStampingSat',
+      //endPoint: 'http://localhost:9999',
       apiVersion: 'apiV1',
-      apiAuth: 'Basic eG1hbG1vcnRoZW46YjE2ZjU1MGQxNDdiZjkyZTk0NTUwNzRkOWVkZmUwMTM='
+      apiAuth: 'Basic aWNzaWM6MjA4M2FmMTc2ZDBmNDcwM2NkZDE1MzlhMWUxZTc3MmY='
     },
     wsMailSender:{
       endPoint: 'http://www.openapis.col.gob.mx/correos/v3/enviar',      

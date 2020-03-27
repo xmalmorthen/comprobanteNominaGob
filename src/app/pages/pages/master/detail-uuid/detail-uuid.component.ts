@@ -1,6 +1,6 @@
 import { Component, OnInit, SecurityContext } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { WsStampingSATService } from 'src/app/services/service.index';
+import { WsStampingSATService, LogInService } from 'src/app/services/service.index';
 import Swal from 'sweetalert2';
 
 declare const $: any;
@@ -18,6 +18,7 @@ export class DetailUUIDComponent implements OnInit {
   constructor(
     private activatedRouter: ActivatedRoute,
     private router: Router,
+    private logInService: LogInService,
     private wsStampingSATService: WsStampingSATService
   ) { }
 
@@ -41,7 +42,7 @@ export class DetailUUIDComponent implements OnInit {
       timer: 2000,
       showConfirmButton: false
     });
-    this.wsStampingSATService.getXML(uuid)
+    this.wsStampingSATService.getXML(uuid,this.logInService.loginModel.token)
     .subscribe(x => {
             // It is necessary to create a new blob object with mime-type explicitly set
             // otherwise only Chrome works like it should
@@ -82,7 +83,7 @@ export class DetailUUIDComponent implements OnInit {
       timer: 2000,
       showConfirmButton: false
     });
-    this.wsStampingSATService.getPDF(uuid)
+    this.wsStampingSATService.getPDF(uuid,this.logInService.loginModel.token)
     .subscribe(x => {
             // It is necessary to create a new blob object with mime-type explicitly set
             // otherwise only Chrome works like it should
@@ -123,7 +124,7 @@ export class DetailUUIDComponent implements OnInit {
       timer: 2000,
       showConfirmButton: false
     });
-    this.wsStampingSATService.getZip(uuid)
+    this.wsStampingSATService.getZip(uuid,this.logInService.loginModel.token)
     .subscribe(x => {
             // It is necessary to create a new blob object with mime-type explicitly set
             // otherwise only Chrome works like it should

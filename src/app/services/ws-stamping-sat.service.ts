@@ -263,9 +263,9 @@ export class WsStampingSATService {
       );
   }
 
-  getXML( UUID: string ): Observable<Blob> {
+  getXML( UUID: string, token: string ): Observable<Blob> {
 
-    const headers_object = new HttpHeaders({'Authorization': apiAuth});
+    const headers_object = new HttpHeaders({'Authorization': apiAuth, 'token': token});
     const wsRequest = `${apiEndPoint}/${apiVersion}/get/getStampingXML?identifier=${UUID}`;
     return this.http.get(wsRequest, { responseType: 'blob', headers: headers_object });
 
@@ -276,8 +276,8 @@ export class WsStampingSATService {
     */
   }
 
-  getPDF( UUID: string ): Observable<Blob> {
-    const headers_object = new HttpHeaders({'Authorization': apiAuth});
+  getPDF( UUID: string, token: string ): Observable<Blob> {
+    const headers_object = new HttpHeaders({'Authorization': apiAuth, 'token': token});
     const callUrl = `${apiEndPoint}/${apiVersion}/get/getStampPDF?identifier=${UUID}`;
     return this.http.get(callUrl, { responseType: 'blob', headers: headers_object });
 
@@ -285,8 +285,8 @@ export class WsStampingSATService {
     // window.location.href = callUrl;
   }
 
-  getZip( UUID: string ): Observable<Blob> {
-    const headers_object = new HttpHeaders({'Authorization': apiAuth});
+  getZip( UUID: string, token: string ): Observable<Blob> {
+    const headers_object = new HttpHeaders({'Authorization': apiAuth, 'token': token});
     const callUrl = `${apiEndPoint}/${apiVersion}/get/getZipFiles?identifier=${UUID}`;
     return this.http.get(callUrl, { responseType: 'blob', headers: headers_object });
 
@@ -298,8 +298,8 @@ export class WsStampingSATService {
     */
   }
 
-  getConstanciaAnualPDF( item: constanciaAnual ): Observable<Blob> {
-    const headers_object = new HttpHeaders({'Authorization': apiAuth});
+  getConstanciaAnualPDF( item: constanciaAnual, token: string ): Observable<Blob> {
+    const headers_object = new HttpHeaders({'Authorization': apiAuth, 'token': token});
     const callUrl = `${apiEndPoint}/${apiVersion}/get/getConstanciaAnualPDF?noCtrl=${item.noCtrl}&rfc=${item.rfc}&anio=${item.anio}`;
     return this.http.get(callUrl, { responseType: 'blob', headers: headers_object });
   }
@@ -315,12 +315,12 @@ export class WsStampingSATService {
   //   return this.http.get(callUrl, { responseType: 'blob', headers: headers_object });
   // }
 
-  getZipMultiple( uuidList: string[] ): Observable<Blob> {
+  getZipMultiple( uuidList: string[], token: string ): Observable<Blob> {
 
     const stringUUIDList =  uuidList.join(","); 
     const stringUUIDB64 = btoa(stringUUIDList);
     
-    const headers_object = new HttpHeaders({'Authorization': apiAuth});
+    const headers_object = new HttpHeaders({'Authorization': apiAuth, 'token': token});
     const callUrl = `${apiEndPoint}/${apiVersion}/get/getZipMultiple?identifier=${stringUUIDB64}`;
     return this.http.get(callUrl, { responseType: 'blob', headers: headers_object });
 
