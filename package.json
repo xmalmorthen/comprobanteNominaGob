@@ -27,7 +27,7 @@
     "datatables.net": "^1.10.20",
     "datatables.net-dt": "^1.10.20",
     "gasparesganga-jquery-loading-overlay": "^2.1.7",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "moment": "^2.24.0",
     "ngx-cacheable": "^1.4.1",
     "ngx-captcha": "^6.4.0",
