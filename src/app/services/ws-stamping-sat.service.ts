@@ -59,8 +59,8 @@ export class WsStampingSATService {
   }
 
   // OBTENER TOKEN DE ACCESO
-  getAccess(usr: string, noCtrl: string, emisorRFC: string, contrasenia?: string): Observable< responseService_Response_Interface > {
-    
+  getAccess(usr: string, noCtrl: string, emisorRFC: string, contrasenia?: string): Observable< responseService_Response_Interface > {    
+
     const wsRequest = `${apiEndPoint}/${apiVersion}/get/getAccess`;
     let headers_object = new HttpHeaders({
       'Content-Type':  'application/json',
