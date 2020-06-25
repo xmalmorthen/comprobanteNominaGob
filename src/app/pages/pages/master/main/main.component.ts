@@ -296,7 +296,7 @@ export class MainComponent implements OnInit  {
         });
   }
 
-  getDeclaracionPatrimonialSimplificada(evt, item: constanciaAnual){
+  getDeclaracionPatrimonialSimplificada(evt, item: declaracionPatrimonialSimplificada_Interface){
     evt.preventDefault();
     Swal.fire({
       position: 'top-end',
@@ -306,7 +306,7 @@ export class MainComponent implements OnInit  {
       timer: 3500,
       showConfirmButton: false
     });
-    this.wsStampingSATService.getConstanciaAnualPDF(item, this.logInService.loginModel.token)
+    this.wsStampingSATService.getDeclaracionPatrimonialSimplificadaPDF(item, this.logInService.loginModel.token)
     .subscribe(x => {
             // It is necessary to create a new blob object with mime-type explicitly set
             // otherwise only Chrome works like it should

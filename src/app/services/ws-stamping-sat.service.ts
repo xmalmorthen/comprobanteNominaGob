@@ -303,6 +303,12 @@ export class WsStampingSATService {
     const callUrl = `${apiEndPoint}/${apiVersion}/get/getConstanciaAnualPDF?noCtrl=${item.noCtrl}&rfc=${item.rfc}&anio=${item.anio}`;
     return this.http.get(callUrl, { responseType: 'blob', headers: headers_object });
   }
+  
+  getDeclaracionPatrimonialSimplificadaPDF( item: constanciaAnual, token: string ): Observable<Blob> {
+    const headers_object = new HttpHeaders({'Authorization': apiAuth, 'token': token});
+    const callUrl = `${apiEndPoint}/${apiVersion}/get/getDeclaracionPatrimonialSimplificadaPDF?noCtrl=${item.noCtrl}&rfc=${item.rfc}&anio=${item.anio}`;
+    return this.http.get(callUrl, { responseType: 'blob', headers: headers_object });
+  }
 
   // getConstanciaAnualPDF( item: constanciaAnual ): Observable<Blob> {
   //   const callUrl = item.url;
