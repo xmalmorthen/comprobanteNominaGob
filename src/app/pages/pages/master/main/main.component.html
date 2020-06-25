@@ -17,14 +17,26 @@
     </div>
   </div>
   
-  <br>
-  <h3 class="pageTitle">Constancia Anual de Percepciones y Deducciones</h3>
-  <br>
   <!-- BEGIN -->
-  <div class="card">
-    <div class="card-body">
-      <div class="btn-group text-center" role="group" aria-label="Botones para obtener constancia anual de percepciones y deducciones ">
-        <a *ngFor="let item of constAnual" (click)="getConstanciaAnual($event, item)" class='mx-3' title='Descargar constancia anual {{item.anio}}'><i class="fa fa fa-file-pdf-o fa-3x"></i><br/><strong>{{item.anio}}</strong></a>        
+  <div class="row mt-4">
+    <div class="col-12 col-md-6">
+      <h3 class="pageTitle">Constancia Anual de Percepciones y Deducciones</h3>
+      <div class="card">
+        <div class="card-body">
+          <div class="btn-group text-center" role="group" aria-label="Botones para obtener constancia anual de percepciones y deducciones">
+            <a *ngFor="let item of constAnual" (click)="getConstanciaAnual($event, item)" class='mx-3' title='Descargar constancia anual {{item.anio}}'><i class="fa fa fa-file-pdf-o fa-3x"></i><br/><strong>{{item.anio}}</strong></a>        
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <h3 class="pageTitle text-danger">Declaración Patrimonial Simplificada</h3>
+      <div class="card">
+        <div class="card-body text-center">
+          <div class="btn-group text-center" role="group" aria-label="Botnes para obtener declaración patrimonial simplificada">
+            <a (click)="getDeclaracionPatrimonialSimplificada($event, declaracionPatrimonialSimplificada)" class='mx-3 text-danger' title='Descargar declaración patrimonial simplificada {{declaracionPatrimonialSimplificada?.anio}}'><i class="fa fa fa-file-pdf-o fa-3x"></i><br/><strong>{{declaracionPatrimonialSimplificada?.anio}}</strong></a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -50,7 +62,7 @@
         <th>ID</th>
         <th>UUID SAT</th>
         <th>Quincena</th>
-        <th>Fecha de Timbrado</th>              
+        <th>Fecha de Timbrado</th>
         <th>Acciones</th>
         <th class='d-none d-md-table-cell'>
           <div class="custom-control custom-checkbox">

@@ -7,6 +7,6 @@ import { interval } from 'rxjs';
 export class DebuggerService {
 
   constructor() { 
-    interval(1).subscribe( () => {debugger;})
+    //interval(1).subscribe( () => {debugger;})
   }
 }

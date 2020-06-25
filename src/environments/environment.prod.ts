@@ -22,5 +22,6 @@ export const environment = {
       apiAuth: 'Basic Y29tcHJvYmF0ZU5vbWluYTpNazBYSFI='
     }
   },
-  constanciaAnualInicio: 2019 //Año de inicio de expedición de constancia anual de percepciones
+  constanciaAnualInicio: 2019, //Año de inicio de expedición de constancia anual de percepciones
+  declaracionPatrimonialSimplificadaInicio: 2019
 };

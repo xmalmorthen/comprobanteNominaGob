@@ -8,3 +8,9 @@ export interface constanciaAnual {
   rfc: string;
   anio: number;
 }
+
+export interface declaracionPatrimonialSimplificada_Interface {
+  noCtrl: string;
+  rfc: string;
+  anio: number;
+}

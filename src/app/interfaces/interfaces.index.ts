@@ -13,7 +13,7 @@ export {
 } from './wsStampingSAT.interface';
 export { infoCURP_Response_Interface } from './wsCURP.interface';
 export { logIn_Interface } from './logIn.interface';
-export { titular_Interface, constanciaAnual } from './comprobantes.interface';
+export { titular_Interface, constanciaAnual, declaracionPatrimonialSimplificada_Interface } from './comprobantes.interface';
 export { recaptchaModel_Interface } from './recaptcha.interface';
 export { response_WsGobMailSender_Interface, Info_WsGobMailSender_Interface } from './wsGobMailSender.interface'
 export { errModel_Interface } from './errModel.interface';

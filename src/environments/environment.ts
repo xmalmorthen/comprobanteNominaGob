@@ -20,9 +20,10 @@ export const environment = {
       apiAuth: 'Basic aWNzaWM6MjA4M2FmMTc2ZDBmNDcwM2NkZDE1MzlhMWUxZTc3MmY='
     },
     wsMailSender:{
-      endPoint: 'http://www.openapis.col.gob.mx/correos/v3/enviar',      
+      endPoint: 'http://www.openapis.col.gob.mx/correos/v3/enviar',
       apiAuth: 'Basic Y29tcHJvYmF0ZU5vbWluYTpNazBYSFI='
     }
   },
-  constanciaAnualInicio: 2019 //Año de inicio de expedición de constancia anual de percepciones
+  constanciaAnualInicio: 2019, //Año de inicio de expedición de constancia anual de percepciones
+  declaracionPatrimonialSimplificadaInicio: 2019
 };
