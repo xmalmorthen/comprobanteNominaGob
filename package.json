@@ -24,7 +24,7 @@
     "bootstrap": "^4.4.1",
     "core-js": "^2.6.11",
     "countup.js-angular2": "^7.3.0",
-    "datatables.net": "^1.10.20",
+    "datatables.net": "^1.10.22",
     "datatables.net-dt": "^1.10.20",
     "gasparesganga-jquery-loading-overlay": "^2.1.7",
     "jquery": "^3.4.1",
