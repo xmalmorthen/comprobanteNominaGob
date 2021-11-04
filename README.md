@@ -1,5 +1,11 @@
 # ComprobanteNominaGob
 
+First run command [ nvm use ] to change node version
+Required 
+    node version v10.9.0
+    npm version 6.2.0
+    angular cli 7.3.9
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.6.
 
 ## Development server

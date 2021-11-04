@@ -36,6 +36,7 @@ export class MainComponent implements OnInit  {
 
   constAnual: constanciaAnual[] = [];
   declaracionPatrimonialSimplificada: declaracionPatrimonialSimplificada_Interface;
+  convocatoriaParaCambioAdscripcion: convocatoriaParaCambioAdscripcion_Interface;
 
   constructor(
     private wsStampingSATService: WsStampingSATService,
@@ -110,6 +111,11 @@ export class MainComponent implements OnInit  {
         noCtrl: sessionUserData.EmpleadoRef.noCtrl,
         rfc: sessionUserData.EmpleadoRef.rfc,
         anio: (new Date()).getFullYear() - 1
+      };
+
+      this.convocatoriaParaCambioAdscripcion = {
+        noCtrl: sessionUserData.EmpleadoRef.noCtrl,
+        rfc: sessionUserData.EmpleadoRef.rfc,
       };
 
   }  

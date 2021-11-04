@@ -314,6 +314,9 @@ export class WsStampingSATService {
   getConvocatoriaParaCambioAdscripcionPDF( item: convocatoriaParaCambioAdscripcion_Interface, token: string ): Observable<Blob> {
     const headers_object = new HttpHeaders({'Authorization': apiAuth, 'token': token});
     const callUrl = `${apiEndPoint}/${apiVersion}/get/getConvocatoriaParaCambioAdscripcionPDF?noCtrl=${item.noCtrl}&rfc=${item.rfc}`;
+
+    debugger;
+
     return this.http.get(callUrl, { responseType: 'blob', headers: headers_object });
   }
 
