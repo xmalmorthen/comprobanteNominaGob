@@ -14,3 +14,8 @@ export interface declaracionPatrimonialSimplificada_Interface {
   rfc: string;
   anio: number;
 }
+
+export interface convocatoriaParaCambioAdscripcion_Interface {
+  noCtrl: string;
+  rfc: string;
+}

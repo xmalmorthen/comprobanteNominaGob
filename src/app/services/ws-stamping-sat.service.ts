@@ -16,9 +16,10 @@ import {
         getComprobantesToken_Request_Interface, 
         getUserData_Response_Interface, 
         getActivationToken_Response_Interface, 
-        constanciaAnual } from '../interfaces/interfaces.index';
+        constanciaAnual,
+        declaracionPatrimonialSimplificada_Interface,
+        convocatoriaParaCambioAdscripcion_Interface } from '../interfaces/interfaces.index';
 import { environment } from '../../environments/environment';
-
 
 // CONSTANTES
 const apiEndPoint = environment.apis.wsStampingSat.endPoint;
@@ -304,22 +305,17 @@ export class WsStampingSATService {
     return this.http.get(callUrl, { responseType: 'blob', headers: headers_object });
   }
   
-  getDeclaracionPatrimonialSimplificadaPDF( item: constanciaAnual, token: string ): Observable<Blob> {
+  getDeclaracionPatrimonialSimplificadaPDF( item: declaracionPatrimonialSimplificada_Interface, token: string ): Observable<Blob> {
     const headers_object = new HttpHeaders({'Authorization': apiAuth, 'token': token});
     const callUrl = `${apiEndPoint}/${apiVersion}/get/getDeclaracionPatrimonialSimplificadaPDF?noCtrl=${item.noCtrl}&rfc=${item.rfc}&anio=${item.anio}`;
     return this.http.get(callUrl, { responseType: 'blob', headers: headers_object });
   }
 
-  // getConstanciaAnualPDF( item: constanciaAnual ): Observable<Blob> {
-  //   const callUrl = item.url;
-  //   let headers_object = new HttpHeaders({
-  //     'Authorization': 'Basic d2ViY2FwZDpyQUl1V3BLSldxbEh3Zz09'
-  //   }); 
-
-  //   debugger;
-
-  //   return this.http.get(callUrl, { responseType: 'blob', headers: headers_object });
-  // }
+  getConvocatoriaParaCambioAdscripcionPDF( item: convocatoriaParaCambioAdscripcion_Interface, token: string ): Observable<Blob> {
+    const headers_object = new HttpHeaders({'Authorization': apiAuth, 'token': token});
+    const callUrl = `${apiEndPoint}/${apiVersion}/get/getConvocatoriaParaCambioAdscripcionPDF?noCtrl=${item.noCtrl}&rfc=${item.rfc}`;
+    return this.http.get(callUrl, { responseType: 'blob', headers: headers_object });
+  }
 
   getZipMultiple( uuidList: string[], token: string ): Observable<Blob> {
 

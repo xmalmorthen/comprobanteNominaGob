@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { OrderPipe } from 'ngx-order-pipe';
-import { titular_Interface, constanciaAnual, getComprobantesToken_Response_Interface, getAccess_Response_Interface, declaracionPatrimonialSimplificada_Interface } from 'src/app/interfaces/interfaces.index';
+import { titular_Interface, constanciaAnual, getComprobantesToken_Response_Interface, getAccess_Response_Interface, declaracionPatrimonialSimplificada_Interface, convocatoriaParaCambioAdscripcion_Interface } from 'src/app/interfaces/interfaces.index';
 import { WsStampingSATService, LogInService } from 'src/app/services/service.index';
 
 import { environment } from '../../../../../environments/environment';
@@ -343,6 +343,58 @@ export class MainComponent implements OnInit  {
           Swal.fire( {
             title: 'Delcaración patrimonial simplificada',
             html : `No se encontró el formato de delcaración patrimonial simplificada para el año ${item.anio}`,
+            type: 'warning'
+          });
+        });
+  }
+
+  getConvocatoriaParaCambioAdscripcion(evt, item: convocatoriaParaCambioAdscripcion_Interface){
+    evt.preventDefault();
+    Swal.fire({
+      position: 'top-end',
+      type: 'success',
+      title: 'Generando archivo PDF',
+      footer: 'Favor de esperar',
+      timer: 3500,
+      showConfirmButton: false
+    });
+    this.wsStampingSATService.getConvocatoriaParaCambioAdscripcionPDF(item, this.logInService.loginModel.token)
+    .subscribe(x => {
+            // It is necessary to create a new blob object with mime-type explicitly set
+            // otherwise only Chrome works like it should
+            var newBlob = new Blob([x], { type: "application/pdf" });
+
+            // IE doesn't allow using a blob object directly as link href
+            // instead it is necessary to use msSaveOrOpenBlob
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(newBlob);
+                return;
+            }
+
+            // For other browsers: 
+            // Create a link pointing to the ObjectURL containing the blob.
+            const data = window.URL.createObjectURL(newBlob);
+
+            var link = document.createElement('a');
+            link.href = data;
+            link.download = `${item.noCtrl}_${item.rfc}_CA.pdf`;
+            // this is necessary as link.click() does not work on the latest firefox
+            link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+
+            setTimeout(function () {
+                // For Firefox it is necessary to delay revoking the ObjectURL
+                window.URL.revokeObjectURL(data);
+                link.remove();
+            }, 100);
+        },
+        ( error: HttpErrorResponse ) =>{
+          let msg = 'Ocurrió un error, favor de intentarlo de nuevo';
+          if (error.status == 417)
+            msg = 'No encontrado'
+          
+          Swal.fire( {
+            title: 'Formulario de la Convocatoria para Cambio de Adscripción',
+            html : `Su registro no cuenta con el formato habilitado`,
             type: 'warning'
           });
         });
